@@ -16,15 +16,20 @@ import javax.swing.SwingConstants;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import java.awt.Font;
+import java.awt.Image;
 
 import javax.swing.JButton;
+import javax.swing.ImageIcon;
+import javax.swing.JLayeredPane;
 
 public class Login extends JFrame {
 	private Coordinador coordinador;
+	private JLayeredPane layeredPane;
 	private JPanel panelLeft, panelRight;
-	private JTextField txtUsuario;
+	private JLabel lblLogin, lblUsuario, lblContraseña, lblIconEmp, lblSistemE;
 	private JPasswordField passwordField;
-	private JButton btnIniciar;
+	private JTextField txtUsuario;
+	private JButton btnIniciar, btnCerrar;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -32,52 +37,79 @@ public class Login extends JFrame {
         iniciarComponentes();
     }
 
-    @SuppressWarnings("unused")
     private void iniciarComponentes() {
         try {
         	FlatArcOrangeIJTheme.setup();
+        	
+        	// Panel de capas //
+        	layeredPane = new JLayeredPane();
+            layeredPane.setBounds(0, 0, 551, 220);
+             
         	// Paneles //
             panelLeft = new JPanel();
             panelLeft.setBackground(new Color(102, 102, 204));
             panelLeft.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-            panelLeft.setBounds(0, 0, 220, 211);
+            panelLeft.setBounds(0, 0, 231, 221);
             panelLeft.setLayout(null);
-            
+            layeredPane.add(panelLeft);
+
             panelRight = new JPanel();
-            panelRight.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-            panelRight.setBounds(220, 0, 264, 211);
+            panelRight.setBackground(new Color(244, 246, 247));
+            panelRight.setBounds(230, 0, 321, 221);
             panelRight.setLayout(null);
+            layeredPane.add(panelRight);
+            
+            // img //
+            ImageIcon empleados = new ImageIcon("C:\\Users\\charly\\Programación\\Java\\Proyectos\\sistema-empleados\\resource\\empleados.png");
+            Image imageEmpleados = empleados.getImage(); // Obtener el objeto Image
+            Image resizedImageEmp = imageEmpleados.getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH); // Redimensionar
+            ImageIcon resizedIconEmp = new ImageIcon(resizedImageEmp); // Crear nuevo ImageIcon con la imagen redimensionada
             
             // Etiquetas //
-            JLabel lblLogin = new JLabel("Login");
-            lblLogin.setFont(new Font("Consolas", Font.PLAIN, 14));
+            lblLogin = new JLabel("Login");
+            lblLogin.setFont(new Font("Consolas", Font.BOLD, 18));
             lblLogin.setHorizontalAlignment(SwingConstants.CENTER);
-            lblLogin.setBounds(105, 14, 50, 25);
+            lblLogin.setBounds(130, 20, 60, 25);
             panelRight.add(lblLogin);
             
-            JLabel lblUsuario = new JLabel("Usuario");
-            lblUsuario.setFont(new Font("Consolas", Font.PLAIN, 13));
-            lblUsuario.setBounds(30, 59, 50, 25);
+            lblUsuario = new JLabel("Usuario");
+            lblUsuario.setFont(new Font("Consolas", Font.BOLD, 13));
+            lblUsuario.setBounds(30, 70, 50, 25);
             panelRight.add(lblUsuario);
             
-            JLabel lblContraseña = new JLabel("Contraseña");
-            lblContraseña.setFont(new Font("Consolas", Font.PLAIN, 13));
-            lblContraseña.setBounds(30, 109, 70, 25);
+            lblContraseña = new JLabel("Contraseña");
+            lblContraseña.setFont(new Font("Consolas", Font.BOLD, 13));
+            lblContraseña.setBounds(30, 120, 70, 25);
             panelRight.add(lblContraseña);
+            
+            lblSistemE = new JLabel("Sistema Empleados");
+            lblSistemE.setHorizontalAlignment(SwingConstants.CENTER);
+            lblSistemE.setFont(new Font("Consolas", Font.BOLD, 15));
+            lblSistemE.setBounds(40, 196, 150, 14);
+            panelLeft.add(lblSistemE);
+            
+            lblIconEmp = new JLabel(resizedIconEmp);
+            lblIconEmp.setBounds(40, 30, 150, 150);
+            panelLeft.add(lblIconEmp);
             
             // Campo de texto //
             txtUsuario = new JTextField();
-            txtUsuario.setBounds(108, 54, 120, 30);
+            txtUsuario.setBounds(110, 65, 179, 30);
+            txtUsuario.requestFocusInWindow();
             panelRight.add(txtUsuario);
             
             // Campo Contraseña //
             passwordField = new JPasswordField();
-            passwordField.setBounds(108, 106, 120, 30);
+            passwordField.setBounds(110, 115, 179, 30);
             panelRight.add(passwordField);
             
             // Botones //
             btnIniciar = new JButton("Iniciar");
-            btnIniciar.setBounds(108, 156, 120, 25); 
+            btnIniciar.setBackground(new Color(135, 206, 250));
+            btnIniciar.setForeground(Color.BLACK);
+            btnIniciar.setFont(new Font("Consolas", Font.BOLD, 12));
+            btnIniciar.setBounds(108, 165, 85, 30);
+            btnIniciar.setMnemonic('i');
             panelRight.add(btnIniciar);
             btnIniciar.addActionListener(e -> {
             	if(coordinador.verificaCamposVacios(txtUsuario.getText(), passwordField.getPassword())) {
@@ -91,16 +123,28 @@ public class Login extends JFrame {
                 }
             });
             
+            btnCerrar = new JButton("Cerrar");
+            btnCerrar.setBackground(new Color(255, 0, 0));
+            btnCerrar.setForeground(Color.BLACK);
+            btnCerrar.setFont(new Font("Consolas", Font.BOLD, 12));
+            btnCerrar.setBounds(202, 165, 85, 30);
+            btnCerrar.setMnemonic('c');   
+            panelRight.add(btnCerrar);
+            btnCerrar.addActionListener(e -> {
+            	dispose();
+            });
+   
+            // Configuración de la ventana //
+            setUndecorated(true);
             setResizable(false);
             setVisible(true);
-            setTitle("Login");
-            setSize(500, 250);
+            //setTitle("Login");
+            setSize(551, 220);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setLocationRelativeTo(null);
             getContentPane().setLayout(null);
             //setIconImage();
-            getContentPane().add(panelLeft);
-            getContentPane().add(panelRight);
+            getContentPane().add(layeredPane);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al iniciar la interfaz: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
