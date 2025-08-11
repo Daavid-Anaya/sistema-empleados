@@ -37,6 +37,7 @@ public class Login extends JFrame {
         iniciarComponentes();
     }
 
+    @SuppressWarnings("unused")
     private void iniciarComponentes() {
         try {
         	FlatArcOrangeIJTheme.setup();
@@ -111,11 +112,13 @@ public class Login extends JFrame {
             btnIniciar.setBounds(108, 165, 85, 30);
             btnIniciar.setMnemonic('i');
             panelRight.add(btnIniciar);
-            btnIniciar.addActionListener(e -> {
+            btnIniciar.addActionListener(event -> {
             	if(coordinador.verificaCamposVacios(txtUsuario.getText(), passwordField.getPassword())) {
                 	if(coordinador.validarUsuarioContraseña(txtUsuario.getText(), passwordField.getPassword())) {
-                		JOptionPane.showMessageDialog(null, "Bienvenido al Sistema", "Inicio", JOptionPane.INFORMATION_MESSAGE);
-                	} else {
+                        JOptionPane.showMessageDialog(null, "Bienvenido al Sistema", "Bienvenida", JOptionPane.INFORMATION_MESSAGE);
+                        coordinador.menuPrincipalVisible();
+                        dispose();
+                    } else {
                         JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE); 
                     }
             	} else {
@@ -130,7 +133,7 @@ public class Login extends JFrame {
             btnCerrar.setBounds(202, 165, 85, 30);
             btnCerrar.setMnemonic('c');   
             panelRight.add(btnCerrar);
-            btnCerrar.addActionListener(e -> {
+            btnCerrar.addActionListener(event -> {
             	dispose();
             });
    
@@ -139,11 +142,11 @@ public class Login extends JFrame {
             setResizable(false);
             setVisible(true);
             //setTitle("Login");
+            //setIconImage();
             setSize(551, 220);
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             setLocationRelativeTo(null);
             getContentPane().setLayout(null);
-            //setIconImage();
             getContentPane().add(layeredPane);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al iniciar la interfaz: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
