@@ -1,7 +1,9 @@
 package controller;
 
 import model.Procesos;
+import model.dao.DaoCargo;
 import model.dao.DaoUsuario;
+import model.vo.VoCargo;
 import view.gui.Login;
 import view.gui.MenuPrincipal;
 
@@ -10,6 +12,7 @@ public class Coordinador {
 	private Login login;
 	private MenuPrincipal menuPrincipal;
 	private DaoUsuario daoUsuario;
+	private DaoCargo daoCargo;
 	private Procesos procesos;
 	
 	public void setLogin(Login login) {
@@ -23,6 +26,11 @@ public class Coordinador {
 	public void setDaoU(DaoUsuario daoUsuario) {
 		this.daoUsuario = daoUsuario;
 	}
+
+	public void setDaoCargo(DaoCargo daoCargo) {
+		this.daoCargo = daoCargo;
+		
+	}
 	
 	public void setProcesos(Procesos procesos) {
 		this.procesos = procesos;
@@ -30,6 +38,10 @@ public class Coordinador {
 	
 	public boolean validarUsuarioContraseña(String usuario, char[] contraseña) {
 		return daoUsuario.validarUsuarioContraseña(usuario, contraseña);
+	}
+
+	public boolean insertar(VoCargo c) {
+		return daoCargo.insertar(c);
 	}
 
 	public boolean verificaCamposVacios(String usuario, char[] contraseña) {
