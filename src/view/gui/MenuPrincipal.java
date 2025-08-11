@@ -1,10 +1,13 @@
 package view.gui;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
 import controller.Coordinador;
+import model.vo.VoCargo;
 
 import java.awt.Color;
 import javax.swing.JButton;
@@ -13,13 +16,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
 
 public class MenuPrincipal extends JFrame implements ActionListener{
-    @SuppressWarnings("unused")
     private Coordinador coordinador;
 	private JPanel panelPrincipal, panelMenu, panelHome, panelUsuarios, panelEmpleados, panelCargo, panelArea;
 	private JTabbedPane panelPestañas;
-	private JButton btnUsuarios, btnEmpleados, btnArea, btnCargo, btnCerrar;
+	private JButton btnUsuarios, btnEmpleados, btnArea, btnCargo, btnCerrar, btnRegistrar;
+    private JLabel lbl_Id, lblNombre;
+    private JTextField txtFNombre, txtFId;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -64,17 +69,45 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         panelPestañas.addTab("Empleados", null, panelEmpleados, null);
         panelEmpleados.setLayout(null);
         
-        panelCargo = new JPanel();
-        panelCargo.setBackground(new Color(255, 255, 255));
-        panelPestañas.addTab("Cargo", null, panelCargo, null);
-        panelCargo.setLayout(null);
-        
         panelArea = new JPanel();
         panelArea.setBackground(new Color(255, 255, 255));
         panelPestañas.addTab("Area", null, panelArea, null);
         panelArea.setLayout(null);
         
+        panelCargo = new JPanel();
+        panelCargo.setBackground(new Color(255, 255, 255));
+        panelPestañas.addTab("Cargo", null, panelCargo, null);
+        panelCargo.setLayout(null);
+
+        // Etiquetas //
+        // Etiquetas dentro de Canel Cargo
+        lbl_Id = new JLabel("ID:");
+        lbl_Id.setFont(new Font("Consolas", Font.BOLD, 13));
+        lbl_Id.setBounds(40, 37, 50, 20);
+        panelCargo.add(lbl_Id);
+        
+        lblNombre = new JLabel("Nombre:");
+        lblNombre.setFont(new Font("Consolas", Font.BOLD, 13));
+        lblNombre.setBounds(40, 82, 50, 20);
+        panelCargo.add(lblNombre);
+
+        // Campo de texto //
+        // Campo texto dentro de Panel Cargo
+        txtFNombre = new JTextField();
+        txtFNombre.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtFNombre.setBounds(100, 80, 120, 25);
+        panelCargo.add(txtFNombre);
+        txtFNombre.setColumns(10);
+        
+        txtFId = new JTextField();
+        txtFId.setEditable(false);
+        txtFId.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtFId.setBounds(100, 35, 120, 25);
+        panelCargo.add(txtFId);
+        txtFId.setColumns(10);
+        
         // Botones //
+        // Botones dentro del panel Menu
         btnUsuarios = new JButton("Usuarios");
         btnUsuarios.setFont(new Font("Consolas", Font.BOLD, 13));
         btnUsuarios.setBounds(52, 120, 95, 30);
@@ -107,8 +140,16 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         btnCerrar.setFont(new Font("Consolas", Font.BOLD, 13));
         btnCerrar.setBounds(52, 340, 95, 30);
         btnCerrar.setMnemonic('e');
-        
-        panelMenu.add(btnCerrar);    
+        btnCerrar.addActionListener(this);
+        panelMenu.add(btnCerrar);
+
+        // Botones dentro de panel Cargo
+        btnRegistrar = new JButton("Registrar");
+        btnRegistrar.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnRegistrar.setBounds(118, 127, 100, 25);
+        btnRegistrar.setMnemonic('r');
+        btnRegistrar.addActionListener(this);
+        panelCargo.add(btnRegistrar);
         
         // Configuración de la ventana //
         setTitle("Menu Principal");
@@ -124,18 +165,32 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         this.coordinador = coordinador;
     }
 
+    public void limpiarDatosCargo() {
+        txtFNombre.setText("");
+        txtFId.setText("");
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnUsuarios) {
-            
+			panelPestañas.setSelectedComponent(panelUsuarios);
         } else if (e.getSource() == btnEmpleados) {
-            
+        	panelPestañas.setSelectedComponent(panelEmpleados);
         } else if (e.getSource() == btnArea) {
-            
+        	panelPestañas.setSelectedComponent(panelArea);
         } else if (e.getSource() == btnCargo) {
-            
+        	panelPestañas.setSelectedComponent(panelCargo); 
         } else if (e.getSource() == btnCerrar) {
             dispose();
+        } else if (e.getSource() == btnRegistrar) {
+            VoCargo cargo = new VoCargo();
+        	cargo.setNombre(txtFNombre.getText());
+        	if (coordinador.insertar(cargo)) {
+        		JOptionPane.showMessageDialog(this, "Cargo registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        	} else {
+        		JOptionPane.showMessageDialog(this, "Error al registrar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);
+        	}
+            limpiarDatosCargo();
         }
     }
 }

@@ -61,12 +61,13 @@ public class Login extends JFrame {
             layeredPane.add(panelRight);
             
             // img //
-            ImageIcon empleados = new ImageIcon("C:\\Users\\charly\\Programación\\Java\\Proyectos\\sistema-empleados\\resource\\empleados.png");
+            ImageIcon empleados = new ImageIcon("resource/empleados.png");
             Image imageEmpleados = empleados.getImage(); // Obtener el objeto Image
             Image resizedImageEmp = imageEmpleados.getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH); // Redimensionar
             ImageIcon resizedIconEmp = new ImageIcon(resizedImageEmp); // Crear nuevo ImageIcon con la imagen redimensionada
             
             // Etiquetas //
+            // Etiquetas dentro del panel derecho
             lblLogin = new JLabel("Login");
             lblLogin.setFont(new Font("Consolas", Font.BOLD, 18));
             lblLogin.setHorizontalAlignment(SwingConstants.CENTER);
@@ -83,6 +84,7 @@ public class Login extends JFrame {
             lblContraseña.setBounds(30, 120, 70, 25);
             panelRight.add(lblContraseña);
             
+            // Etiquetas dentro del panel izquierdo
             lblSistemE = new JLabel("Sistema Empleados");
             lblSistemE.setHorizontalAlignment(SwingConstants.CENTER);
             lblSistemE.setFont(new Font("Consolas", Font.BOLD, 15));
@@ -95,12 +97,14 @@ public class Login extends JFrame {
             
             // Campo de texto //
             txtUsuario = new JTextField();
+            txtUsuario.setFont(new Font("Consolas", Font.PLAIN, 13));
             txtUsuario.setBounds(110, 65, 179, 30);
             txtUsuario.requestFocusInWindow();
             panelRight.add(txtUsuario);
             
             // Campo Contraseña //
             passwordField = new JPasswordField();
+            passwordField.setFont(new Font("Consolas", Font.PLAIN, 13));
             passwordField.setBounds(110, 115, 179, 30);
             panelRight.add(passwordField);
             
