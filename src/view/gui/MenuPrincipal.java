@@ -4,7 +4,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EtchedBorder;
+import javax.swing.table.DefaultTableModel;
 
 import controller.Coordinador;
 import model.vo.VoCargo;
@@ -16,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 public class MenuPrincipal extends JFrame implements ActionListener{
@@ -25,6 +28,9 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 	private JButton btnUsuarios, btnEmpleados, btnArea, btnCargo, btnCerrar, btnRegistrar;
     private JLabel lbl_Id, lblNombre;
     private JTextField txtFNombre, txtFId;
+    private DefaultTableModel modeloTablaCargos;
+	private JTable tablaCargos;
+	private JScrollPane scrollTablaCargos;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -150,6 +156,26 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         btnRegistrar.setMnemonic('r');
         btnRegistrar.addActionListener(this);
         panelCargo.add(btnRegistrar);
+
+        // Tablas
+        // Tabla dentro de panel Cargo
+        modeloTablaCargos = new DefaultTableModel(new Object[][] {}, new String[] {"ID", "Nombre Cargo"}) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        
+        tablaCargos = new JTable(modeloTablaCargos);
+        tablaCargos.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        tablaCargos.setFont(new Font("Consolas", Font.PLAIN, 13));
+        tablaCargos.getTableHeader().setReorderingAllowed(false);
+        
+        // Scrolls //
+        // Scroll dentro de panel Cargos
+        scrollTablaCargos = new JScrollPane(tablaCargos);
+        scrollTablaCargos.setBounds(230, 35, 350, 392);
+        panelCargo.add(scrollTablaCargos);
         
         // Configuración de la ventana //
         setTitle("Menu Principal");
