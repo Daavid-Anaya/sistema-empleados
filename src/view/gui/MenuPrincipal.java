@@ -9,6 +9,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.Coordinador;
+import model.CargoTableModel;
 import model.vo.VoCargo;
 
 import java.awt.Color;
@@ -206,12 +207,14 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         	panelPestañas.setSelectedComponent(panelArea);
         } else if (e.getSource() == btnCargo) {
         	panelPestañas.setSelectedComponent(panelCargo); 
+            tablaCargos.setModel(new CargoTableModel(coordinador.cargaListaCargos()));
         } else if (e.getSource() == btnCerrar) {
             dispose();
         } else if (e.getSource() == btnRegistrar) {
             VoCargo cargo = new VoCargo();
         	cargo.setNombre(txtFNombre.getText());
         	if (coordinador.insertar(cargo)) {
+                tablaCargos.setModel(new CargoTableModel(coordinador.cargaListaCargos()));
         		JOptionPane.showMessageDialog(this, "Cargo registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         	} else {
         		JOptionPane.showMessageDialog(this, "Error al registrar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);

@@ -2,7 +2,10 @@ package model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -42,4 +45,24 @@ public class DaoCargo {
             return false;
         }
     }
+
+    public List<VoCargo> cargaListaCargos() {
+        List<VoCargo> listaCargos = new ArrayList<>();
+        String query = "SELECT * FROM cargos";
+
+        try (Connection connection = new Conexion().getConnection();
+        PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                VoCargo cargo = new VoCargo();
+                cargo.setId(resultSet.getInt("id_cargo"));
+                cargo.setNombre(resultSet.getString("nombre_cargo"));
+                listaCargos.add(cargo);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return listaCargos;
+    } 
 }

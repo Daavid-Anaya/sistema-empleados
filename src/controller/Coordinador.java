@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import model.Procesos;
 import model.dao.DaoCargo;
 import model.dao.DaoUsuario;
@@ -51,4 +53,8 @@ public class Coordinador {
 	public void menuPrincipalVisible() {
 		menuPrincipal.setVisible(true);
 	}
+
+    public List<VoCargo> cargaListaCargos() {
+		return daoCargo.cargaListaCargos();
+    }
 }
