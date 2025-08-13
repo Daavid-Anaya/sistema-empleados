@@ -26,7 +26,8 @@ public class MenuPrincipal extends JFrame implements ActionListener{
     private Coordinador coordinador;
 	private JPanel panelPrincipal, panelMenu, panelHome, panelUsuarios, panelEmpleados, panelCargo, panelArea;
 	private JTabbedPane panelPestañas;
-	private JButton btnUsuarios, btnEmpleados, btnArea, btnCargo, btnCerrar, btnRegistrarCargo, btnActualizarCargo;
+	private JButton btnUsuarios, btnEmpleados, btnArea, btnCargo, btnCerrar, btnRegistrarCargo, btnActualizarCargo,
+    btnEliminarCargo;
     private JLabel lbl_IdCargo, lblNombreCargo;
     private JTextField txtFNombreCargo, txtFIdCargo;
     private DefaultTableModel modeloTablaCargos;
@@ -153,17 +154,24 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         // Botones dentro de panel Cargo
         btnRegistrarCargo = new JButton("Registrar");
         btnRegistrarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnRegistrarCargo.setBounds(90, 127, 120, 25);
+        btnRegistrarCargo.setBounds(90, 127, 120, 28);
         btnRegistrarCargo.setMnemonic('r');
         btnRegistrarCargo.addActionListener(this);
         panelCargo.add(btnRegistrarCargo);
 
         btnActualizarCargo = new JButton("Actualizar");
         btnActualizarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnActualizarCargo.setBounds(90, 163, 120, 25);
+        btnActualizarCargo.setBounds(90, 170, 120, 28);
         btnActualizarCargo.setMnemonic('A');
         btnActualizarCargo.addActionListener(this);
         panelCargo.add(btnActualizarCargo);
+
+        btnEliminarCargo = new JButton("Eliminar");
+        btnEliminarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnEliminarCargo.setBounds(90, 213, 120, 28);
+        btnEliminarCargo.setMnemonic('e');
+        btnEliminarCargo.addActionListener(this);
+        panelCargo.add(btnEliminarCargo);
 
         // Tablas
         // Tabla dentro de panel Cargo
@@ -229,7 +237,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         } else if (e.getSource() == btnRegistrarCargo) {
             VoCargo cargo = new VoCargo();
         	cargo.setNombre(txtFNombreCargo.getText());
-        	if (coordinador.insertarCargo(cargo)) {
+        	if (!txtFNombreCargo.getText().isEmpty() && coordinador.insertarCargo(cargo)) {
                 tablaCargos.setModel(new CargoTableModel(coordinador.cargaListaCargos()));
         		JOptionPane.showMessageDialog(this, "Cargo registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         	} else {
@@ -252,6 +260,22 @@ public class MenuPrincipal extends JFrame implements ActionListener{
             } else {
                 JOptionPane.showMessageDialog(this, "Seleccione un cargo para actualizar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
+        } else if (e.getSource() == btnEliminarCargo) {
+            int fila = tablaCargos.getSelectedRow();
+            if (fila != -1 && !txtFIdCargo.getText().isEmpty()) {
+                VoCargo cargo = new VoCargo(Integer.parseInt(txtFIdCargo.getText()), txtFNombreCargo.getText());
+                boolean confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar el cargo seleccionado?", "Confirmación", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+                if (confirmacion && coordinador.eliminarCargo(cargo)) {
+                    tablaCargos.setModel(new CargoTableModel(coordinador.cargaListaCargos()));
+                    limpiarDatosCargo();
+                    JOptionPane.showMessageDialog(this, "Cargo eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se eliminó el cargo.", "Advertencia", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccione un cargo para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+            
         }
     }
 }

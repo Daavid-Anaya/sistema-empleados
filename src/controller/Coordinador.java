@@ -61,4 +61,8 @@ public class Coordinador {
     public boolean actualizarCargo(VoCargo cargo) {
         return daoCargo.actualizarCargo(cargo);
     }
+
+    public boolean eliminarCargo(VoCargo cargo) {
+        return daoCargo.eliminarCargo(cargo);
+    }
 }

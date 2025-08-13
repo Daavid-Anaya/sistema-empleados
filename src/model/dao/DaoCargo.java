@@ -84,4 +84,22 @@ public class DaoCargo {
     		return false;
     	}
     }
+
+    public boolean eliminarCargo(VoCargo c) {
+        String deleteQuery = "DELETE FROM cargos WHERE id_cargo = ?";
+
+        try (Connection connection = new Conexion().getConnection();
+             PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+            // Asignamos el valor del ID del cargo a eliminar
+            statement.setInt(1, c.getId());
+
+            // Ejecutamos la eliminación
+            int rowsDeleted = statement.executeUpdate();
+
+            return rowsDeleted > 0;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar cargo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
 }
