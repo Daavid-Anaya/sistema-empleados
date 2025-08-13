@@ -26,7 +26,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
     private Coordinador coordinador;
 	private JPanel panelPrincipal, panelMenu, panelHome, panelUsuarios, panelEmpleados, panelCargo, panelArea;
 	private JTabbedPane panelPestañas;
-	private JButton btnUsuarios, btnEmpleados, btnArea, btnCargo, btnCerrar, btnRegistrar;
+	private JButton btnUsuarios, btnEmpleados, btnArea, btnCargo, btnCerrar, btnRegistrar, btnActualizar;
     private JLabel lbl_Id, lblNombre;
     private JTextField txtFNombre, txtFId;
     private DefaultTableModel modeloTablaCargos;
@@ -153,10 +153,17 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         // Botones dentro de panel Cargo
         btnRegistrar = new JButton("Registrar");
         btnRegistrar.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnRegistrar.setBounds(118, 127, 100, 25);
+        btnRegistrar.setBounds(90, 127, 120, 25);
         btnRegistrar.setMnemonic('r');
         btnRegistrar.addActionListener(this);
         panelCargo.add(btnRegistrar);
+        
+        btnActualizar = new JButton("Actualizar");
+        btnActualizar.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnActualizar.setBounds(90, 163, 120, 25);
+        btnActualizar.setMnemonic('A');
+        btnActualizar.addActionListener(this);
+        panelCargo.add(btnActualizar);
 
         // Tablas
         // Tabla dentro de panel Cargo
@@ -171,6 +178,15 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         tablaCargos.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
         tablaCargos.setFont(new Font("Consolas", Font.PLAIN, 13));
         tablaCargos.getTableHeader().setReorderingAllowed(false);
+        tablaCargos.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int fila = tablaCargos.getSelectedRow();
+                if (fila != -1) {
+                    txtFId.setText(tablaCargos.getValueAt(fila, 0).toString());
+                    txtFNombre.setText(tablaCargos.getValueAt(fila, 1).toString());
+                }
+            }
+        });
         
         // Scrolls //
         // Scroll dentro de panel Cargos
@@ -213,13 +229,29 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         } else if (e.getSource() == btnRegistrar) {
             VoCargo cargo = new VoCargo();
         	cargo.setNombre(txtFNombre.getText());
-        	if (coordinador.insertar(cargo)) {
+        	if (coordinador.insertarCargo(cargo)) {
                 tablaCargos.setModel(new CargoTableModel(coordinador.cargaListaCargos()));
         		JOptionPane.showMessageDialog(this, "Cargo registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         	} else {
         		JOptionPane.showMessageDialog(this, "Error al registrar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);
         	}
             limpiarDatosCargo();
+        } else if (e.getSource() == btnActualizar) {
+            int fila = tablaCargos.getSelectedRow();
+            if (fila != -1) {
+                VoCargo cargo = new VoCargo();
+                cargo.setId(Integer.parseInt(txtFId.getText()));
+                cargo.setNombre(txtFNombre.getText());
+                if (coordinador.actualizarCargo(cargo)) {
+                    tablaCargos.setModel(new CargoTableModel(coordinador.cargaListaCargos()));
+                    limpiarDatosCargo();
+                    JOptionPane.showMessageDialog(this, "Cargo actualizado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al actualizar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Seleccione un cargo para actualizar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
         }
     }
 }

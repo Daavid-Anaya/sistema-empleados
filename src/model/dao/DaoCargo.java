@@ -21,7 +21,7 @@ public class DaoCargo {
         this.coordinador = coordinador;
     }
     
-    public boolean insertar(VoCargo c) {
+    public boolean insertarCargo(VoCargo c) {
     	// Consulta SQL para insertar los datos en la tabla Pacientes
         String insertQuery = "INSERT INTO cargos (nombre_cargo) VALUES (?)";
     	
@@ -61,8 +61,27 @@ public class DaoCargo {
                 listaCargos.add(cargo);
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al cargar lista de cargos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return listaCargos;
-    } 
+    }
+
+    public boolean actualizarCargo(VoCargo c) {
+    	String UpdateQuery = "UPDATE cargos SET nombre_cargo = ? WHERE id_cargo = ? ";
+    	
+    	try (Connection connection = new Conexion().getConnection();
+    	PreparedStatement statement = connection.prepareStatement(UpdateQuery)) {
+    		// Asignamos los valores a los parámetros
+            statement.setString(1, c.getNombre());
+            statement.setInt(2, c.getId());
+
+            // Ejecutamos la actualización
+            int rowsUpdated = statement.executeUpdate();
+
+            return rowsUpdated > 0;
+    	} catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar cargo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    		return false;
+    	}
+    }
 }

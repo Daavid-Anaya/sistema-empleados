@@ -42,8 +42,8 @@ public class Coordinador {
 		return daoUsuario.validarUsuarioContraseña(usuario, contraseña);
 	}
 
-	public boolean insertar(VoCargo c) {
-		return daoCargo.insertar(c);
+	public boolean insertarCargo(VoCargo c) {
+		return daoCargo.insertarCargo(c);
 	}
 
 	public boolean verificaCamposVacios(String usuario, char[] contraseña) {
@@ -56,5 +56,9 @@ public class Coordinador {
 
     public List<VoCargo> cargaListaCargos() {
 		return daoCargo.cargaListaCargos();
+    }
+
+    public boolean actualizarCargo(VoCargo cargo) {
+        return daoCargo.actualizarCargo(cargo);
     }
 }
