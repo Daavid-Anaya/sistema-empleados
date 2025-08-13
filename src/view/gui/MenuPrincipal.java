@@ -26,9 +26,9 @@ public class MenuPrincipal extends JFrame implements ActionListener{
     private Coordinador coordinador;
 	private JPanel panelPrincipal, panelMenu, panelHome, panelUsuarios, panelEmpleados, panelCargo, panelArea;
 	private JTabbedPane panelPestañas;
-	private JButton btnUsuarios, btnEmpleados, btnArea, btnCargo, btnCerrar, btnRegistrar, btnActualizar;
-    private JLabel lbl_Id, lblNombre;
-    private JTextField txtFNombre, txtFId;
+	private JButton btnUsuarios, btnEmpleados, btnArea, btnCargo, btnCerrar, btnRegistrarCargo, btnActualizarCargo;
+    private JLabel lbl_IdCargo, lblNombreCargo;
+    private JTextField txtFNombreCargo, txtFIdCargo;
     private DefaultTableModel modeloTablaCargos;
 	private JTable tablaCargos;
 	private JScrollPane scrollTablaCargos;
@@ -88,30 +88,30 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 
         // Etiquetas //
         // Etiquetas dentro de Canel Cargo
-        lbl_Id = new JLabel("ID:");
-        lbl_Id.setFont(new Font("Consolas", Font.BOLD, 13));
-        lbl_Id.setBounds(40, 37, 50, 20);
-        panelCargo.add(lbl_Id);
-        
-        lblNombre = new JLabel("Nombre:");
-        lblNombre.setFont(new Font("Consolas", Font.BOLD, 13));
-        lblNombre.setBounds(40, 82, 50, 20);
-        panelCargo.add(lblNombre);
+        lbl_IdCargo = new JLabel("ID:");
+        lbl_IdCargo.setFont(new Font("Consolas", Font.BOLD, 13));
+        lbl_IdCargo.setBounds(40, 37, 50, 20);
+        panelCargo.add(lbl_IdCargo);
+
+        lblNombreCargo = new JLabel("Nombre:");
+        lblNombreCargo.setFont(new Font("Consolas", Font.BOLD, 13));
+        lblNombreCargo.setBounds(40, 82, 50, 20);
+        panelCargo.add(lblNombreCargo);
 
         // Campo de texto //
         // Campo texto dentro de Panel Cargo
-        txtFNombre = new JTextField();
-        txtFNombre.setFont(new Font("Consolas", Font.PLAIN, 13));
-        txtFNombre.setBounds(100, 80, 120, 25);
-        panelCargo.add(txtFNombre);
-        txtFNombre.setColumns(10);
+        txtFNombreCargo = new JTextField();
+        txtFNombreCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtFNombreCargo.setBounds(100, 80, 120, 25);
+        panelCargo.add(txtFNombreCargo);
+        txtFNombreCargo.setColumns(10);
         
-        txtFId = new JTextField();
-        txtFId.setEditable(false);
-        txtFId.setFont(new Font("Consolas", Font.PLAIN, 13));
-        txtFId.setBounds(100, 35, 120, 25);
-        panelCargo.add(txtFId);
-        txtFId.setColumns(10);
+        txtFIdCargo = new JTextField();
+        txtFIdCargo.setEditable(false);
+        txtFIdCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtFIdCargo.setBounds(100, 35, 120, 25);
+        panelCargo.add(txtFIdCargo);
+        txtFIdCargo.setColumns(10);
         
         // Botones //
         // Botones dentro del panel Menu
@@ -151,19 +151,19 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         panelMenu.add(btnCerrar);
 
         // Botones dentro de panel Cargo
-        btnRegistrar = new JButton("Registrar");
-        btnRegistrar.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnRegistrar.setBounds(90, 127, 120, 25);
-        btnRegistrar.setMnemonic('r');
-        btnRegistrar.addActionListener(this);
-        panelCargo.add(btnRegistrar);
-        
-        btnActualizar = new JButton("Actualizar");
-        btnActualizar.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnActualizar.setBounds(90, 163, 120, 25);
-        btnActualizar.setMnemonic('A');
-        btnActualizar.addActionListener(this);
-        panelCargo.add(btnActualizar);
+        btnRegistrarCargo = new JButton("Registrar");
+        btnRegistrarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnRegistrarCargo.setBounds(90, 127, 120, 25);
+        btnRegistrarCargo.setMnemonic('r');
+        btnRegistrarCargo.addActionListener(this);
+        panelCargo.add(btnRegistrarCargo);
+
+        btnActualizarCargo = new JButton("Actualizar");
+        btnActualizarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnActualizarCargo.setBounds(90, 163, 120, 25);
+        btnActualizarCargo.setMnemonic('A');
+        btnActualizarCargo.addActionListener(this);
+        panelCargo.add(btnActualizarCargo);
 
         // Tablas
         // Tabla dentro de panel Cargo
@@ -182,8 +182,8 @@ public class MenuPrincipal extends JFrame implements ActionListener{
             if (!e.getValueIsAdjusting()) {
                 int fila = tablaCargos.getSelectedRow();
                 if (fila != -1) {
-                    txtFId.setText(tablaCargos.getValueAt(fila, 0).toString());
-                    txtFNombre.setText(tablaCargos.getValueAt(fila, 1).toString());
+                    txtFIdCargo.setText(tablaCargos.getValueAt(fila, 0).toString());
+                    txtFNombreCargo.setText(tablaCargos.getValueAt(fila, 1).toString());
                 }
             }
         });
@@ -209,8 +209,8 @@ public class MenuPrincipal extends JFrame implements ActionListener{
     }
 
     public void limpiarDatosCargo() {
-        txtFNombre.setText("");
-        txtFId.setText("");
+        txtFNombreCargo.setText("");
+        txtFIdCargo.setText("");
     }
 
     @Override
@@ -226,9 +226,9 @@ public class MenuPrincipal extends JFrame implements ActionListener{
             tablaCargos.setModel(new CargoTableModel(coordinador.cargaListaCargos()));
         } else if (e.getSource() == btnCerrar) {
             dispose();
-        } else if (e.getSource() == btnRegistrar) {
+        } else if (e.getSource() == btnRegistrarCargo) {
             VoCargo cargo = new VoCargo();
-        	cargo.setNombre(txtFNombre.getText());
+        	cargo.setNombre(txtFNombreCargo.getText());
         	if (coordinador.insertarCargo(cargo)) {
                 tablaCargos.setModel(new CargoTableModel(coordinador.cargaListaCargos()));
         		JOptionPane.showMessageDialog(this, "Cargo registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -236,12 +236,12 @@ public class MenuPrincipal extends JFrame implements ActionListener{
         		JOptionPane.showMessageDialog(this, "Error al registrar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);
         	}
             limpiarDatosCargo();
-        } else if (e.getSource() == btnActualizar) {
+        } else if (e.getSource() == btnActualizarCargo) {
             int fila = tablaCargos.getSelectedRow();
             if (fila != -1) {
                 VoCargo cargo = new VoCargo();
-                cargo.setId(Integer.parseInt(txtFId.getText()));
-                cargo.setNombre(txtFNombre.getText());
+                cargo.setId(Integer.parseInt(txtFIdCargo.getText()));
+                cargo.setNombre(txtFNombreCargo.getText());
                 if (coordinador.actualizarCargo(cargo)) {
                     tablaCargos.setModel(new CargoTableModel(coordinador.cargaListaCargos()));
                     limpiarDatosCargo();
