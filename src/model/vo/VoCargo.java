@@ -13,6 +13,14 @@ public class VoCargo {
         this.id = id;
         this.nombre = nombre;
     }
+    
+    public VoCargo(String nombre) {
+        this.nombre = nombre;
+    }
+    
+    public VoCargo(int id) {
+        this.id = id;
+    }
 
     // Metodos getters and setters
     public int getId() {
