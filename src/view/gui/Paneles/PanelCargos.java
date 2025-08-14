@@ -19,7 +19,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PanelCargos extends JPanel implements ActionListener {
+public class PanelCargos extends JPanel {
     private Coordinador coordinador;
     private JButton btnRegistrarCargo, btnActualizarCargo, btnEliminarCargo;
     private JLabel lbl_IdCargo, lblNombreCargo;
@@ -68,21 +68,21 @@ public class PanelCargos extends JPanel implements ActionListener {
         btnRegistrarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
         btnRegistrarCargo.setBounds(80, 127, 120, 28);
         btnRegistrarCargo.setMnemonic('r');
-        btnRegistrarCargo.addActionListener(this);
+        btnRegistrarCargo.addActionListener(new ManejadorBotonRegistrar());
         add(btnRegistrarCargo);
 
         btnActualizarCargo = new JButton("Actualizar");
         btnActualizarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
         btnActualizarCargo.setBounds(80, 170, 120, 28);
         btnActualizarCargo.setMnemonic('A');
-        btnActualizarCargo.addActionListener(this);
+        btnActualizarCargo.addActionListener(new ManejarBotonActuralizar());
         add(btnActualizarCargo);
 
         btnEliminarCargo = new JButton("Eliminar");
         btnEliminarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
         btnEliminarCargo.setBounds(80, 213, 120, 28);
         btnEliminarCargo.setMnemonic('e');
-        btnEliminarCargo.addActionListener(this);
+        btnEliminarCargo.addActionListener(new ManejarBotonEliminar());
         add(btnEliminarCargo);
 
         // Tablas //
@@ -126,43 +126,57 @@ public class PanelCargos extends JPanel implements ActionListener {
 		tablaCargos.setModel(new CargoTableModel(coordinador.cargaListaCargos()));
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == btnRegistrarCargo) {
+    // Clases interna que implementa ActionListener
+	// Registrar Cargo
+    private class ManejadorBotonRegistrar implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
         	if (!txtFNombreCargo.getText().isEmpty() && coordinador.insertarCargo(new VoCargo(txtFNombreCargo.getText()))) {
-                mostrarTablaCargos();
-        		JOptionPane.showMessageDialog(this, "Cargo registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        		mostrarTablaCargos();
+        		JOptionPane.showMessageDialog(null, "Cargo registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         	} else {
-        		JOptionPane.showMessageDialog(this, "Error al registrar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);
+        		JOptionPane.showMessageDialog(null, "Error al registrar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);
         	}
-            limpiarDatosCargo();
-        } else if (e.getSource() == btnActualizarCargo) {
-            int fila = tablaCargos.getSelectedRow();
+           limpiarDatosCargo();
+        }
+    }
+    
+    // Actualizar Cargo
+    private class ManejarBotonActuralizar implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			int fila = tablaCargos.getSelectedRow();
             if (fila != -1) {;
                 if (coordinador.actualizarCargo(new VoCargo(Integer.parseInt(txtFIdCargo.getText()), txtFNombreCargo.getText()))) {
                     mostrarTablaCargos();
                     limpiarDatosCargo();
-                    JOptionPane.showMessageDialog(this, "Cargo actualizado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Cargo actualizado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Error al actualizar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Error al actualizar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Seleccione un cargo para actualizar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Seleccione un cargo para actualizar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
-        } else if (e.getSource() == btnEliminarCargo) {
-            int fila = tablaCargos.getSelectedRow();
+		}
+    }
+	
+    // Eliminar Cargo
+    private class ManejarBotonEliminar implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			int fila = tablaCargos.getSelectedRow();
             if (fila != -1 && !txtFIdCargo.getText().isEmpty()) {
-                boolean confirmacion = JOptionPane.showConfirmDialog(this, "¿Está seguro de eliminar el cargo seleccionado?", "Confirmación", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+                boolean confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el cargo seleccionado?", "Confirmación", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
                 if (confirmacion && coordinador.eliminarCargo(new VoCargo(Integer.parseInt(txtFIdCargo.getText())))) {
                     mostrarTablaCargos();
                     limpiarDatosCargo();
-                    JOptionPane.showMessageDialog(this, "Cargo eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Cargo eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(this, "No se eliminó el cargo.", "Advertencia", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "No se eliminó el cargo.", "Advertencia", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(this, "Seleccione un cargo para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            }
-        }
+                JOptionPane.showMessageDialog(null, "Seleccione un cargo para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }  
+		}
     }
 }
