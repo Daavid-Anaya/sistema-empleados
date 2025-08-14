@@ -2,25 +2,23 @@ package view.gui;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
+import javax.swing.JButton;
+import javax.swing.ImageIcon;
+import javax.swing.JLayeredPane;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
+import javax.swing.JPasswordField;
 
 import com.formdev.flatlaf.intellijthemes.FlatArcOrangeIJTheme;
 
 import controller.Coordinador;
 
 import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
 import java.awt.Font;
 import java.awt.Image;
-
-import javax.swing.JButton;
-import javax.swing.ImageIcon;
-import javax.swing.JLayeredPane;
 
 public class Login extends JFrame {
 	private Coordinador coordinador;

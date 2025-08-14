@@ -7,12 +7,12 @@ import model.dao.DaoCargo;
 import model.dao.DaoUsuario;
 import model.vo.VoCargo;
 import view.gui.Login;
-import view.gui.MenuPrincipal;
+import view.gui.VentanaPrincipal;
 
 public class Coordinador {
 	@SuppressWarnings("unused")
 	private Login login;
-	private MenuPrincipal menuPrincipal;
+	private VentanaPrincipal ventanaPrincipal;
 	private DaoUsuario daoUsuario;
 	private DaoCargo daoCargo;
 	private Procesos procesos;
@@ -21,8 +21,8 @@ public class Coordinador {
 		this.login = login;
 	}
 
-	public void setMenuPrincipal(MenuPrincipal menuPrincipal) {
-        this.menuPrincipal = menuPrincipal;
+	public void setVentanaPrincipal(VentanaPrincipal menuPrincipal) {
+        this.ventanaPrincipal = menuPrincipal;
     }
 
 	public void setDaoU(DaoUsuario daoUsuario) {
@@ -51,7 +51,7 @@ public class Coordinador {
 	}
 
 	public void menuPrincipalVisible() {
-		menuPrincipal.setVisible(true);
+		ventanaPrincipal.setVisible(true);
 	}
 
     public List<VoCargo> cargaListaCargos() {
