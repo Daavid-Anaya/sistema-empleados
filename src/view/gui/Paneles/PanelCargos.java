@@ -22,9 +22,9 @@ import java.awt.event.ActionListener;
 
 public class PanelCargos extends JPanel {
     private Coordinador coordinador;
-    private JButton btnRegistrarCargo, btnActualizarCargo, btnEliminarCargo;
-    private JLabel lbl_IdCargo, lblNombreCargo;
-    private JTextField txtFNombreCargo, txtFIdCargo;
+    private JButton btnBuscarCargo, btnRegistrarCargo, btnActualizarCargo, btnEliminarCargo;
+    private JLabel lbl_Id, lbl_IdCargo, lblNombreCargo;
+    private JTextField txtFId, txtFIdCargo, txtFNombreCargo;
     private DefaultTableModel modeloTablaCargos;
 	private JTable tablaCargos;
 	private JScrollPane scrollTablaCargos;
@@ -41,6 +41,11 @@ public class PanelCargos extends JPanel {
 		setLayout(null);
 
         // Etiquetas //
+        lbl_Id = new JLabel("Ingrese el ID del Cargo a consultar:");
+		lbl_Id.setFont(new Font("Consolas", Font.BOLD, 14));
+	    lbl_Id.setBounds(40, 30, 300, 20);
+	    add(lbl_Id);
+
         lbl_IdCargo = new JLabel("ID:");
         lbl_IdCargo.setFont(new Font("Consolas", Font.BOLD, 14));
         lbl_IdCargo.setBounds(20, 100, 60, 20);
@@ -52,6 +57,12 @@ public class PanelCargos extends JPanel {
         add(lblNombreCargo);
 
         // Campo de texto //
+        txtFId = new JTextField();
+	   	txtFId.setFont(new Font("Consolas", Font.PLAIN, 13));
+	    txtFId.setBounds(330, 28, 120, 25);
+	    txtFId.setColumns(10);
+	    add(txtFId);
+
         txtFIdCargo = new JTextField();
         txtFIdCargo.setEditable(false);
         txtFIdCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
@@ -66,6 +77,13 @@ public class PanelCargos extends JPanel {
         add(txtFNombreCargo);
 
         // Botones //
+        btnBuscarCargo = new JButton("Buscar");
+        btnBuscarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnBuscarCargo.setBounds(460, 27, 120, 28);
+        btnBuscarCargo.setMnemonic('b');
+        btnBuscarCargo.addActionListener(new ManejadorBotonBuscar());
+        add(btnBuscarCargo);
+
         btnRegistrarCargo = new JButton("Registrar");
         btnRegistrarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
         btnRegistrarCargo.setBounds(55, 213, 120, 28);
@@ -129,8 +147,8 @@ public class PanelCargos extends JPanel {
     }
 	
 	public void limpiarDatosCargo() {
-        txtFNombreCargo.setText("");
         txtFIdCargo.setText("");
+        txtFNombreCargo.setText("");
     }
 	
 	public void mostrarTablaCargos() {
@@ -138,6 +156,25 @@ public class PanelCargos extends JPanel {
     }
 
     // Clases interna que implementa ActionListener
+    // Buscar Cargo
+    private class ManejadorBotonBuscar implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (txtFId.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese el ID del cargo a buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            } else {
+                VoCargo cargo = coordinador.buscarCargo(new VoCargo(Integer.parseInt(txtFId.getText())));
+                if (cargo != null) {
+                    txtFIdCargo.setText(String.valueOf(cargo.getId()));
+                    txtFNombreCargo.setText(cargo.getNombre());
+                } else {
+                    JOptionPane.showMessageDialog(null, "Cargo no encontrado.", "Información", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+            txtFId.setText("");
+        }
+    }
+
 	// Registrar Cargo
     private class ManejadorBotonRegistrar implements ActionListener {
         @Override

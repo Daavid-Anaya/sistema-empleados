@@ -37,26 +37,30 @@ public class Coordinador {
 	public void setProcesos(Procesos procesos) {
 		this.procesos = procesos;
 	}
+
+	public void menuPrincipalVisible() {
+		ventanaPrincipal.setVisible(true);
+	}
 	
 	public boolean validarUsuarioContraseña(String usuario, char[] contraseña) {
 		return daoUsuario.validarUsuarioContraseña(usuario, contraseña);
-	}
-
-	public boolean insertarCargo(VoCargo c) {
-		return daoCargo.insertarCargo(c);
 	}
 
 	public boolean verificaCamposVacios(String usuario, char[] contraseña) {
 		return procesos.verificaCamposVacios(usuario, contraseña);
 	}
 
-	public void menuPrincipalVisible() {
-		ventanaPrincipal.setVisible(true);
-	}
-
     public List<VoCargo> cargaListaCargos() {
 		return daoCargo.cargaListaCargos();
     }
+
+	public VoCargo buscarCargo(VoCargo cargo) {
+		return daoCargo.buscarCargo(cargo);
+	}
+
+	public boolean insertarCargo(VoCargo c) {
+		return daoCargo.insertarCargo(c);
+	}
 
     public boolean actualizarCargo(VoCargo cargo) {
         return daoCargo.actualizarCargo(cargo);

@@ -20,6 +20,24 @@ public class DaoCargo {
     public void setCoordinador(Coordinador coordinador) {
         this.coordinador = coordinador;
     }
+
+    public VoCargo buscarCargo(VoCargo c) {
+        String query = "SELECT * FROM cargos WHERE id_cargo = ?";
+        try (Connection connection = new Conexion().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, c.getId());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                VoCargo cargo = new VoCargo();
+                cargo.setId(resultSet.getInt("id_cargo"));
+                cargo.setNombre(resultSet.getString("nombre_cargo"));
+                return cargo;
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al buscar cargo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
+    }
     
     public boolean insertarCargo(VoCargo c) {
     	// Consulta SQL para insertar los datos en la tabla Pacientes
@@ -44,26 +62,6 @@ public class DaoCargo {
             JOptionPane.showMessageDialog(null, "Error al insertar cargo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-    }
-
-    public List<VoCargo> cargaListaCargos() {
-        List<VoCargo> listaCargos = new ArrayList<>();
-        String query = "SELECT * FROM cargos";
-
-        try (Connection connection = new Conexion().getConnection();
-        PreparedStatement statement = connection.prepareStatement(query)) {
-            ResultSet resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                VoCargo cargo = new VoCargo();
-                cargo.setId(resultSet.getInt("id_cargo"));
-                cargo.setNombre(resultSet.getString("nombre_cargo"));
-                listaCargos.add(cargo);
-            }
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al cargar lista de cargos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        return listaCargos;
     }
 
     public boolean actualizarCargo(VoCargo c) {
@@ -101,5 +99,25 @@ public class DaoCargo {
             JOptionPane.showMessageDialog(null, "Error al eliminar cargo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
+    }
+
+    public List<VoCargo> cargaListaCargos() {
+        List<VoCargo> listaCargos = new ArrayList<>();
+        String query = "SELECT * FROM cargos";
+
+        try (Connection connection = new Conexion().getConnection();
+        PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                VoCargo cargo = new VoCargo();
+                cargo.setId(resultSet.getInt("id_cargo"));
+                cargo.setNombre(resultSet.getString("nombre_cargo"));
+                listaCargos.add(cargo);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar lista de cargos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return listaCargos;
     }
 }
