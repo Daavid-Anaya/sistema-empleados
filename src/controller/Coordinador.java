@@ -3,8 +3,10 @@ package controller;
 import java.util.List;
 
 import model.Procesos;
+import model.dao.DaoArea;
 import model.dao.DaoCargo;
 import model.dao.DaoUsuario;
+import model.vo.VoArea;
 import model.vo.VoCargo;
 import view.gui.Login;
 import view.gui.VentanaPrincipal;
@@ -14,6 +16,7 @@ public class Coordinador {
 	private Login login;
 	private VentanaPrincipal ventanaPrincipal;
 	private DaoUsuario daoUsuario;
+	private DaoArea daoArea;
 	private DaoCargo daoCargo;
 	private Procesos procesos;
 	
@@ -25,8 +28,12 @@ public class Coordinador {
         this.ventanaPrincipal = menuPrincipal;
     }
 
-	public void setDaoU(DaoUsuario daoUsuario) {
+	public void setDaoUsuario(DaoUsuario daoUsuario) {
 		this.daoUsuario = daoUsuario;
+	}
+
+	public void setDaoArea(DaoArea daoArea) {
+		this.daoArea = daoArea;
 	}
 
 	public void setDaoCargo(DaoCargo daoCargo) {
@@ -68,5 +75,25 @@ public class Coordinador {
 
     public boolean eliminarCargo(VoCargo cargo) {
         return daoCargo.eliminarCargo(cargo);
+    }
+
+	public List<VoArea> cargaListaAreas() {
+		return daoArea.cargaListaAreas();
+    }
+
+	public VoArea buscarArea(VoArea a) {
+		return daoArea.buscarArea(a);
+	}
+
+	public boolean insertarArea(VoArea a) {
+		return daoArea.insertarArea(a);
+	}
+
+    public boolean actualizarArea(VoArea a) {
+        return daoArea.actualizarArea(a);
+    }
+
+    public boolean eliminarArea(VoArea a) {
+        return daoArea.eliminarArea(a);
     }
 }

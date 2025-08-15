@@ -1,6 +1,7 @@
 package controller;
 
 import model.Procesos;
+import model.dao.DaoArea;
 import model.dao.DaoCargo;
 import model.dao.DaoUsuario;
 import view.gui.Login;
@@ -15,6 +16,7 @@ public class App {
 		Coordinador coordinador = new Coordinador();
 		Procesos procesos = new Procesos();
 		DaoUsuario daoUsuario = new DaoUsuario();
+		DaoArea daoArea = new DaoArea();
 		DaoCargo daoCargo = new DaoCargo();
 		
 		// Relacionar clases con el coordinador
@@ -22,13 +24,15 @@ public class App {
 		ventanaPrincipal.setCoordinador(coordinador);
 		procesos.setCoordinador(coordinador);
 		daoUsuario.setCoordinador(coordinador);
+		daoArea.setCoordinador(coordinador);
 		daoCargo.setCoordinador(coordinador);
 		
 		// Relacionar el coordinador con las clases
 		coordinador.setLogin(login);
 		coordinador.setVentanaPrincipal(ventanaPrincipal);
-		coordinador.setDaoU(daoUsuario);
 		coordinador.setProcesos(procesos);
+		coordinador.setDaoUsuario(daoUsuario);
+		coordinador.setDaoArea(daoArea);
 		coordinador.setDaoCargo(daoCargo);
     }
 }
