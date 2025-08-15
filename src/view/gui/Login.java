@@ -126,6 +126,8 @@ public class Login extends JFrame {
             	} else {
                     JOptionPane.showMessageDialog(null, "Los campos de usuario y contraseña no pueden estar vacíos", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
+                txtUsuario.setText("");
+                passwordField.setText("");
             });
             
             btnCerrar = new JButton("Cerrar");
