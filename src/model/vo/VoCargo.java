@@ -2,7 +2,7 @@ package model.vo;
 
 public class VoCargo {
     private int id;
-    private String  nombre;
+    private String nombre;
 
     // Constructores
     public VoCargo() {

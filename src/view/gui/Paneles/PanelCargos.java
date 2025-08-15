@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 
 public class PanelCargos extends JPanel {
     private Coordinador coordinador;
-    private JButton btnBuscarCargo, btnRegistrarCargo, btnActualizarCargo, btnEliminarCargo;
+    private JButton btnBuscarCargo, btnRegistrarCargo, btnActualizarCargo, btnEliminarCargo, btnLimpiarTxt;
     private JLabel lbl_Id, lbl_IdCargo, lblNombreCargo;
     private JTextField txtFId, txtFIdCargo, txtFNombreCargo;
     private DefaultTableModel modeloTablaCargos;
@@ -105,6 +105,13 @@ public class PanelCargos extends JPanel {
         btnEliminarCargo.addActionListener(new ManejarBotonEliminar());
         add(btnEliminarCargo);
 
+        btnLimpiarTxt = new JButton("Limpiar");
+        btnLimpiarTxt.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnLimpiarTxt.setBounds(55, 342, 120, 28);
+        btnLimpiarTxt.setMnemonic('l');
+        btnLimpiarTxt.addActionListener(new ManejarBotonLimpiar());
+        add(btnLimpiarTxt);
+
         // Tablas //
         modeloTablaCargos = new DefaultTableModel(new Object[][] {}, new String[] {"ID", "Nombre Cargo"}) {
             @Override
@@ -155,7 +162,7 @@ public class PanelCargos extends JPanel {
 		tablaCargos.setModel(new CargoTableModel(coordinador.cargaListaCargos()));
     }
 
-    // Clases interna que implementa ActionListener
+    // Clases internas que implementa ActionListener
     // Buscar Cargo
     private class ManejadorBotonBuscar implements ActionListener {
         @Override
@@ -226,5 +233,13 @@ public class PanelCargos extends JPanel {
                 JOptionPane.showMessageDialog(null, "Seleccione un cargo para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }  
 		}
+    }
+
+    // Limpiar Campos
+    public class ManejarBotonLimpiar implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            limpiarDatosCargo();
+        }
     }
 }

@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 
 public class PanelAreas extends JPanel {
     private Coordinador coordinador;
-    private JButton btnBuscarArea, btnRegistrarArea, btnActualizarArea, btnEliminarArea;
+    private JButton btnBuscarArea, btnRegistrarArea, btnActualizarArea, btnEliminarArea, btnLimpiarTxt;
     private JLabel lbl_Id, lbl_IdArea, lblNombreArea;
     private JTextField txtFId, txtFIdArea, txtFNombreArea;
     private DefaultTableModel modeloTablaAreas;
@@ -105,6 +105,13 @@ public class PanelAreas extends JPanel {
         btnEliminarArea.addActionListener(new ManejarBotonEliminar());
         add(btnEliminarArea);
 
+        btnLimpiarTxt = new JButton("Limpiar");
+        btnLimpiarTxt.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnLimpiarTxt.setBounds(55, 342, 120, 28);
+        btnLimpiarTxt.setMnemonic('l');
+        btnLimpiarTxt.addActionListener(new ManejarBotonLimpiar());
+        add(btnLimpiarTxt);
+
         // Tablas //
         modeloTablaAreas = new DefaultTableModel(new Object[][] {}, new String[] {"ID", "Nombre Area"}) {
             @Override
@@ -160,10 +167,10 @@ public class PanelAreas extends JPanel {
     private class ManejadorBotonBuscar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (txtFIdArea.getText().isEmpty()) {
+            if (txtFId.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Por favor, ingrese el ID del área a buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             } else {
-                VoArea area = coordinador.buscarArea(new VoArea(Integer.parseInt(txtFIdArea.getText())));
+                VoArea area = coordinador.buscarArea(new VoArea(Integer.parseInt(txtFId.getText())));
                 if (area != null) {
                     txtFIdArea.setText(String.valueOf(area.getId()));
                     txtFNombreArea.setText(area.getNombre());
@@ -226,5 +233,13 @@ public class PanelAreas extends JPanel {
                 JOptionPane.showMessageDialog(null, "Seleccione un cargo para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }  
 		}
+    }
+
+    // Limpiar Campos
+    public class ManejarBotonLimpiar implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            limpiarDatosArea();
+        }
     }
 }
