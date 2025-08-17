@@ -43,7 +43,7 @@ public class PanelCargos extends JPanel {
         // Etiquetas //
         lbl_Id = new JLabel("Ingrese el ID del Cargo a consultar:");
 		lbl_Id.setFont(new Font("Consolas", Font.BOLD, 14));
-	    lbl_Id.setBounds(40, 30, 300, 20);
+	    lbl_Id.setBounds(80, 30, 290, 20);
 	    add(lbl_Id);
 
         lbl_IdCargo = new JLabel("ID:");
@@ -59,55 +59,55 @@ public class PanelCargos extends JPanel {
         // Campo de texto //
         txtFId = new JTextField();
 	   	txtFId.setFont(new Font("Consolas", Font.PLAIN, 13));
-	    txtFId.setBounds(330, 28, 120, 25);
+	    txtFId.setBounds(370, 28, 120, 25);
 	    txtFId.setColumns(10);
 	    add(txtFId);
 
         txtFIdCargo = new JTextField();
         txtFIdCargo.setEditable(false);
         txtFIdCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        txtFIdCargo.setBounds(80, 98, 120, 25);
+        txtFIdCargo.setBounds(80, 98, 150, 25);
         txtFIdCargo.setColumns(10);
         add(txtFIdCargo);
 
         txtFNombreCargo = new JTextField();
         txtFNombreCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        txtFNombreCargo.setBounds(80, 143, 120, 25);
+        txtFNombreCargo.setBounds(80, 143, 150, 25);
         txtFNombreCargo.setColumns(10);
         add(txtFNombreCargo);
 
         // Botones //
         btnBuscarCargo = new JButton("Buscar");
         btnBuscarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnBuscarCargo.setBounds(460, 27, 120, 28);
+        btnBuscarCargo.setBounds(500, 26, 140, 30);
         btnBuscarCargo.setMnemonic('b');
         btnBuscarCargo.addActionListener(new ManejadorBotonBuscar());
         add(btnBuscarCargo);
 
         btnRegistrarCargo = new JButton("Registrar");
         btnRegistrarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnRegistrarCargo.setBounds(55, 213, 120, 28);
+        btnRegistrarCargo.setBounds(93, 213, 140, 30);
         btnRegistrarCargo.setMnemonic('r');
         btnRegistrarCargo.addActionListener(new ManejadorBotonRegistrar());
         add(btnRegistrarCargo);
 
         btnActualizarCargo = new JButton("Actualizar");
         btnActualizarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnActualizarCargo.setBounds(55, 256, 120, 28);
+        btnActualizarCargo.setBounds(93, 256, 140, 30);
         btnActualizarCargo.setMnemonic('a');
         btnActualizarCargo.addActionListener(new ManejarBotonActuralizar());
         add(btnActualizarCargo);
 
         btnEliminarCargo = new JButton("Eliminar");
         btnEliminarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnEliminarCargo.setBounds(55, 299, 120, 28);
+        btnEliminarCargo.setBounds(93, 299, 140, 30);
         btnEliminarCargo.setMnemonic('e');
         btnEliminarCargo.addActionListener(new ManejarBotonEliminar());
         add(btnEliminarCargo);
 
         btnLimpiarTxt = new JButton("Limpiar");
         btnLimpiarTxt.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnLimpiarTxt.setBounds(55, 342, 120, 28);
+        btnLimpiarTxt.setBounds(93, 342, 140, 30);
         btnLimpiarTxt.setMnemonic('l');
         btnLimpiarTxt.addActionListener(new ManejarBotonLimpiar());
         add(btnLimpiarTxt);
@@ -136,16 +136,16 @@ public class PanelCargos extends JPanel {
         
         // Scrolls //
         scrollTablaCargos = new JScrollPane(tablaCargos);
-        scrollTablaCargos.setBounds(230, 80, 370, 350);
+        scrollTablaCargos.setBounds(330, 80, 420, 370);
         add(scrollTablaCargos);
 
         // Separadores //
 	    separador1 = new JSeparator();
-	    separador1.setBounds(10, 80, 210, 10);
+	    separador1.setBounds(10, 80, 310, 10);
         add(separador1);
         
         separador2 = new JSeparator();
-	    separador2.setBounds(10, 190, 210, 10);
+	    separador2.setBounds(10, 190, 310, 10);
         add(separador2);
     }
 

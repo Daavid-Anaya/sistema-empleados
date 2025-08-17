@@ -43,7 +43,7 @@ public class PanelAreas extends JPanel {
         // Etiquetas //
         lbl_Id = new JLabel("Ingrese el ID del Area a consultar:");
 		lbl_Id.setFont(new Font("Consolas", Font.BOLD, 14));
-	    lbl_Id.setBounds(40, 30, 300, 20);
+	    lbl_Id.setBounds(80, 30, 290, 20);
 	    add(lbl_Id);
 
         lbl_IdArea = new JLabel("ID:");
@@ -56,58 +56,59 @@ public class PanelAreas extends JPanel {
         lblNombreArea.setBounds(20, 145, 60, 20);
         add(lblNombreArea);
 
+
         // Campo de texto //
         txtFId = new JTextField();
 	   	txtFId.setFont(new Font("Consolas", Font.PLAIN, 13));
-	    txtFId.setBounds(330, 28, 120, 25);
+	    txtFId.setBounds(370, 28, 120, 25);
 	    txtFId.setColumns(10);
 	    add(txtFId);
 
         txtFIdArea = new JTextField();
         txtFIdArea.setEditable(false);
         txtFIdArea.setFont(new Font("Consolas", Font.PLAIN, 13));
-        txtFIdArea.setBounds(80, 98, 120, 25);
+        txtFIdArea.setBounds(80, 98, 150, 25);
         txtFIdArea.setColumns(10);
         add(txtFIdArea);
 
         txtFNombreArea = new JTextField();
         txtFNombreArea.setFont(new Font("Consolas", Font.PLAIN, 13));
-        txtFNombreArea.setBounds(80, 143, 120, 25);
+        txtFNombreArea.setBounds(80, 143, 150, 25);
         txtFNombreArea.setColumns(10);
         add(txtFNombreArea);
 
         // Botones //
         btnBuscarArea = new JButton("Buscar");
         btnBuscarArea.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnBuscarArea.setBounds(460, 27, 120, 28);
+        btnBuscarArea.setBounds(500, 26, 140, 30);
         btnBuscarArea.setMnemonic('b');
         btnBuscarArea.addActionListener(new ManejadorBotonBuscar());
         add(btnBuscarArea);
 
         btnRegistrarArea = new JButton("Registrar");
         btnRegistrarArea.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnRegistrarArea.setBounds(55, 213, 120, 28);
+        btnRegistrarArea.setBounds(93, 213, 140, 30);
         btnRegistrarArea.setMnemonic('r');
         btnRegistrarArea.addActionListener(new ManejadorBotonRegistrar());
         add(btnRegistrarArea);
 
         btnActualizarArea = new JButton("Actualizar");
         btnActualizarArea.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnActualizarArea.setBounds(55, 256, 120, 28);
+        btnActualizarArea.setBounds(93, 256, 140, 30);
         btnActualizarArea.setMnemonic('a');
         btnActualizarArea.addActionListener(new ManejarBotonActualizar());
         add(btnActualizarArea);
 
         btnEliminarArea = new JButton("Eliminar");
         btnEliminarArea.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnEliminarArea.setBounds(55, 299, 120, 28);
+        btnEliminarArea.setBounds(93, 299, 140, 30);
         btnEliminarArea.setMnemonic('e');
         btnEliminarArea.addActionListener(new ManejarBotonEliminar());
         add(btnEliminarArea);
 
         btnLimpiarTxt = new JButton("Limpiar");
         btnLimpiarTxt.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnLimpiarTxt.setBounds(55, 342, 120, 28);
+        btnLimpiarTxt.setBounds(93, 342, 140, 30);
         btnLimpiarTxt.setMnemonic('l');
         btnLimpiarTxt.addActionListener(new ManejarBotonLimpiar());
         add(btnLimpiarTxt);
@@ -135,17 +136,18 @@ public class PanelAreas extends JPanel {
         });
         
         // Scrolls //
+        // Scrolls //
         scrollTablaAreas = new JScrollPane(tablaAreas);
-        scrollTablaAreas.setBounds(230, 80, 370, 350);
+        scrollTablaAreas.setBounds(330, 80, 420, 370);
         add(scrollTablaAreas);
 
         // Separadores //
 	    separador1 = new JSeparator();
-	    separador1.setBounds(10, 80, 210, 10);
+	    separador1.setBounds(10, 80, 310, 10);
         add(separador1);
         
         separador2 = new JSeparator();
-	    separador2.setBounds(10, 190, 210, 10);
+	    separador2.setBounds(10, 190, 310, 10);
         add(separador2);
     }
 

@@ -7,11 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 
 import controller.Coordinador;
-import view.gui.Paneles.PanelAreas;
-import view.gui.Paneles.PanelCargos;
-import view.gui.Paneles.PanelEmpleados;
-import view.gui.Paneles.PanelHome;
-import view.gui.Paneles.PanelUsuarios;
+import view.gui.Paneles.*;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -39,7 +35,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 	public void iniciarComponentes() {
 		// Panel Principal //
         panelPrincipal = new JPanel();
-        panelPrincipal.setBounds(0, 0, 834, 511);
+        panelPrincipal.setBounds(0, 0, 984, 511);
         panelPrincipal.setLayout(null);
         panelPrincipal.setBackground(new Color(255, 255, 255));
         panelPrincipal.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -48,7 +44,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         // Panel de Pestañas //
         panelPestañas = new JTabbedPane(JTabbedPane.TOP);
         panelPestañas.setBackground(new Color(244, 244, 244));
-        panelPestañas.setBounds(210, 11, 614, 489);
+        panelPestañas.setBounds(205, 11, 769, 489);
         panelPrincipal.add(panelPestañas);
         
         // Paneles //
@@ -115,7 +111,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         // Configuración de la ventana //
         setTitle("Menu Principal");
         //setIconImage();
-		setSize(850, 550);
+		setSize(1000, 550);
 		setResizable(false);
         setLocationRelativeTo(null);
         getContentPane().setLayout(null);
