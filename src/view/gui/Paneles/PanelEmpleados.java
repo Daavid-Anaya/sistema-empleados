@@ -1,16 +1,36 @@
 package view.gui.Paneles;
 
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import controller.Coordinador;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class PanelEmpleados extends JPanel implements ActionListener {
+public class PanelEmpleados extends JPanel {
     @SuppressWarnings("unused")
     private Coordinador coordinador;
+    private JPanel panelEmp, panelArea, panelCargo, panelAcciones;
+    private JLabel lblIdEmp, lblNombreEmp, lblApellidoEmp, lblTipoDocEmp, lblDocumentoEmp, lblTelefonoEmp, lblCorreoEmp;
+    private JLabel lblIdArea, lblArea, lblIdCargo, lblCargo;
+    private JTextField txtIdEmp, txtNomEmp, txtApellEmp, txtDocEmp, txtTelEmp, txtCorreoEmp;
+	private JTextField txtIdArea, txtArea, txtIdCargo, txtCargo;
+    private JComboBox<String> ComboDoc;
+	private JTable tablaEmp;
+    private DefaultTableModel modeloTablaEmp;
+    private JScrollPane scrollTablaEmp;
+	private JButton btnRegistrar, btnModificar, btnEliminar, btnBuscar, btnMasArea, btnMasCargo;
 
     private static final long serialVersionUID = 1L;
 
@@ -21,14 +41,283 @@ public class PanelEmpleados extends JPanel implements ActionListener {
     private void iniciarComponentes() {
         setBackground(new Color(255, 255, 255));
         setLayout(null);
+
+        //// Panel de Empleados ////
+        panelEmp = new JPanel();
+        panelEmp.setBackground(new Color(255, 255, 255));
+        panelEmp.setBorder(new TitledBorder(null, "Empleado", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        panelEmp.setBounds(5, 15, 275, 211);
+        panelEmp.setLayout(null);
+        add(panelEmp);
+
+        // Etiquetas //
+        lblIdEmp = new JLabel("ID");
+        lblIdEmp.setBounds(10, 24, 14, 15);
+        lblIdEmp.setFont(new Font("Consolas", Font.BOLD, 12));
+        panelEmp.add(lblIdEmp);
+
+        lblNombreEmp = new JLabel("Nombre");
+        lblNombreEmp.setFont(new Font("Consolas", Font.BOLD, 12));
+        lblNombreEmp.setBounds(10, 50, 42, 15);
+        panelEmp.add(lblNombreEmp);
+        
+        lblApellidoEmp = new JLabel("Apellido");
+        lblApellidoEmp.setFont(new Font("Consolas", Font.BOLD, 12));
+        lblApellidoEmp.setBounds(10, 76, 56, 15);
+        panelEmp.add(lblApellidoEmp);
+        
+        lblTipoDocEmp = new JLabel("Tipo Doc");
+        lblTipoDocEmp.setFont(new Font("Consolas", Font.BOLD, 12));
+        lblTipoDocEmp.setBounds(10, 102, 56, 15);
+        panelEmp.add(lblTipoDocEmp);
+        
+        lblDocumentoEmp = new JLabel("Documento");
+        lblDocumentoEmp.setFont(new Font("Consolas", Font.BOLD, 12));
+        lblDocumentoEmp.setBounds(10, 128, 63, 15);
+        panelEmp.add(lblDocumentoEmp);
+        
+        lblTelefonoEmp = new JLabel("Telefono");
+        lblTelefonoEmp.setFont(new Font("Consolas", Font.BOLD, 12));
+        lblTelefonoEmp.setBounds(10, 154, 56, 15);
+        panelEmp.add(lblTelefonoEmp);
+        
+        lblCorreoEmp = new JLabel("Correo");
+        lblCorreoEmp.setFont(new Font("Consolas", Font.BOLD, 12));
+        lblCorreoEmp.setBounds(10, 180, 56, 15);
+        panelEmp.add(lblCorreoEmp);
+
+        // Campos de texto //
+        txtIdEmp = new JTextField();
+        txtIdEmp.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtIdEmp.setBounds(80, 19, 175, 20);
+        panelEmp.add(txtIdEmp);
+        txtIdEmp.setColumns(10);
+        
+        txtNomEmp = new JTextField();
+        txtNomEmp.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtNomEmp.setColumns(10);
+        txtNomEmp.setBounds(80, 45, 175, 20);
+        panelEmp.add(txtNomEmp);
+        
+        txtApellEmp = new JTextField();
+        txtApellEmp.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtApellEmp.setColumns(10);
+        txtApellEmp.setBounds(80, 71, 175, 20);
+        panelEmp.add(txtApellEmp);
+        
+        txtDocEmp = new JTextField();
+        txtDocEmp.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtDocEmp.setColumns(10);
+        txtDocEmp.setBounds(80, 123, 175, 20);
+        panelEmp.add(txtDocEmp);
+        
+        txtTelEmp = new JTextField();
+        txtTelEmp.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtTelEmp.setColumns(10);
+        txtTelEmp.setBounds(80, 149, 175, 20);
+        panelEmp.add(txtTelEmp);
+        
+        txtCorreoEmp = new JTextField();
+        txtCorreoEmp.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtCorreoEmp.setColumns(10);
+        txtCorreoEmp.setBounds(80, 175, 175, 20);
+        panelEmp.add(txtCorreoEmp);
+
+        // Cuadro combinado //
+        ComboDoc = new JComboBox<String>();
+        ComboDoc.setFont(new Font("Consolas", Font.PLAIN, 13));
+        ComboDoc.setBounds(80, 97, 175, 20);
+        panelEmp.add(ComboDoc);
+
+        //// Panel de Areas ////
+        panelArea = new JPanel();
+        panelArea.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Area", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+        panelArea.setBackground(Color.WHITE);
+        panelArea.setBounds(290, 15, 230, 114);
+        panelArea.setLayout(null);
+        add(panelArea);
+        
+        lblIdArea = new JLabel("ID");
+        lblIdArea.setBounds(10, 24, 14, 15);
+        lblIdArea.setFont(new Font("Consolas", Font.BOLD, 12));
+        panelArea.add(lblIdArea);
+        
+        lblArea = new JLabel("Area");
+        lblArea.setFont(new Font("Consolas", Font.BOLD, 12));
+        lblArea.setBounds(10, 54, 42, 15);
+        panelArea.add(lblArea);
+        
+        txtIdArea = new JTextField();
+        txtIdArea.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtIdArea.setColumns(10);
+        txtIdArea.setBounds(57, 19, 153, 20);
+        panelArea.add(txtIdArea);
+        
+        txtArea = new JTextField();
+        txtArea.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtArea.setColumns(10);
+        txtArea.setBounds(57, 51, 153, 20);
+        panelArea.add(txtArea);
+        
+        btnMasArea = new JButton("...");
+        btnMasArea.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnMasArea.setBounds(57, 79, 70, 23);
+        btnMasArea.addActionListener(new ManejadorBotonAreas());
+        panelArea.add(btnMasArea);
+
+        //// Panel Cargos ////
+        panelCargo = new JPanel();
+        panelCargo.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, new Color(255, 255, 255), new Color(160, 160, 160)), "Cargo", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+        panelCargo.setBackground(Color.WHITE);
+        panelCargo.setBounds(530, 15, 230, 114);
+        panelCargo.setLayout(null);
+        add(panelCargo);
+
+        lblIdCargo = new JLabel("ID");
+        lblIdCargo.setFont(new Font("Consolas", Font.BOLD, 12));
+        lblIdCargo.setBounds(10, 24, 14, 15);
+        panelCargo.add(lblIdCargo);
+        
+        lblCargo = new JLabel("Cargo");
+        lblCargo.setFont(new Font("Consolas", Font.BOLD, 12));
+        lblCargo.setBounds(10, 54, 42, 15);
+        panelCargo.add(lblCargo);
+        
+        txtIdCargo = new JTextField();
+        txtIdCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtIdCargo.setColumns(10);
+        txtIdCargo.setBounds(57, 19, 153, 20);
+        panelCargo.add(txtIdCargo);
+        
+        txtCargo = new JTextField();
+        txtCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtCargo.setColumns(10);
+        txtCargo.setBounds(57, 51, 153, 20);
+        panelCargo.add(txtCargo);
+        
+        btnMasCargo = new JButton("...");
+        btnMasCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnMasCargo.setBounds(57, 79, 70, 23);
+        btnMasCargo.addActionListener(new ManejadorBotonCargos());
+        panelCargo.add(btnMasCargo);
+
+        // Tablas //
+        modeloTablaEmp = new DefaultTableModel(new Object[][] {}, new String[] {"ID", "Nombre", "Tipo Doc", "Documento", "ID Area", "Area", "ID Cargo", "Cargo", "Telefono", "Correo"}) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        tablaEmp = new JTable(modeloTablaEmp);
+        tablaEmp.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        tablaEmp.setFont(new Font("Consolas", Font.PLAIN, 13));
+        tablaEmp.getTableHeader().setReorderingAllowed(false);
+        tablaEmp.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int fila = tablaEmp.getSelectedRow();
+                if (fila != -1) {
+                    txtNomEmp.setText(tablaEmp.getValueAt(fila, 1).toString());
+                    ComboDoc.setSelectedItem(tablaEmp.getValueAt(fila, 2).toString());
+                    txtDocEmp.setText(tablaEmp.getValueAt(fila, 3).toString());
+                    txtIdArea.setText(tablaEmp.getValueAt(fila, 4).toString());
+                    txtArea.setText(tablaEmp.getValueAt(fila, 5).toString());
+                    txtIdCargo.setText(tablaEmp.getValueAt(fila, 6).toString());
+                    txtCargo.setText(tablaEmp.getValueAt(fila, 7).toString());
+                    txtTelEmp.setText(tablaEmp.getValueAt(fila, 8).toString());
+                    txtCorreoEmp.setText(tablaEmp.getValueAt(fila, 9).toString());
+                }
+            }
+        });
+
+        // Scrolls //
+        scrollTablaEmp = new JScrollPane(tablaEmp);
+        scrollTablaEmp.setBounds(5, 234, 752, 218);
+        add(scrollTablaEmp);
+
+        //// Panel Acciones ////
+        panelAcciones = new JPanel();
+        panelAcciones.setBackground(new Color(255, 255, 255));
+        panelAcciones.setBorder(new TitledBorder(null, "Acciones", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        panelAcciones.setBounds(290, 134, 470, 92);
+        panelAcciones.setLayout(null);
+        add(panelAcciones);
+        
+        btnRegistrar = new JButton("Registrar");
+        btnRegistrar.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnRegistrar.setBounds(20, 35, 100, 30);
+        btnRegistrar.addActionListener(new ManejadorBotonRegistrar());
+        panelAcciones.add(btnRegistrar);
+        
+        btnModificar = new JButton("Modificar");
+        btnModificar.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnModificar.setBounds(130, 35, 100, 30);
+        btnModificar.addActionListener(new ManejadorBotonActualizar());
+        panelAcciones.add(btnModificar);
+        
+        btnEliminar = new JButton("Eliminar");
+        btnEliminar.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnEliminar.setBounds(240, 35, 100, 30);
+        btnEliminar.addActionListener(new ManejadorBotonEliminar());
+        panelAcciones.add(btnEliminar);
+        
+        btnBuscar = new JButton("Buscar");
+        btnBuscar.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnBuscar.setBounds(350, 35, 100, 30);
+        btnBuscar.addActionListener(new ManejadorBotonBuscar());
+        panelAcciones.add(btnBuscar);
     }
 
     public void setCoordinador(Coordinador coordinador) {
         this.coordinador = coordinador;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        
+    // Clases internas que implementa ActionListener
+    // Boton para seleccionar area
+    public class ManejadorBotonAreas implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            
+        }
+    }
+
+    // Boton para seleccionar cargo
+    public class ManejadorBotonCargos implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            
+        }
+    }
+
+    // Registrar Empleado
+    public class ManejadorBotonRegistrar implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            
+        }
+    }
+
+    // Actualizar Empleado
+    public class ManejadorBotonActualizar implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            
+        }
+    }
+
+    // Eliminar Empleado
+    public class ManejadorBotonEliminar implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            
+        } 
+    }
+
+    // Buscar Empleado
+    public class ManejadorBotonBuscar implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
     }
 }
