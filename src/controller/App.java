@@ -1,6 +1,6 @@
 package controller;
 
-import model.Procesos;
+import model.Validaciones;
 import model.dao.DaoArea;
 import model.dao.DaoCargo;
 import model.dao.DaoEmpleado;
@@ -15,7 +15,7 @@ public class App {
     	Login login = new Login();
 		VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
 		Coordinador coordinador = new Coordinador();
-		Procesos procesos = new Procesos();
+		Validaciones procesos = new Validaciones();
 		DaoUsuario daoUsuario = new DaoUsuario();
 		DaoArea daoArea = new DaoArea();
 		DaoCargo daoCargo = new DaoCargo();

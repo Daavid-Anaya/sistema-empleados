@@ -2,7 +2,7 @@ package model;
 
 import controller.Coordinador;
 
-public class Procesos {
+public class Validaciones {
 	@SuppressWarnings("unused")
 	private Coordinador coordinador;
 

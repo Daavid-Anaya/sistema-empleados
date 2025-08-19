@@ -2,7 +2,7 @@ package controller;
 
 import java.util.List;
 
-import model.Procesos;
+import model.Validaciones;
 import model.dao.DaoArea;
 import model.dao.DaoCargo;
 import model.dao.DaoEmpleado;
@@ -21,7 +21,7 @@ public class Coordinador {
 	private DaoArea daoArea;
 	private DaoCargo daoCargo;
 	private DaoEmpleado daoEmpleado;
-	private Procesos procesos;
+	private Validaciones procesos;
 	
 	public void setLogin(Login login) {
 		this.login = login;
@@ -47,7 +47,7 @@ public class Coordinador {
 		this.daoEmpleado = daoEmpleado;
 	}
 
-	public void setProcesos(Procesos procesos) {
+	public void setProcesos(Validaciones procesos) {
 		this.procesos = procesos;
 	}
 
