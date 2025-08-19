@@ -21,7 +21,7 @@ public class Coordinador {
 	private DaoArea daoArea;
 	private DaoCargo daoCargo;
 	private DaoEmpleado daoEmpleado;
-	private Validaciones procesos;
+	private Validaciones validaciones;
 	
 	public void setLogin(Login login) {
 		this.login = login;
@@ -47,8 +47,8 @@ public class Coordinador {
 		this.daoEmpleado = daoEmpleado;
 	}
 
-	public void setProcesos(Validaciones procesos) {
-		this.procesos = procesos;
+	public void setValidaciones(Validaciones validaciones) {
+		this.validaciones = validaciones;
 	}
 
 	public void menuPrincipalVisible() {
@@ -60,12 +60,20 @@ public class Coordinador {
 	}
 
 	public boolean verificaCamposVacios(String usuario, char[] contraseña) {
-		return procesos.verificaCamposVacios(usuario, contraseña);
+		return validaciones.verificaCamposVacios(usuario, contraseña);
 	}
 
 	public boolean verificaCamposVaciosEmpleado(String nombre, String apellido, String tipoDoc, String documento,
 	String idArea, String idCargo, String telefono, String correo) {
-		return procesos.verificaCamposVaciosEmpleado(nombre, apellido, tipoDoc, documento, idArea, idCargo, telefono, correo);
+		return validaciones.verificaCamposVaciosEmpleado(nombre, apellido, tipoDoc, documento, idArea, idCargo, telefono, correo);
+	}
+
+	public boolean existeNombreArea(String nombre) {
+		return daoArea.existeNombreArea(nombre);
+	}
+
+	public boolean existeIdArea(int id) {
+		return daoArea.existeIdArea(id);
 	}
 
 	public void irArea() {
@@ -104,20 +112,20 @@ public class Coordinador {
 		return daoArea.cargaListaAreas();
     }
 
-	public VoArea buscarArea(VoArea a) {
-		return daoArea.buscarArea(a);
+	public VoArea buscarArea(String id) {
+		return daoArea.buscarArea(id);
 	}
 
-	public boolean insertarArea(VoArea a) {
-		return daoArea.insertarArea(a);
+	public boolean insertarArea(String nombre) {
+		return daoArea.insertarArea(nombre);
 	}
 
     public boolean actualizarArea(VoArea a) {
         return daoArea.actualizarArea(a);
     }
 
-    public boolean eliminarArea(VoArea a) {
-        return daoArea.eliminarArea(a);
+    public boolean eliminarArea(int id) {
+        return daoArea.eliminarArea(id);
     }
 
 	public void enviarArea(VoArea area) {

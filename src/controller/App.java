@@ -15,7 +15,7 @@ public class App {
     	Login login = new Login();
 		VentanaPrincipal ventanaPrincipal = new VentanaPrincipal();
 		Coordinador coordinador = new Coordinador();
-		Validaciones procesos = new Validaciones();
+		Validaciones validaciones = new Validaciones();
 		DaoUsuario daoUsuario = new DaoUsuario();
 		DaoArea daoArea = new DaoArea();
 		DaoCargo daoCargo = new DaoCargo();
@@ -24,7 +24,7 @@ public class App {
 		// Relacionar clases con el coordinador
 		login.setCoordinador(coordinador);
 		ventanaPrincipal.setCoordinador(coordinador);
-		procesos.setCoordinador(coordinador);
+		validaciones.setCoordinador(coordinador);
 		daoUsuario.setCoordinador(coordinador);
 		daoArea.setCoordinador(coordinador);
 		daoCargo.setCoordinador(coordinador);
@@ -33,7 +33,7 @@ public class App {
 		// Relacionar el coordinador con las clases
 		coordinador.setLogin(login);
 		coordinador.setVentanaPrincipal(ventanaPrincipal);
-		coordinador.setProcesos(procesos);
+		coordinador.setValidaciones(validaciones);
 		coordinador.setDaoUsuario(daoUsuario);
 		coordinador.setDaoArea(daoArea);
 		coordinador.setDaoCargo(daoCargo);

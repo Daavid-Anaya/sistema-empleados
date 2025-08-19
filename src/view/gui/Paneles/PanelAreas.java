@@ -165,6 +165,7 @@ public class PanelAreas extends JPanel {
     public void limpiarDatosArea() {
         txtFIdArea.setText("");
         txtFNombreArea.setText("");
+        tablaAreas.clearSelection();
     }
 
     public void mostrarTablaAreas() {
@@ -176,18 +177,24 @@ public class PanelAreas extends JPanel {
     private class ManejadorBotonBuscar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (txtFId.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Por favor, ingrese el ID del área a buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            } else {
-                VoArea area = coordinador.buscarArea(new VoArea(Integer.parseInt(txtFId.getText())));
-                if (area != null) {
-                    txtFIdArea.setText(String.valueOf(area.getId()));
-                    txtFNombreArea.setText(area.getNombre());
+            try {
+                String idArea = txtFId.getText().trim();
+                if (idArea.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, seleccione el ID del área a buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Área no encontrada.", "Información", JOptionPane.INFORMATION_MESSAGE);
+                    VoArea area = coordinador.buscarArea(idArea);
+                    if (area != null) {
+                        txtFIdArea.setText(String.valueOf(area.getId()));
+                        txtFNombreArea.setText(area.getNombre());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Área no encontrada.", "Información", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
+                tablaAreas.clearSelection();
+                txtFId.setText("");
+            } catch (NumberFormatException a) {
+                JOptionPane.showMessageDialog(null, "Error: La cadena no es un entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            txtFId.setText("");
         }
     }
 
@@ -195,16 +202,17 @@ public class PanelAreas extends JPanel {
     private class ManejadorBotonRegistrar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!txtFNombreArea.getText().isEmpty()) {
-                if (coordinador.insertarArea(new VoArea(txtFNombreArea.getText()))) {
-        		mostrarTablaAreas();
-        		JOptionPane.showMessageDialog(null, "Área registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        	} else {
-        		JOptionPane.showMessageDialog(null, "Error al registrar el área.", "Error", JOptionPane.ERROR_MESSAGE);
-        	}
-            limpiarDatosArea();
+            String nombreArea = txtFNombreArea.getText().trim();
+            if (!nombreArea.isEmpty() && !coordinador.existeNombreArea(nombreArea)) {
+                if (coordinador.insertarArea(nombreArea)) {
+        		    mostrarTablaAreas();
+        		    JOptionPane.showMessageDialog(null, "Área registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        	    } else {
+        		    JOptionPane.showMessageDialog(null, "Error al registrar el área.", "Error", JOptionPane.ERROR_MESSAGE);
+        	    }
+                limpiarDatosArea();
             } else {
-                JOptionPane.showMessageDialog(null, "Por favor, ingrese el nombre del área.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese el nombre del área o verifique que no exista.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -213,17 +221,23 @@ public class PanelAreas extends JPanel {
     private class ManejarBotonActualizar implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int fila = tablaAreas.getSelectedRow();
-            if (fila != -1) {
-                if (coordinador.actualizarArea(new VoArea(Integer.parseInt(txtFIdArea.getText()), txtFNombreArea.getText()))) {
-                    mostrarTablaAreas();
-                    limpiarDatosArea();
-                    JOptionPane.showMessageDialog(null, "Área actualizada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            String idArea = txtFIdArea.getText().trim();
+            String nombreArea = txtFNombreArea.getText().trim();
+            if (!nombreArea.isEmpty() && !idArea.isEmpty()) {
+                int id = Integer.parseInt(idArea);
+                if (coordinador.existeIdArea(id) && !coordinador.existeNombreArea(nombreArea)) {
+                    if (coordinador.actualizarArea(new VoArea(id, nombreArea))) {
+                        limpiarDatosArea();
+                        mostrarTablaAreas();
+                        JOptionPane.showMessageDialog(null, "Área actualizada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al actualizar el Área.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Error al actualizar el Área.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "ID de área no encontrado o nombre ya existe.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Seleccione un área para actualizar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Verifique que no haya campos vacíos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
 		}
     }
@@ -232,18 +246,18 @@ public class PanelAreas extends JPanel {
     private class ManejarBotonEliminar implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int fila = tablaAreas.getSelectedRow();
-            if (fila != -1 && !txtFIdArea.getText().isEmpty()) {
+            String idArea = txtFIdArea.getText().trim();
+            if (!idArea.isEmpty()) {
                 boolean confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el área seleccionada?", "Confirmación", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
-                if (confirmacion && coordinador.eliminarArea(new VoArea(Integer.parseInt(txtFIdArea.getText())))) {
-                    mostrarTablaAreas();
+                if (confirmacion && coordinador.eliminarArea(Integer.parseInt(idArea))) {
                     limpiarDatosArea();
-                    JOptionPane.showMessageDialog(null, "Cargo eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    mostrarTablaAreas();
+                    JOptionPane.showMessageDialog(null, "Área eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "No se eliminó el cargo.", "Advertencia", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "No se eliminó el área.", "Advertencia", JOptionPane.INFORMATION_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Seleccione un cargo para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Seleccione un área para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }  
 		}
     }
@@ -260,9 +274,10 @@ public class PanelAreas extends JPanel {
     public class ManejarBotonEnviar implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (!txtFNombreArea.getText().isEmpty() && !txtFIdArea.getText().isEmpty()) {
-				VoArea area = new VoArea(Integer.parseInt(txtFIdArea.getText()), txtFNombreArea.getText());
-				coordinador.enviarArea(area);
+            String nombreArea = txtFNombreArea.getText().trim();
+            String idArea = txtFIdArea.getText().trim();
+			if (!nombreArea.isEmpty() && !idArea.isEmpty()) {
+				coordinador.enviarArea(new VoArea(Integer.parseInt(idArea), nombreArea));
         	} 
 			limpiarDatosArea();
             btnEnviar.setEnabled(false);

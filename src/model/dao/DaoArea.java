@@ -21,8 +21,56 @@ public class DaoArea {
         this.coordinador = coordinador;
     }
 
+    // Método para verificar si existe un área por su nombre
+    public boolean existeNombreArea(String nombre) {
+        // Consulta SQL para verificar si existe un área por su nombre
+        String sql = "SELECT COUNT(*) FROM areas WHERE nombre_area = ?";
+
+        // Preparar la conexión y la consulta
+        try (Connection connection = new Conexion().getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Establecer el valor del parámetro en la consulta
+            statement.setString(1, nombre);
+
+            // Ejecutar la consulta
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Procesar el resultado
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0; // Si hay al menos una coincidencia
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al verificar nombre de área: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+
+    // Método para verificar si existe un área por su id
+    public boolean existeIdArea(int id) {
+        // Consulta SQL para verificar si existe un área por su ID
+        String sql = "SELECT COUNT(*) FROM areas WHERE id_area = ?";
+
+        // Preparar la conexión y la consulta
+        try (Connection connection = new Conexion().getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Establecer el valor del parámetro en la consulta
+            statement.setInt(1, id);
+
+            // Ejecutar la consulta
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Procesar el resultado
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0; // Si hay al menos una coincidencia
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al verificar ID de área: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+
     // Método para buscar un área por su ID
-    public VoArea buscarArea(VoArea a) {
+    public VoArea buscarArea(String id) {
         // Consulta SQL para buscar el área por su ID
         String query = "SELECT * FROM areas WHERE id_area = ?";
 
@@ -30,7 +78,7 @@ public class DaoArea {
         try(Connection connection = new Conexion().getConnection();
             PreparedStatement statement = connection.prepareStatement(query)) {
             // Establecer el valor del parámetro en la consulta
-            statement.setInt(1, a.getId());
+            statement.setInt(1, Integer.parseInt(id));
             
             // Ejecutar la consulta
             ResultSet resultSet = statement.executeQuery();
@@ -49,7 +97,7 @@ public class DaoArea {
     }
 
     // Método para insertar un área
-    public boolean insertarArea(VoArea a) {
+    public boolean insertarArea(String nombre) {
         // Consulta SQL para insertar el área
         String insertQuery = "INSERT INTO areas (nombre_area) VALUES (?)";
 
@@ -57,7 +105,7 @@ public class DaoArea {
         try (Connection connection = new Conexion().getConnection();
             PreparedStatement statement = connection.prepareStatement(insertQuery)) {
             // Establecer el valor del parámetro en la consulta
-            statement.setString(1, a.getNombre());
+            statement.setString(1, nombre);
 
             // Ejecutar la consulta
             int rowsInserted = statement.executeUpdate();
@@ -93,7 +141,7 @@ public class DaoArea {
     }
 
     // Método para eliminar un área
-    public boolean eliminarArea(VoArea a) {
+    public boolean eliminarArea(int id) {
         // Consulta SQL para eliminar el área
         String deleteQuery = "DELETE FROM areas WHERE id_area = ?";
 
@@ -101,7 +149,7 @@ public class DaoArea {
         try (Connection connection = new Conexion().getConnection();
             PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
             // Establecer el valor del parámetro en la consulta
-            statement.setInt(1, a.getId());
+            statement.setInt(1, id);
 
             // Ejecutar la consulta
             int rowsDeleted = statement.executeUpdate();
@@ -118,12 +166,14 @@ public class DaoArea {
 	public List<VoArea> cargaListaAreas() {
         // Consulta SQL para obtener todas las áreas
         String selectQuery = "SELECT * FROM areas";
-
+        
         List<VoArea> listaAreas = new ArrayList<>();
+
+        // Preparar la conexión y la consulta
         try (Connection connection = new Conexion().getConnection();
-            PreparedStatement statement = connection.prepareStatement(selectQuery);
+            PreparedStatement statement = connection.prepareStatement(selectQuery)) {
             // Ejecutar la consulta
-            ResultSet resultSet = statement.executeQuery()) {
+            ResultSet resultSet = statement.executeQuery();
 
             // Procesar el resultado
             while (resultSet.next()) {

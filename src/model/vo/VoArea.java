@@ -13,14 +13,6 @@ public class VoArea {
         this.id = id;
         this.nombre = nombre;
     }
-    
-    public VoArea(String nombre) {
-        this.nombre = nombre;
-    }
-    
-    public VoArea(int id) {
-        this.id = id;
-    }
 
     // Métodos getters and setters
     public int getId() {
