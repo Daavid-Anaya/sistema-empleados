@@ -1,8 +1,10 @@
 package view.gui.Paneles;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -12,6 +14,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.Coordinador;
+import model.vo.VoEmpleado;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -19,18 +22,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PanelEmpleados extends JPanel {
-    @SuppressWarnings("unused")
     private Coordinador coordinador;
     private JPanel panelEmp, panelArea, panelCargo, panelAcciones;
     private JLabel lblIdEmp, lblNombreEmp, lblApellidoEmp, lblTipoDocEmp, lblDocumentoEmp, lblTelefonoEmp, lblCorreoEmp;
     private JLabel lblIdArea, lblArea, lblIdCargo, lblCargo;
     private JTextField txtIdEmp, txtNomEmp, txtApellEmp, txtDocEmp, txtTelEmp, txtCorreoEmp;
-	private JTextField txtIdArea, txtArea, txtIdCargo, txtCargo;
+	public JTextField txtIdArea, txtArea, txtIdCargo, txtCargo;
     private JComboBox<String> ComboDoc;
 	private JTable tablaEmp;
     private DefaultTableModel modeloTablaEmp;
     private JScrollPane scrollTablaEmp;
-	private JButton btnRegistrar, btnModificar, btnEliminar, btnBuscar, btnMasArea, btnMasCargo;
+	private JButton btnRegistrar, btnModificar, btnEliminar, btnBuscar, btnBuscarArea, btnBuscarCargo;
 
     private static final long serialVersionUID = 1L;
 
@@ -90,8 +92,9 @@ public class PanelEmpleados extends JPanel {
         txtIdEmp = new JTextField();
         txtIdEmp.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtIdEmp.setBounds(80, 19, 175, 20);
-        panelEmp.add(txtIdEmp);
         txtIdEmp.setColumns(10);
+        txtIdEmp.setEnabled(false);
+        panelEmp.add(txtIdEmp);
         
         txtNomEmp = new JTextField();
         txtNomEmp.setFont(new Font("Consolas", Font.PLAIN, 13));
@@ -124,7 +127,7 @@ public class PanelEmpleados extends JPanel {
         panelEmp.add(txtCorreoEmp);
 
         // Cuadro combinado //
-        ComboDoc = new JComboBox<String>();
+        ComboDoc = new JComboBox<String>(new DefaultComboBoxModel<String>(new String[] {"INE", "Pasaporte", "Carnet"})); 
         ComboDoc.setFont(new Font("Consolas", Font.PLAIN, 13));
         ComboDoc.setBounds(80, 97, 175, 20);
         panelEmp.add(ComboDoc);
@@ -159,11 +162,11 @@ public class PanelEmpleados extends JPanel {
         txtArea.setBounds(57, 51, 153, 20);
         panelArea.add(txtArea);
         
-        btnMasArea = new JButton("...");
-        btnMasArea.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnMasArea.setBounds(57, 79, 70, 23);
-        btnMasArea.addActionListener(new ManejadorBotonAreas());
-        panelArea.add(btnMasArea);
+        btnBuscarArea = new JButton("...");
+        btnBuscarArea.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnBuscarArea.setBounds(57, 79, 70, 23);
+        btnBuscarArea.addActionListener(new ManejadorBotonAreas());
+        panelArea.add(btnBuscarArea);
 
         //// Panel Cargos ////
         panelCargo = new JPanel();
@@ -195,11 +198,11 @@ public class PanelEmpleados extends JPanel {
         txtCargo.setBounds(57, 51, 153, 20);
         panelCargo.add(txtCargo);
         
-        btnMasCargo = new JButton("...");
-        btnMasCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnMasCargo.setBounds(57, 79, 70, 23);
-        btnMasCargo.addActionListener(new ManejadorBotonCargos());
-        panelCargo.add(btnMasCargo);
+        btnBuscarCargo = new JButton("...");
+        btnBuscarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnBuscarCargo.setBounds(57, 79, 70, 23);
+        btnBuscarCargo.addActionListener(new ManejadorBotonCargos());
+        panelCargo.add(btnBuscarCargo);
 
         // Tablas //
         modeloTablaEmp = new DefaultTableModel(new Object[][] {}, new String[] {"ID", "Nombre", "Tipo Doc", "Documento", "ID Area", "Area", "ID Cargo", "Cargo", "Telefono", "Correo"}) {
@@ -272,12 +275,29 @@ public class PanelEmpleados extends JPanel {
         this.coordinador = coordinador;
     }
 
+    public void limpiarDatos() {
+    	txtIdEmp.setText("");
+    	txtNomEmp.setText("");
+    	txtApellEmp.setText("");
+    	txtDocEmp.setText("");
+    	txtTelEmp.setText("");
+    	txtCorreoEmp.setText("");
+    	txtIdArea.setText("");
+    	txtArea.setText("");
+    	txtIdCargo.setText("");
+    	txtCargo.setText("");
+    }
+
+    public void mostrarTablaEmpleados() {
+    	//tablaEmp.setModel(new EmpleadoTableModel(coordinador.cargaListaEmpleados()));
+    }
+
     // Clases internas que implementa ActionListener
     // Boton para seleccionar area
     public class ManejadorBotonAreas implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            
+            coordinador.irArea();
         }
     }
 
@@ -285,7 +305,7 @@ public class PanelEmpleados extends JPanel {
     public class ManejadorBotonCargos implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            
+            coordinador.irCargo();
         }
     }
 
@@ -293,7 +313,17 @@ public class PanelEmpleados extends JPanel {
     public class ManejadorBotonRegistrar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            
+            if (coordinador.verificaCamposVaciosEmpleado(txtNomEmp.getText(), txtApellEmp.getText(), ComboDoc.getSelectedItem().toString(),
+            txtDocEmp.getText(), txtIdArea.getText(), txtIdCargo.getText(), txtTelEmp.getText(), txtCorreoEmp.getText())) {
+        		VoEmpleado nuevoEmpleado = new VoEmpleado(txtNomEmp.getText(), txtApellEmp.getText(), ComboDoc.getSelectedItem().toString(),
+            txtDocEmp.getText(), Integer.parseInt(txtIdArea.getText()), Integer.parseInt(txtIdCargo.getText()), txtTelEmp.getText(), txtCorreoEmp.getText());
+                coordinador.insertarEmpleado(nuevoEmpleado);
+        		mostrarTablaEmpleados();
+        		JOptionPane.showMessageDialog(null, "Empleado registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                limpiarDatos();
+            } else {
+        		JOptionPane.showMessageDialog(null, "Ingrese todos los campos.", "Error", JOptionPane.WARNING_MESSAGE);
+        	}
         }
     }
 

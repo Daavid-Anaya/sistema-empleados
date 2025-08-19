@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 public class PanelCargos extends JPanel {
     private Coordinador coordinador;
     private JButton btnBuscarCargo, btnRegistrarCargo, btnActualizarCargo, btnEliminarCargo, btnLimpiarTxt;
+    public JButton btnEnviar;
     private JLabel lbl_Id, lbl_IdCargo, lblNombreCargo;
     private JTextField txtFId, txtFIdCargo, txtFNombreCargo;
     private DefaultTableModel modeloTablaCargos;
@@ -112,6 +113,14 @@ public class PanelCargos extends JPanel {
         btnLimpiarTxt.addActionListener(new ManejarBotonLimpiar());
         add(btnLimpiarTxt);
 
+        btnEnviar = new JButton("Enviar");
+        btnEnviar.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnEnviar.setBounds(93, 385, 140, 30);
+        btnEnviar.setMnemonic('v');
+        btnEnviar.setEnabled(false);
+        btnEnviar.addActionListener(new ManejarBotonEnviar());
+        add(btnEnviar);
+
         // Tablas //
         modeloTablaCargos = new DefaultTableModel(new Object[][] {}, new String[] {"ID", "Nombre Cargo"}) {
             @Override
@@ -186,13 +195,17 @@ public class PanelCargos extends JPanel {
     private class ManejadorBotonRegistrar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-        	if (!txtFNombreCargo.getText().isEmpty() && coordinador.insertarCargo(new VoCargo(txtFNombreCargo.getText()))) {
+            if (!txtFNombreCargo.getText().isEmpty()) {
+                if (coordinador.insertarCargo(new VoCargo(txtFNombreCargo.getText()))) {
         		mostrarTablaCargos();
         		JOptionPane.showMessageDialog(null, "Cargo registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         	} else {
         		JOptionPane.showMessageDialog(null, "Error al registrar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);
         	}
-           limpiarDatosCargo();
+            limpiarDatosCargo();
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese el nombre del cargo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
         }
     }
     
@@ -241,5 +254,18 @@ public class PanelCargos extends JPanel {
         public void actionPerformed(ActionEvent e) {
             limpiarDatosCargo();
         }
+    }
+
+    // Enviar datos a panel empleados
+    public class ManejarBotonEnviar implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+            if (!txtFNombreCargo.getText().isEmpty() && !txtFIdCargo.getText().isEmpty()) {
+				VoCargo cargo = new VoCargo(Integer.parseInt(txtFIdCargo.getText()), txtFNombreCargo.getText());
+				coordinador.enviarCargo(cargo);
+        	} 
+			limpiarDatosCargo();
+            btnEnviar.setEnabled(false);
+		}
     }
 }

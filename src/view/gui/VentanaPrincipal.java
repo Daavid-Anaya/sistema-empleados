@@ -18,13 +18,13 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
     @SuppressWarnings("unused")
     private Coordinador coordinador;
 	private JPanel panelPrincipal, panelMenu;
-	private JTabbedPane panelPestañas;
+	public JTabbedPane panelPestañas;
 	private JButton btnUsuarios, btnEmpleados, btnArea, btnCargo, btnCerrar;
     private PanelHome panelHome;
     private PanelUsuarios panelUsuarios;
-    private PanelEmpleados panelEmpleados;
-    private PanelAreas panelAreas;
-    private PanelCargos panelCargos;
+    public PanelEmpleados panelEmpleados;
+    public PanelAreas panelAreas;
+    public PanelCargos panelCargos;
 	
 	private static final long serialVersionUID = 1L;
 

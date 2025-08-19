@@ -23,6 +23,7 @@ import java.awt.event.ActionListener;
 public class PanelAreas extends JPanel {
     private Coordinador coordinador;
     private JButton btnBuscarArea, btnRegistrarArea, btnActualizarArea, btnEliminarArea, btnLimpiarTxt;
+    public JButton btnEnviar;
     private JLabel lbl_Id, lbl_IdArea, lblNombreArea;
     private JTextField txtFId, txtFIdArea, txtFNombreArea;
     private DefaultTableModel modeloTablaAreas;
@@ -55,7 +56,6 @@ public class PanelAreas extends JPanel {
         lblNombreArea.setFont(new Font("Consolas", Font.BOLD, 14));
         lblNombreArea.setBounds(20, 145, 60, 20);
         add(lblNombreArea);
-
 
         // Campo de texto //
         txtFId = new JTextField();
@@ -113,6 +113,14 @@ public class PanelAreas extends JPanel {
         btnLimpiarTxt.addActionListener(new ManejarBotonLimpiar());
         add(btnLimpiarTxt);
 
+        btnEnviar = new JButton("Enviar");
+        btnEnviar.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnEnviar.setBounds(93, 385, 140, 30);
+        btnEnviar.setMnemonic('v');
+        btnEnviar.setEnabled(false);
+        btnEnviar.addActionListener(new ManejarBotonEnviar());
+        add(btnEnviar);
+
         // Tablas //
         modeloTablaAreas = new DefaultTableModel(new Object[][] {}, new String[] {"ID", "Nombre Area"}) {
             @Override
@@ -135,7 +143,6 @@ public class PanelAreas extends JPanel {
             }
         });
         
-        // Scrolls //
         // Scrolls //
         scrollTablaAreas = new JScrollPane(tablaAreas);
         scrollTablaAreas.setBounds(330, 80, 420, 370);
@@ -188,13 +195,17 @@ public class PanelAreas extends JPanel {
     private class ManejadorBotonRegistrar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-        	if (!txtFNombreArea.getText().isEmpty() && coordinador.insertarArea(new VoArea(txtFNombreArea.getText()))) {
+            if (!txtFNombreArea.getText().isEmpty()) {
+                if (coordinador.insertarArea(new VoArea(txtFNombreArea.getText()))) {
         		mostrarTablaAreas();
         		JOptionPane.showMessageDialog(null, "Área registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         	} else {
         		JOptionPane.showMessageDialog(null, "Error al registrar el área.", "Error", JOptionPane.ERROR_MESSAGE);
         	}
-           limpiarDatosArea();
+            limpiarDatosArea();
+            } else {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese el nombre del área.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
         }
     }
 
@@ -243,5 +254,18 @@ public class PanelAreas extends JPanel {
         public void actionPerformed(ActionEvent e) {
             limpiarDatosArea();
         }
+    }
+
+    // Enviar datos a panel empleados
+    public class ManejarBotonEnviar implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if (!txtFNombreArea.getText().isEmpty() && !txtFIdArea.getText().isEmpty()) {
+				VoArea area = new VoArea(Integer.parseInt(txtFIdArea.getText()), txtFNombreArea.getText());
+				coordinador.enviarArea(area);
+        	} 
+			limpiarDatosArea();
+            btnEnviar.setEnabled(false);
+		}
     }
 }

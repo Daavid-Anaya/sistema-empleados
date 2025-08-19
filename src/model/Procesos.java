@@ -11,10 +11,12 @@ public class Procesos {
 	}
 
 	public boolean verificaCamposVacios(String usuario, char[] password) {
-		if (!usuario.isEmpty() && password.length > 0) {
-			return true;
-        } else {
-            return false;
-        }
+		return !usuario.isEmpty() && password.length > 0;
+	}
+
+	public boolean verificaCamposVaciosEmpleado(String nombre, String apellido, String tipoDoc, String documento,
+	String idArea, String idCargo, String telefono, String correo) {
+		return !nombre.isEmpty() && !apellido.isEmpty() && !tipoDoc.isEmpty() && 
+		!documento.isEmpty() && !idArea.isEmpty() && !idCargo.isEmpty() && !telefono.isEmpty() && !correo.isEmpty();
 	}
 }
