@@ -76,6 +76,14 @@ public class Coordinador {
 		return daoArea.existeIdArea(id);
 	}
 
+	public boolean existeNombreCargo(String nombre) {
+		return daoCargo.existeNombreCargo(nombre);
+	}
+
+	public boolean existeIdCargo(int id) {
+		return daoCargo.existeIdCargo(id);
+	}
+
 	public void irArea() {
 		ventanaPrincipal.panelPestañas.setSelectedComponent(ventanaPrincipal.panelAreas);
 		ventanaPrincipal.panelAreas.btnEnviar.setEnabled(true);
@@ -92,20 +100,20 @@ public class Coordinador {
 		return daoCargo.cargaListaCargos();
     }
 
-	public VoCargo buscarCargo(VoCargo cargo) {
-		return daoCargo.buscarCargo(cargo);
+	public VoCargo buscarCargo(String id) {
+		return daoCargo.buscarCargo(id);
 	}
 
-	public boolean insertarCargo(VoCargo c) {
-		return daoCargo.insertarCargo(c);
+	public boolean insertarCargo(String nombre) {
+		return daoCargo.insertarCargo(nombre);
 	}
 
     public boolean actualizarCargo(VoCargo cargo) {
         return daoCargo.actualizarCargo(cargo);
     }
 
-    public boolean eliminarCargo(VoCargo cargo) {
-        return daoCargo.eliminarCargo(cargo);
+    public boolean eliminarCargo(int id) {
+        return daoCargo.eliminarCargo(id);
     }
 
 	public List<VoArea> cargaListaAreas() {

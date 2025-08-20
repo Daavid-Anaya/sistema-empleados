@@ -180,7 +180,7 @@ public class PanelAreas extends JPanel {
             try {
                 String idArea = txtFId.getText().trim();
                 if (idArea.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "Por favor, seleccione el ID del área a buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese el ID del área a buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 } else {
                     VoArea area = coordinador.buscarArea(idArea);
                     if (area != null) {

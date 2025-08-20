@@ -21,12 +21,69 @@ public class DaoCargo {
         this.coordinador = coordinador;
     }
 
-    public VoCargo buscarCargo(VoCargo c) {
+    // Método para verificar si existe un cargo por su nombre
+    public boolean existeNombreCargo(String nombre) {
+        // Consulta SQL para verificar si existe un cargo por su nombre
+        String sql = "SELECT COUNT(*) FROM cargos WHERE nombre_cargo = ?";
+
+        // Preparar la conexión y la consulta
+        try (Connection connection = new Conexion().getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Establecer el valor del parámetro en la consulta
+            statement.setString(1, nombre);
+
+            // Ejecutar la consulta
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Procesar el resultado
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0; // Si hay al menos una coincidencia
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al verificar nombre de área: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+
+    // Método para verificar si existe un cargo por su id
+    public boolean existeIdCargo(int id) {
+        // Consulta SQL para verificar si existe un cargo por su ID
+        String sql = "SELECT COUNT(*) FROM cargos WHERE id_cargo = ?";
+
+        // Preparar la conexión y la consulta
+        try (Connection connection = new Conexion().getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Establecer el valor del parámetro en la consulta
+            statement.setInt(1, id);
+
+            // Ejecutar la consulta
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Procesar el resultado
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0; // Si hay al menos una coincidencia
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al verificar ID de área: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+
+    // Método para buscar un cargo por su ID
+    public VoCargo buscarCargo(String id) {
+        // Consulta SQL para buscar el cargo por su ID
         String query = "SELECT * FROM cargos WHERE id_cargo = ?";
+
+        // Preparar la conexión y la consulta
         try (Connection connection = new Conexion().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, c.getId());
+            // Establecer el valor del parámetro en la consulta
+            statement.setInt(1, Integer.parseInt(id));
+            
+            // Ejecutar la consulta
             ResultSet resultSet = statement.executeQuery();
+
+            // Procesar el resultado
             if (resultSet.next()) {
                 VoCargo cargo = new VoCargo();
                 cargo.setId(resultSet.getInt("id_cargo"));
@@ -39,43 +96,44 @@ public class DaoCargo {
         return null;
     }
     
-    public boolean insertarCargo(VoCargo c) {
-    	// Consulta SQL para insertar los datos en la tabla Pacientes
+    // Método para insertar un cargo
+    public boolean insertarCargo(String nombre) {
+    	// Consulta SQL para insertar el cargo
         String insertQuery = "INSERT INTO cargos (nombre_cargo) VALUES (?)";
     	
-        // Usar try-with-resources para asegurarse de que los recursos se cierren automáticamente
+        // Preparar la conexión y la consulta
         try (Connection connection = new Conexion().getConnection();
-            	PreparedStatement statement = connection.prepareStatement(insertQuery)) {   
-        	// Asignamos los valores a los parámetros
-        	statement.setString(1, c.getNombre());
+            PreparedStatement statement = connection.prepareStatement(insertQuery)) {   
+        	// Establecer el valor del parámetro en la consulta
+        	statement.setString(1, nombre);
         	
         	// Ejecutamos la consulta
             int rowsInserted = statement.executeUpdate();
 
             // Verificamos si la inserción fue exitosa
-            if (rowsInserted > 0) {
-               return true;
-            } else {
-            	return false;
-            }
+            return rowsInserted > 0;
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al insertar cargo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
 
+    // Método para actualizar un cargo
     public boolean actualizarCargo(VoCargo c) {
+        // Consulta SQL para actualizar cargo
     	String UpdateQuery = "UPDATE cargos SET nombre_cargo = ? WHERE id_cargo = ? ";
     	
+        // Preparar la conexión y la consulta
     	try (Connection connection = new Conexion().getConnection();
     	PreparedStatement statement = connection.prepareStatement(UpdateQuery)) {
-    		// Asignamos los valores a los parámetros
+    		// Establecer los valores de los parámetros en la consulta
             statement.setString(1, c.getNombre());
             statement.setInt(2, c.getId());
 
-            // Ejecutamos la actualización
+            // Ejecutar la consulta
             int rowsUpdated = statement.executeUpdate();
 
+            // Verificar si se actualizó el cargo
             return rowsUpdated > 0;
     	} catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al actualizar cargo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -83,17 +141,21 @@ public class DaoCargo {
     	}
     }
 
-    public boolean eliminarCargo(VoCargo c) {
+    // Método para eliminar un cargo
+    public boolean eliminarCargo(int id) {
+        // Consulta SQL para eliminar el cargo
         String deleteQuery = "DELETE FROM cargos WHERE id_cargo = ?";
 
+        // Preparar la conexión y la consulta
         try (Connection connection = new Conexion().getConnection();
              PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
-            // Asignamos el valor del ID del cargo a eliminar
-            statement.setInt(1, c.getId());
+            // Establecer el valor del parámetro en la consulta
+            statement.setInt(1, id);
 
-            // Ejecutamos la eliminación
+            // Ejecutar la consulta
             int rowsDeleted = statement.executeUpdate();
 
+            // Verificar si se eliminó el cargo
             return rowsDeleted > 0;
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error al eliminar cargo: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -101,14 +163,20 @@ public class DaoCargo {
         }
     }
 
+    // Método para cargar la lista de cargos
     public List<VoCargo> cargaListaCargos() {
         List<VoCargo> listaCargos = new ArrayList<>();
+
+        // Consulta SQL para obtener todas los cargos
         String query = "SELECT * FROM cargos";
 
+        // Preparar la conexión y la consulta
         try (Connection connection = new Conexion().getConnection();
         PreparedStatement statement = connection.prepareStatement(query)) {
+            // Ejecutar la consulta
             ResultSet resultSet = statement.executeQuery();
 
+            // Procesar el resultado
             while (resultSet.next()) {
                 VoCargo cargo = new VoCargo();
                 cargo.setId(resultSet.getInt("id_cargo"));

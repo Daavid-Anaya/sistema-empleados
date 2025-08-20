@@ -165,6 +165,7 @@ public class PanelCargos extends JPanel {
 	public void limpiarDatosCargo() {
         txtFIdCargo.setText("");
         txtFNombreCargo.setText("");
+        tablaCargos.clearSelection();
     }
 	
 	public void mostrarTablaCargos() {
@@ -176,18 +177,24 @@ public class PanelCargos extends JPanel {
     private class ManejadorBotonBuscar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (txtFId.getText().isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Por favor, ingrese el ID del cargo a buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            } else {
-                VoCargo cargo = coordinador.buscarCargo(new VoCargo(Integer.parseInt(txtFId.getText())));
-                if (cargo != null) {
-                    txtFIdCargo.setText(String.valueOf(cargo.getId()));
-                    txtFNombreCargo.setText(cargo.getNombre());
+            try {
+                String idCargo = txtFId.getText().trim();
+                if (idCargo.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese el ID del cargo a buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Cargo no encontrado.", "Información", JOptionPane.INFORMATION_MESSAGE);
+                    VoCargo cargo = coordinador.buscarCargo(idCargo);
+                    if (cargo != null) {
+                        txtFIdCargo.setText(String.valueOf(cargo.getId()));
+                        txtFNombreCargo.setText(cargo.getNombre());
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Cargo no encontrado.", "Información", JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
+                tablaCargos.clearSelection();
+                txtFId.setText("");
+            } catch (Exception a) {
+                JOptionPane.showMessageDialog(null, "Error: La cadena no es un entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
             }
-            txtFId.setText("");
         }
     }
 
@@ -195,14 +202,15 @@ public class PanelCargos extends JPanel {
     private class ManejadorBotonRegistrar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (!txtFNombreCargo.getText().isEmpty()) {
-                if (coordinador.insertarCargo(new VoCargo(txtFNombreCargo.getText()))) {
-        		mostrarTablaCargos();
-        		JOptionPane.showMessageDialog(null, "Cargo registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        	} else {
-        		JOptionPane.showMessageDialog(null, "Error al registrar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);
-        	}
-            limpiarDatosCargo();
+            String nombreCargo = txtFNombreCargo.getText().trim();
+            if (!nombreCargo.isEmpty() && !coordinador.existeNombreCargo(nombreCargo)) {
+                if (coordinador.insertarCargo(nombreCargo)) {
+        		    mostrarTablaCargos();
+        		    JOptionPane.showMessageDialog(null, "Cargo registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+        	    } else {
+        		    JOptionPane.showMessageDialog(null, "Error al registrar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);
+        	    }
+                limpiarDatosCargo();
             } else {
                 JOptionPane.showMessageDialog(null, "Por favor, ingrese el nombre del cargo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
@@ -213,17 +221,23 @@ public class PanelCargos extends JPanel {
     private class ManejarBotonActuralizar implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int fila = tablaCargos.getSelectedRow();
-            if (fila != -1) {;
-                if (coordinador.actualizarCargo(new VoCargo(Integer.parseInt(txtFIdCargo.getText()), txtFNombreCargo.getText()))) {
-                    mostrarTablaCargos();
-                    limpiarDatosCargo();
-                    JOptionPane.showMessageDialog(null, "Cargo actualizado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+			String idCargo = txtFIdCargo.getText().trim();
+            String nombreCargo = txtFNombreCargo.getText().trim();
+            if (!nombreCargo.isEmpty() && !idCargo.isEmpty()) {
+                int id = Integer.parseInt(idCargo);
+                if (coordinador.existeIdCargo(id) && !coordinador.existeNombreCargo(nombreCargo)) {
+                    if (coordinador.actualizarCargo(new VoCargo(id, nombreCargo))) {
+                        limpiarDatosCargo();
+                        mostrarTablaCargos();
+                        JOptionPane.showMessageDialog(null, "Cargo actualizado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al actualizar el Cargo.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }  
                 } else {
-                    JOptionPane.showMessageDialog(null, "Error al actualizar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "ID de cargo no encontrado o nombre ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             } else {
-                JOptionPane.showMessageDialog(null, "Seleccione un cargo para actualizar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Verifique que no haya campos vacíos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
 		}
     }
@@ -232,10 +246,10 @@ public class PanelCargos extends JPanel {
     private class ManejarBotonEliminar implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int fila = tablaCargos.getSelectedRow();
-            if (fila != -1 && !txtFIdCargo.getText().isEmpty()) {
+			String idCargo = txtFIdCargo.getText().trim();
+            if (!idCargo.isEmpty()) {
                 boolean confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el cargo seleccionado?", "Confirmación", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
-                if (confirmacion && coordinador.eliminarCargo(new VoCargo(Integer.parseInt(txtFIdCargo.getText())))) {
+                if (confirmacion && coordinador.eliminarCargo(Integer.parseInt(idCargo))) {
                     mostrarTablaCargos();
                     limpiarDatosCargo();
                     JOptionPane.showMessageDialog(null, "Cargo eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);

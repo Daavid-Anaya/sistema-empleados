@@ -123,8 +123,9 @@ public class DaoArea {
         // Consulta SQL para actualizar el área
         String updateQuery = "UPDATE areas SET nombre_area = ? WHERE id_area = ?";
 
+        // Preparar la conexión y la consulta
         try (Connection connection = new Conexion().getConnection();
-            PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+        PreparedStatement statement = connection.prepareStatement(updateQuery)) {
             // Establecer los valores de los parámetros en la consulta
             statement.setString(1, a.getNombre());
             statement.setInt(2, a.getId());
@@ -164,11 +165,11 @@ public class DaoArea {
 
     // Método para cargar la lista de áreas
 	public List<VoArea> cargaListaAreas() {
+        List<VoArea> listaAreas = new ArrayList<>();
+
         // Consulta SQL para obtener todas las áreas
         String selectQuery = "SELECT * FROM areas";
         
-        List<VoArea> listaAreas = new ArrayList<>();
-
         // Preparar la conexión y la consulta
         try (Connection connection = new Conexion().getConnection();
             PreparedStatement statement = connection.prepareStatement(selectQuery)) {
