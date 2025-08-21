@@ -133,6 +133,8 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
 			panelPestañas.setSelectedComponent(panelUsuarios);
         } else if (e.getSource() == btnEmpleados) {
         	panelPestañas.setSelectedComponent(panelEmpleados);
+            panelEmpleados.mostrarTablaEmpleados();
+            panelEmpleados.limpiarDatos();
         } else if (e.getSource() == btnArea) {
         	panelPestañas.setSelectedComponent(panelAreas);
             panelAreas.mostrarTablaAreas();

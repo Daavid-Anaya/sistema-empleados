@@ -63,9 +63,9 @@ public class Coordinador {
 		return validaciones.verificaCamposVacios(usuario, contraseña);
 	}
 
-	public boolean verificaCamposVaciosEmpleado(String nombre, String apellido, String tipoDoc, String documento,
+	public boolean verificaCamposVaciosEmpleado(String id, String nombre, String apellido, String tipoDoc, String documento,
 	String idArea, String idCargo, String telefono, String correo) {
-		return validaciones.verificaCamposVaciosEmpleado(nombre, apellido, tipoDoc, documento, idArea, idCargo, telefono, correo);
+		return validaciones.verificaCamposVaciosEmpleado(id, nombre, apellido, tipoDoc, documento, idArea, idCargo, telefono, correo);
 	}
 
 	public boolean existeNombreArea(String nombre) {
@@ -150,7 +150,7 @@ public class Coordinador {
 		ventanaPrincipal.panelCargos.limpiarDatosCargo();
 	}
 
-	public List<VoEmpleado> cargaListaEmpleado() {
+	public List<VoEmpleado> cargaListaEmpleados() {
 		return daoEmpleado.listarEmpleados();
     }
 

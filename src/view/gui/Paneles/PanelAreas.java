@@ -12,7 +12,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.Coordinador;
-import model.AreaTableModel;
+import model.tablas.AreaTableModel;
 import model.vo.VoArea;
 
 import java.awt.Color;
@@ -65,7 +65,7 @@ public class PanelAreas extends JPanel {
 	    add(txtFId);
 
         txtFIdArea = new JTextField();
-        txtFIdArea.setEditable(false);
+        txtFIdArea.setEnabled(false);
         txtFIdArea.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtFIdArea.setBounds(80, 98, 150, 25);
         txtFIdArea.setColumns(10);
@@ -139,6 +139,7 @@ public class PanelAreas extends JPanel {
                 if (fila != -1) {
                     txtFIdArea.setText(tablaAreas.getValueAt(fila, 0).toString());
                     txtFNombreArea.setText(tablaAreas.getValueAt(fila, 1).toString());
+                    tablaAreas.clearSelection();
                 }
             }
         });
@@ -165,7 +166,6 @@ public class PanelAreas extends JPanel {
     public void limpiarDatosArea() {
         txtFIdArea.setText("");
         txtFNombreArea.setText("");
-        tablaAreas.clearSelection();
     }
 
     public void mostrarTablaAreas() {
@@ -190,10 +190,10 @@ public class PanelAreas extends JPanel {
                         JOptionPane.showMessageDialog(null, "Área no encontrada.", "Información", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
-                tablaAreas.clearSelection();
                 txtFId.setText("");
             } catch (NumberFormatException a) {
                 JOptionPane.showMessageDialog(null, "Error: La cadena no es un entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                txtFId.setText("");
             }
         }
     }
@@ -202,8 +202,10 @@ public class PanelAreas extends JPanel {
     private class ManejadorBotonRegistrar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            String idArea = txtFIdArea.getText().trim();
             String nombreArea = txtFNombreArea.getText().trim();
-            if (!nombreArea.isEmpty() && !coordinador.existeNombreArea(nombreArea)) {
+
+            if (idArea.isEmpty() && !nombreArea.isEmpty() && !coordinador.existeNombreArea(nombreArea)) {
                 if (coordinador.insertarArea(nombreArea)) {
         		    mostrarTablaAreas();
         		    JOptionPane.showMessageDialog(null, "Área registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -212,7 +214,7 @@ public class PanelAreas extends JPanel {
         	    }
                 limpiarDatosArea();
             } else {
-                JOptionPane.showMessageDialog(null, "Por favor, ingrese el nombre del área o verifique que no exista.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Por favor, complete el campo Nombre o verifique que no exista el nombre y el campo ID este vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -278,9 +280,11 @@ public class PanelAreas extends JPanel {
             String idArea = txtFIdArea.getText().trim();
 			if (!nombreArea.isEmpty() && !idArea.isEmpty()) {
 				coordinador.enviarArea(new VoArea(Integer.parseInt(idArea), nombreArea));
-        	} 
-			limpiarDatosArea();
-            btnEnviar.setEnabled(false);
+                limpiarDatosArea();
+                btnEnviar.setEnabled(false);
+        	} else {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese el ID y nombre del área.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
 		}
     }
 }

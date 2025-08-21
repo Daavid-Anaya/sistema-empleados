@@ -14,6 +14,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.Coordinador;
+import model.tablas.EmpleadoTableModel;
 import model.vo.VoEmpleado;
 
 import java.awt.Color;
@@ -154,17 +155,19 @@ public class PanelEmpleados extends JPanel {
         txtIdArea.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtIdArea.setColumns(10);
         txtIdArea.setBounds(57, 19, 153, 20);
+        txtIdArea.setEnabled(false);
         panelArea.add(txtIdArea);
         
         txtArea = new JTextField();
         txtArea.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtArea.setColumns(10);
         txtArea.setBounds(57, 51, 153, 20);
+        txtArea.setEnabled(false);
         panelArea.add(txtArea);
         
-        btnBuscarArea = new JButton("...");
+        btnBuscarArea = new JButton("Seleccionar");
         btnBuscarArea.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnBuscarArea.setBounds(57, 79, 70, 23);
+        btnBuscarArea.setBounds(57, 79, 120, 23);
         btnBuscarArea.addActionListener(new ManejadorBotonAreas());
         panelArea.add(btnBuscarArea);
 
@@ -190,22 +193,24 @@ public class PanelEmpleados extends JPanel {
         txtIdCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtIdCargo.setColumns(10);
         txtIdCargo.setBounds(57, 19, 153, 20);
+        txtIdCargo.setEnabled(false);
         panelCargo.add(txtIdCargo);
         
         txtCargo = new JTextField();
         txtCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtCargo.setColumns(10);
         txtCargo.setBounds(57, 51, 153, 20);
+        txtCargo.setEnabled(false);
         panelCargo.add(txtCargo);
         
-        btnBuscarCargo = new JButton("...");
+        btnBuscarCargo = new JButton("Seleccionar");
         btnBuscarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnBuscarCargo.setBounds(57, 79, 70, 23);
+        btnBuscarCargo.setBounds(57, 79, 120, 23);
         btnBuscarCargo.addActionListener(new ManejadorBotonCargos());
         panelCargo.add(btnBuscarCargo);
 
         // Tablas //
-        modeloTablaEmp = new DefaultTableModel(new Object[][] {}, new String[] {"ID", "Nombre", "Tipo Doc", "Documento", "ID Area", "Area", "ID Cargo", "Cargo", "Telefono", "Correo"}) {
+        modeloTablaEmp = new DefaultTableModel(new Object[][] {}, new String[] {"ID", "Nombre", "Tipo Doc", "Documento", "Area", "Cargo", "Telefono", "Correo"}) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -214,21 +219,22 @@ public class PanelEmpleados extends JPanel {
 
         tablaEmp = new JTable(modeloTablaEmp);
         tablaEmp.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        tablaEmp.setFont(new Font("Consolas", Font.PLAIN, 13));
+        tablaEmp.setFont(new Font("Consolas", Font.PLAIN, 10));
         tablaEmp.getTableHeader().setReorderingAllowed(false);
         tablaEmp.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 int fila = tablaEmp.getSelectedRow();
-                if (fila != -1) {
+                if (fila != -1 && tablaEmp.getValueAt(fila, 0) != null) {
+                    txtIdEmp.setText(tablaEmp.getValueAt(fila, 0).toString());
                     txtNomEmp.setText(tablaEmp.getValueAt(fila, 1).toString());
-                    ComboDoc.setSelectedItem(tablaEmp.getValueAt(fila, 2).toString());
-                    txtDocEmp.setText(tablaEmp.getValueAt(fila, 3).toString());
-                    txtIdArea.setText(tablaEmp.getValueAt(fila, 4).toString());
+                    txtApellEmp.setText(tablaEmp.getValueAt(fila, 2).toString());
+                    ComboDoc.setSelectedItem(tablaEmp.getValueAt(fila, 3).toString());
+                    txtDocEmp.setText(tablaEmp.getValueAt(fila, 4).toString());
                     txtArea.setText(tablaEmp.getValueAt(fila, 5).toString());
-                    txtIdCargo.setText(tablaEmp.getValueAt(fila, 6).toString());
-                    txtCargo.setText(tablaEmp.getValueAt(fila, 7).toString());
-                    txtTelEmp.setText(tablaEmp.getValueAt(fila, 8).toString());
-                    txtCorreoEmp.setText(tablaEmp.getValueAt(fila, 9).toString());
+                    txtCargo.setText(tablaEmp.getValueAt(fila, 6).toString());
+                    txtTelEmp.setText(tablaEmp.getValueAt(fila, 7).toString());
+                    txtCorreoEmp.setText(tablaEmp.getValueAt(fila, 8).toString());
+                    tablaEmp.clearSelection(); // Limpia la selección para evitar que se mantenga resaltada
                 }
             }
         });
@@ -289,7 +295,7 @@ public class PanelEmpleados extends JPanel {
     }
 
     public void mostrarTablaEmpleados() {
-    	//tablaEmp.setModel(new EmpleadoTableModel(coordinador.cargaListaEmpleados()));
+    	tablaEmp.setModel(new EmpleadoTableModel(coordinador.cargaListaEmpleados()));
     }
 
     // Clases internas que implementa ActionListener
@@ -313,16 +319,23 @@ public class PanelEmpleados extends JPanel {
     public class ManejadorBotonRegistrar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            if (coordinador.verificaCamposVaciosEmpleado(txtNomEmp.getText(), txtApellEmp.getText(), ComboDoc.getSelectedItem().toString(),
-            txtDocEmp.getText(), txtIdArea.getText(), txtIdCargo.getText(), txtTelEmp.getText(), txtCorreoEmp.getText())) {
-        		VoEmpleado nuevoEmpleado = new VoEmpleado(txtNomEmp.getText(), txtApellEmp.getText(), ComboDoc.getSelectedItem().toString(),
-            txtDocEmp.getText(), Integer.parseInt(txtIdArea.getText()), Integer.parseInt(txtIdCargo.getText()), txtTelEmp.getText(), txtCorreoEmp.getText());
+            String idEmp = txtIdEmp.getText().trim();
+            String nombreEmp = txtNomEmp.getText().trim();
+            String apellEmp = txtApellEmp.getText().trim();
+            String docEmp = ComboDoc.getSelectedItem().toString();
+            String idArea = txtIdArea.getText().trim();
+            String idCargo = txtIdCargo.getText().trim();
+            String telEmp = txtTelEmp.getText().trim();
+            String correoEmp = txtCorreoEmp.getText().trim();
+
+            if (coordinador.verificaCamposVaciosEmpleado(idEmp, nombreEmp, apellEmp, docEmp, txtDocEmp.getText(), idArea, idCargo, telEmp, correoEmp)) {
+        		VoEmpleado nuevoEmpleado = new VoEmpleado(nombreEmp, apellEmp, docEmp, txtDocEmp.getText(), Integer.parseInt(idArea), Integer.parseInt(idCargo), telEmp, correoEmp);
                 coordinador.insertarEmpleado(nuevoEmpleado);
         		mostrarTablaEmpleados();
         		JOptionPane.showMessageDialog(null, "Empleado registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 limpiarDatos();
             } else {
-        		JOptionPane.showMessageDialog(null, "Ingrese todos los campos.", "Error", JOptionPane.WARNING_MESSAGE);
+        		JOptionPane.showMessageDialog(null, "Ingrese todos los campos y verifique el campo ID este vacio.", "Error", JOptionPane.WARNING_MESSAGE);
         	}
         }
     }

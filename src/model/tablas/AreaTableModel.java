@@ -1,23 +1,23 @@
-package model;
+package model.tablas;
 
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-import model.vo.VoCargo;
+import model.vo.VoArea;
 
-public class CargoTableModel extends AbstractTableModel {
+public class AreaTableModel extends AbstractTableModel {
     private static final long serialVersionUID = 1L;
-    private List<VoCargo> cargos;
-    private final String[] columnas = {"ID", "Nombre Cargo"};
+    private List<VoArea> areas;
+    private final String[] columnas = {"ID", "Nombre Area"};
 
-    public CargoTableModel(List<VoCargo> cargos) {
-        this.cargos = cargos;
+    public AreaTableModel(List<VoArea> areas) {
+        this.areas = areas;
     }
 
     @Override
     public int getRowCount() {
-        return cargos.size();
+        return areas.size();
     }
 
     @Override
@@ -27,8 +27,8 @@ public class CargoTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        VoCargo c = cargos.get(rowIndex);
-        return columnIndex == 0 ? c.getId() : c.getNombre();
+        VoArea area = areas.get(rowIndex);
+        return columnIndex == 0 ? area.getId() : area.getNombre();
     }
 
     @Override
@@ -36,8 +36,8 @@ public class CargoTableModel extends AbstractTableModel {
         return columnas[column];
     }
 
-    public void setCargos(List<VoCargo> nuevosCargos) {
-        this.cargos = nuevosCargos;
+    public void setAreas(List<VoArea> nuevosAreas) {
+        this.areas = nuevosAreas;
         fireTableDataChanged(); // 🔄 Actualiza la vista
     }
 }

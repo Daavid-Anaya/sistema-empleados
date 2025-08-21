@@ -12,7 +12,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.Coordinador;
-import model.CargoTableModel;
+import model.tablas.CargoTableModel;
 import model.vo.VoCargo;
 
 import java.awt.Font;
@@ -65,7 +65,7 @@ public class PanelCargos extends JPanel {
 	    add(txtFId);
 
         txtFIdCargo = new JTextField();
-        txtFIdCargo.setEditable(false);
+        txtFIdCargo.setEnabled(false);
         txtFIdCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtFIdCargo.setBounds(80, 98, 150, 25);
         txtFIdCargo.setColumns(10);
@@ -139,6 +139,7 @@ public class PanelCargos extends JPanel {
                 if (fila != -1) {
                     txtFIdCargo.setText(tablaCargos.getValueAt(fila, 0).toString());
                     txtFNombreCargo.setText(tablaCargos.getValueAt(fila, 1).toString());
+                    tablaCargos.clearSelection();
                 }
             }
         });
@@ -165,7 +166,6 @@ public class PanelCargos extends JPanel {
 	public void limpiarDatosCargo() {
         txtFIdCargo.setText("");
         txtFNombreCargo.setText("");
-        tablaCargos.clearSelection();
     }
 	
 	public void mostrarTablaCargos() {
@@ -190,10 +190,10 @@ public class PanelCargos extends JPanel {
                         JOptionPane.showMessageDialog(null, "Cargo no encontrado.", "Información", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
-                tablaCargos.clearSelection();
                 txtFId.setText("");
             } catch (Exception a) {
                 JOptionPane.showMessageDialog(null, "Error: La cadena no es un entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
+                txtFId.setText("");
             }
         }
     }
@@ -202,8 +202,9 @@ public class PanelCargos extends JPanel {
     private class ManejadorBotonRegistrar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            String idCargo = txtFIdCargo.getText().trim();
             String nombreCargo = txtFNombreCargo.getText().trim();
-            if (!nombreCargo.isEmpty() && !coordinador.existeNombreCargo(nombreCargo)) {
+            if (idCargo.isEmpty() && !nombreCargo.isEmpty() && !coordinador.existeNombreCargo(nombreCargo)) {
                 if (coordinador.insertarCargo(nombreCargo)) {
         		    mostrarTablaCargos();
         		    JOptionPane.showMessageDialog(null, "Cargo registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -212,7 +213,7 @@ public class PanelCargos extends JPanel {
         	    }
                 limpiarDatosCargo();
             } else {
-                JOptionPane.showMessageDialog(null, "Por favor, ingrese el nombre del cargo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Por favor, complete el campo Nombre o verifique que no exista el nombre y el campo ID este vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
         }
     }
@@ -274,12 +275,17 @@ public class PanelCargos extends JPanel {
     public class ManejarBotonEnviar implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-            if (!txtFNombreCargo.getText().isEmpty() && !txtFIdCargo.getText().isEmpty()) {
-				VoCargo cargo = new VoCargo(Integer.parseInt(txtFIdCargo.getText()), txtFNombreCargo.getText());
+            String idCargo = txtFIdCargo.getText().trim();
+            String nombreCargo = txtFNombreCargo.getText().trim();
+            if (!nombreCargo.isEmpty() && !idCargo.isEmpty()) {
+				VoCargo cargo = new VoCargo(Integer.parseInt(idCargo), nombreCargo);
 				coordinador.enviarCargo(cargo);
-        	} 
-			limpiarDatosCargo();
-            btnEnviar.setEnabled(false);
+                limpiarDatosCargo();
+                btnEnviar.setEnabled(false);
+        	} else {
+                JOptionPane.showMessageDialog(null, "Por favor, ingrese el ID y nombre del cargo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+			
 		}
     }
 }

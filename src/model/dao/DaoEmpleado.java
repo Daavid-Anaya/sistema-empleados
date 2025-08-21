@@ -2,6 +2,8 @@ package model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -62,8 +64,43 @@ public class DaoEmpleado {
         return false;
     }
 
+    // Método para cargar lista de empleados
     public List<VoEmpleado> listarEmpleados() {
-        
-        return null;
+        List<VoEmpleado> empleados = new ArrayList<>();
+
+        // Consulta SQL para listar empleados
+        String selectQuery = "SELECT e.id_empleado, e.nombre, e.apellido, e.tipo_documento, e.documento,\n" + //
+                        "e.id_area, a.nombre_area, e.id_cargo, c.nombre_cargo, e.telefono, e.correo\n" + //
+                        "FROM empleados e\n" + //
+                        "INNER JOIN areas a\n" + //
+                        "ON e.id_area = a.id_area\n" + //
+                        "INNER JOIN cargos c\n" + //
+                        "ON e.id_cargo = c.id_cargo;";
+
+        try (Connection connection = new Conexion().getConnection();
+            PreparedStatement statement = connection.prepareStatement(selectQuery);
+            // Ejecutar la consulta
+            ResultSet resultSet = statement.executeQuery()) {
+
+            // Procesar el resultado
+            while (resultSet.next()) {
+                VoEmpleado emp = new VoEmpleado();
+                emp.setIdEmpleado(resultSet.getInt("id_empleado"));
+                emp.setNombre(resultSet.getString("nombre"));
+                emp.setApellido(resultSet.getString("apellido"));
+                emp.setTipoDoc(resultSet.getString("tipo_documento"));
+                emp.setDocumento(resultSet.getString("documento"));
+                emp.setIdArea(resultSet.getInt("id_area"));
+                emp.setNombreArea(resultSet.getString("nombre_area"));
+                emp.setIdCargo(resultSet.getInt("id_cargo"));
+                emp.setNombreCargo(resultSet.getString("nombre_cargo"));
+                emp.setTelefono(resultSet.getString("telefono"));
+                emp.setCorreo(resultSet.getString("correo"));
+                empleados.add(emp);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al listar empleados: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return empleados;
     }
 }

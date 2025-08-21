@@ -8,7 +8,9 @@ public class VoEmpleado {
     private String tipoDoc;
     private String documento;
     private int idArea;
+    private String nombreArea;
     private int idCargo;
+    private String nombreCargo;
     private String telefono;
     private String correo;
 
@@ -28,7 +30,7 @@ public class VoEmpleado {
         this.correo = correo;
     }
 
-    public VoEmpleado(int idEmpleado, String nombre, String apellido, String tipoDoc, String documento, int idArea, int idCargo, String telefono, String correo) {
+    public VoEmpleado(int idEmpleado, String nombre, String apellido, String tipoDoc, String documento, int idArea, String nombreArea, int idCargo, String nombreCargo, String telefono, String correo) {
         this.idEmpleado = idEmpleado;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -65,8 +67,16 @@ public class VoEmpleado {
         return idArea;
     }
 
+    public String getNombreArea() {
+        return nombreArea;
+    }
+
     public int getIdCargo() {
         return idCargo;
+    }
+
+    public String getNombreCargo() {
+        return nombreCargo;
     }
 
     public String getTelefono() {
@@ -111,5 +121,13 @@ public class VoEmpleado {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public void setNombreArea(String nombreArea) {
+        this.nombreArea = nombreArea;
+    }
+
+    public void setNombreCargo(String nombreCargo) {
+        this.nombreCargo = nombreCargo;
     }
 }

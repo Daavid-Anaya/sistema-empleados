@@ -1,4 +1,4 @@
-package model;
+package model.tablas;
 
 import java.util.List;
 
@@ -6,13 +6,13 @@ import javax.swing.table.AbstractTableModel;
 
 import model.vo.VoEmpleado;
 
-public class EmpleadoTableModelo extends AbstractTableModel{
+public class EmpleadoTableModel extends AbstractTableModel{
 
    private static final long serialVersionUID = 1L;
     private List<VoEmpleado> empleados;
-    private final String[] columnas = {"ID", "Nombre", "Apellido", "Tipo Doc", "Documento", "ID Area", "ID Cargo", "Telefono", "Correo"};
+    private final String[] columnas = {"ID", "Nombre", "Apellido", "Tipo Doc", "Documento", "Area", "Cargo", "Telefono", "Correo"};
 
-    public EmpleadoTableModelo(List<VoEmpleado> empleados) {
+    public EmpleadoTableModel(List<VoEmpleado> empleados) {
         this.empleados = empleados;
     }
 
@@ -35,8 +35,8 @@ public class EmpleadoTableModelo extends AbstractTableModel{
             case 2: return empleado.getApellido();
             case 3: return empleado.getTipoDoc();
             case 4: return empleado.getDocumento();
-            case 5: return empleado.getIdArea();
-            case 6: return empleado.getIdCargo();
+            case 5: return empleado.getNombreArea();
+            case 6: return empleado.getNombreCargo();
             case 7: return empleado.getTelefono();
             case 8: return empleado.getCorreo();
             default: return null;
