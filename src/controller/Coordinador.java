@@ -63,10 +63,14 @@ public class Coordinador {
 		return validaciones.verificaCamposVacios(usuario, contraseña);
 	}
 
-	public boolean verificaCamposVaciosEmpleado(String id, String nombre, String apellido, String tipoDoc, String documento,
+	public boolean verificaCamposVaciosEmpleado(String nombre, String apellido, String documento,
 	String idArea, String idCargo, String telefono, String correo) {
-		return validaciones.verificaCamposVaciosEmpleado(id, nombre, apellido, tipoDoc, documento, idArea, idCargo, telefono, correo);
+		return validaciones.verificaCamposVaciosEmpleado(nombre, apellido, documento, idArea, idCargo, telefono, correo);
 	}
+
+	public boolean existeIdEmpleado(int id) {
+        return daoEmpleado.existeIdEmpleado(id);
+    }
 
 	public boolean existeNombreArea(String nombre) {
 		return daoArea.existeNombreArea(nombre);

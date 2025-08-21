@@ -1,5 +1,7 @@
 package model;
 
+import java.util.stream.Stream;
+
 import controller.Coordinador;
 
 public class Validaciones {
@@ -14,9 +16,8 @@ public class Validaciones {
 		return !usuario.isEmpty() && password.length > 0;
 	}
 
-	public boolean verificaCamposVaciosEmpleado(String id, String nombre, String apellido, String tipoDoc, String documento,
+	public boolean verificaCamposVaciosEmpleado(String nombre, String apellido, String documento,
 	String idArea, String idCargo, String telefono, String correo) {
-		return id.isEmpty() && !nombre.isEmpty() && !apellido.isEmpty() && !tipoDoc.isEmpty() && 
-		!documento.isEmpty() && !idArea.isEmpty() && !idCargo.isEmpty() && !telefono.isEmpty() && !correo.isEmpty();
+		return Stream.of(nombre, apellido, documento, idArea, idCargo, telefono, correo).allMatch(s -> s != null && !s.trim().isEmpty());
 	}
 }

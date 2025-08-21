@@ -3,6 +3,7 @@ package model.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,30 @@ public class DaoEmpleado {
     // Método para buscar un Empleado por su ID
     public VoEmpleado buscarEmpleado(VoEmpleado emp) {
         return null;
+    }
+
+    // Método para verificar si existe un empleado por su id
+    public boolean existeIdEmpleado(int id) {
+        // Consulta SQL para verificar si existe un empleado por su ID
+        String sql = "SELECT COUNT(*) FROM empleados WHERE id_empleado = ?";
+
+        // Preparar la conexión y la consulta
+        try (Connection connection = new Conexion().getConnection();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+            // Establecer el valor del parámetro en la consulta
+            statement.setInt(1, id);
+
+            // Ejecutar la consulta
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Procesar el resultado
+                if (resultSet.next()) {
+                    return resultSet.getInt(1) > 0; // Si hay al menos una coincidencia
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al verificar ID de empleado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
     }
 
     // Método para insertar un Empleado
@@ -54,9 +79,35 @@ public class DaoEmpleado {
         }
     }
 
+     // Método para actualizar un empleado
     public boolean actualizarEmpleado(VoEmpleado emp) {
+        // Consulta SQL para actualizar el empleado
+        String updateQuery = "UPDATE empleados SET nombre = ?, apellido = ?, tipo_documento = ?, " +
+        "documento = ?, id_area = ?, id_cargo = ?, telefono = ?, correo = ? WHERE id_empleado = ?";
 
-        return false;
+        // Preparar la conexión y la consulta
+        try (Connection connection = new Conexion().getConnection();
+        PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+            // Establecer los valores de los parámetros en la consulta
+            statement.setString(1, emp.getNombre());
+            statement.setString(2, emp.getApellido());
+            statement.setString(3, emp.getTipoDoc());
+            statement.setString(4, emp.getDocumento());
+            statement.setInt(5, emp.getIdArea());
+            statement.setInt(6, emp.getIdCargo());
+            statement.setString(7, emp.getTelefono());
+            statement.setString(8, emp.getCorreo());
+            statement.setInt(9, emp.getIdEmpleado());
+
+            // Ejecutar la consulta
+            int rowsUpdated = statement.executeUpdate();
+
+            // Verificar si se actualizó el área
+            return rowsUpdated > 0;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar empleado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
     }
 
     public boolean eliminarEmpleado(VoEmpleado emp) {

@@ -320,20 +320,25 @@ public class PanelEmpleados extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             String idEmp = txtIdEmp.getText().trim();
-            String nombreEmp = txtNomEmp.getText().trim();
-            String apellEmp = txtApellEmp.getText().trim();
-            String docEmp = ComboDoc.getSelectedItem().toString();
-            String idArea = txtIdArea.getText().trim();
-            String idCargo = txtIdCargo.getText().trim();
-            String telEmp = txtTelEmp.getText().trim();
-            String correoEmp = txtCorreoEmp.getText().trim();
+            String nombreEmp = txtNomEmp.getText();
+            String apellEmp = txtApellEmp.getText();
+            String tipoDoc = ComboDoc.getSelectedItem().toString();
+            String docEmp = txtDocEmp.getText();
+            String idArea = txtIdArea.getText();
+            String idCargo = txtIdCargo.getText();
+            String telEmp = txtTelEmp.getText();
+            String correoEmp = txtCorreoEmp.getText();
+            
 
-            if (coordinador.verificaCamposVaciosEmpleado(idEmp, nombreEmp, apellEmp, docEmp, txtDocEmp.getText(), idArea, idCargo, telEmp, correoEmp)) {
-        		VoEmpleado nuevoEmpleado = new VoEmpleado(nombreEmp, apellEmp, docEmp, txtDocEmp.getText(), Integer.parseInt(idArea), Integer.parseInt(idCargo), telEmp, correoEmp);
-                coordinador.insertarEmpleado(nuevoEmpleado);
-        		mostrarTablaEmpleados();
-        		JOptionPane.showMessageDialog(null, "Empleado registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                limpiarDatos();
+            if (idEmp.isEmpty() && coordinador.verificaCamposVaciosEmpleado(nombreEmp, apellEmp, docEmp, idArea, idCargo, telEmp, correoEmp)) { // 
+        		VoEmpleado nuevoEmpleado = new VoEmpleado(nombreEmp, tipoDoc, apellEmp, docEmp, Integer.parseInt(idArea), Integer.parseInt(idCargo), telEmp, correoEmp);
+                if (coordinador.insertarEmpleado(nuevoEmpleado)) {
+                    mostrarTablaEmpleados();
+                    limpiarDatos();
+        		    JOptionPane.showMessageDialog(null, "Empleado registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);    
+                } else {
+        		    JOptionPane.showMessageDialog(null, "Error al registrar el empleado.", "Error", JOptionPane.ERROR_MESSAGE);
+        	    }
             } else {
         		JOptionPane.showMessageDialog(null, "Ingrese todos los campos y verifique el campo ID este vacio.", "Error", JOptionPane.WARNING_MESSAGE);
         	}
@@ -344,7 +349,35 @@ public class PanelEmpleados extends JPanel {
     public class ManejadorBotonActualizar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            
+            String idEmp = txtIdEmp.getText().trim();
+            String nombreEmp = txtNomEmp.getText();
+            String apellEmp = txtApellEmp.getText();
+            String tipoDoc = ComboDoc.getSelectedItem().toString();
+            String documento = txtDocEmp.getText();
+            String idArea = txtIdArea.getText();
+            String nombreArea = txtArea.getText();
+            String idCargo = txtIdCargo.getText();
+            String nombreCargo = txtCargo.getText();
+            String telEmp = txtTelEmp.getText();
+            String correoEmp = txtCorreoEmp.getText();
+
+            if (!idEmp.isEmpty() && coordinador.verificaCamposVaciosEmpleado(nombreEmp, apellEmp, documento, idArea, idCargo, telEmp, correoEmp)) {
+                int id = Integer.parseInt(idEmp);
+                if (coordinador.existeIdEmpleado(id)) {
+                    if (coordinador.actualizarEmpleado(new VoEmpleado(id, nombreEmp, apellEmp, tipoDoc, documento, Integer.parseInt(idArea), nombreArea, Integer.parseInt(idCargo), nombreCargo, telEmp, correoEmp))) {
+                        limpiarDatos();
+                        mostrarTablaEmpleados();
+                        JOptionPane.showMessageDialog(null, "Empleado actualizado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al actualizar el empleado.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "El ID del empleado no existe.", "Error", JOptionPane.ERROR_MESSAGE);
+                    
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Verifique que no haya campos vacíos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
         }
     }
 
