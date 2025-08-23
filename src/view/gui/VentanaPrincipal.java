@@ -19,13 +19,14 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
     private Coordinador coordinador;
 	private JPanel panelPrincipal, panelMenu;
 	public JTabbedPane panelPestañas;
-	private JButton btnUsuarios, btnEmpleados, btnArea, btnCargo, btnCerrar;
+	private JButton btnUsuarios, btnEmpleados, btnArea, btnCargo, btnNomina;
     private PanelHome panelHome;
     private PanelUsuarios panelUsuarios;
     public PanelEmpleados panelEmpleados;
     public PanelAreas panelAreas;
     public PanelCargos panelCargos;
-	
+    public PanelNomina panelNomina;
+
 	private static final long serialVersionUID = 1L;
 
 	public VentanaPrincipal() {
@@ -70,6 +71,9 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         panelCargos = new PanelCargos();
         panelPestañas.addTab("Cargo", null, panelCargos, null);
 
+        panelNomina = new PanelNomina();
+        panelPestañas.addTab("Nomina", null, panelNomina, null);
+
         // Etiquetas //
         
         // Botones //
@@ -101,12 +105,12 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         btnCargo.addActionListener(this);
         panelMenu.add(btnCargo);
         
-        btnCerrar = new JButton("Cerrar");
-        btnCerrar.setFont(new Font("Consolas", Font.BOLD, 13));
-        btnCerrar.setBounds(52, 340, 95, 30);
-        btnCerrar.setMnemonic('e');
-        btnCerrar.addActionListener(this);
-        panelMenu.add(btnCerrar);
+        btnNomina = new JButton("Nomina");
+        btnNomina.setFont(new Font("Consolas", Font.BOLD, 13));
+        btnNomina.setBounds(52, 340, 95, 30);
+        btnNomina.setMnemonic('n');
+        btnNomina.addActionListener(this);
+        panelMenu.add(btnNomina);
 
         // Configuración de la ventana //
         setTitle("Menu Principal");
@@ -125,6 +129,7 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         panelEmpleados.setCoordinador(coordinador);
         panelAreas.setCoordinador(coordinador);
         panelCargos.setCoordinador(coordinador);
+        panelNomina.setCoordinador(coordinador);
     }
 
     @Override
@@ -143,8 +148,10 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
         	panelPestañas.setSelectedComponent(panelCargos); 
             panelCargos.mostrarTablaCargos();
             panelCargos.limpiarDatosCargo();
-        } else if (e.getSource() == btnCerrar) {
-            dispose();
+        } else if (e.getSource() == btnNomina) {
+            panelPestañas.setSelectedComponent(panelNomina);
+            //panelNomina.mostrarTablaNomina();
+            //panelNomina.limpiarDatosNomina();
         }
     }
 }
