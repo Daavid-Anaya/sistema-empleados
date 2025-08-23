@@ -21,11 +21,6 @@ public class DaoEmpleado {
         this.coordinador = coordinador;
     }
 
-    // Método para buscar un Empleado por su ID
-    public VoEmpleado buscarEmpleado(VoEmpleado emp) {
-        return null;
-    }
-
     // Método para verificar si existe un empleado por su id
     public boolean existeIdEmpleado(int id) {
         // Consulta SQL para verificar si existe un empleado por su ID
@@ -48,6 +43,41 @@ public class DaoEmpleado {
             JOptionPane.showMessageDialog(null, "Error al verificar ID de empleado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return false;
+    }
+
+    // Método para buscar un Empleado por su ID
+    public VoEmpleado buscarEmpleado(int id) {
+        // Consulta SQL para buscar un empleado por su ID
+        String query = "SELECT * FROM empleados WHERE id_empleado = ?";
+
+        // Preparar la conexión y la consulta
+        try (Connection connection = new Conexion().getConnection();
+            PreparedStatement statement = connection.prepareStatement(query)) {
+            // Establecer el valor del parámetro en la consulta
+            statement.setInt(1, id);
+
+            // Ejecutar la consulta
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Procesar el resultado
+                if (resultSet.next()) {
+                    // Crear un objeto VoEmpleado con los datos del ResultSet
+                    VoEmpleado empleado = new VoEmpleado();
+                    empleado.setIdEmpleado(resultSet.getInt("id_empleado"));
+                    empleado.setNombre(resultSet.getString("nombre"));
+                    empleado.setApellido(resultSet.getString("apellido"));
+                    empleado.setTipoDoc(resultSet.getString("tipo_documento"));
+                    empleado.setDocumento(resultSet.getString("documento"));
+                    empleado.setIdArea(resultSet.getInt("id_area"));
+                    empleado.setIdCargo(resultSet.getInt("id_cargo"));
+                    empleado.setTelefono(resultSet.getString("telefono"));
+                    empleado.setCorreo(resultSet.getString("correo"));
+                    return empleado;
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al buscar empleado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
     }
 
     // Método para insertar un Empleado
@@ -110,13 +140,30 @@ public class DaoEmpleado {
         }
     }
 
-    public boolean eliminarEmpleado(VoEmpleado emp) {
+    // Método para eliminar un empleado
+    public boolean eliminarEmpleado(int id) {
+         // Consulta SQL para eliminar el empleado
+        String deleteQuery = "DELETE FROM empleados WHERE id_empleado = ?";
 
-        return false;
+        // Preparar la conexión y la consulta
+        try (Connection connection = new Conexion().getConnection();
+            PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+            // Establecer el valor del parámetro en la consulta
+            statement.setInt(1, id);
+
+            // Ejecutar la consulta
+            int rowsDeleted = statement.executeUpdate();
+
+            // Verificar si se eliminó el área
+            return rowsDeleted > 0;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar empleado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
     }
 
     // Método para cargar lista de empleados
-    public List<VoEmpleado> listarEmpleados() {
+    public List<VoEmpleado> cargaListEmpleados() {
         List<VoEmpleado> empleados = new ArrayList<>();
 
         // Consulta SQL para listar empleados

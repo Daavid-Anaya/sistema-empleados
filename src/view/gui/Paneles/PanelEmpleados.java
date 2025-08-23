@@ -15,6 +15,8 @@ import javax.swing.table.DefaultTableModel;
 
 import controller.Coordinador;
 import model.tablas.EmpleadoTableModel;
+import model.vo.VoArea;
+import model.vo.VoCargo;
 import model.vo.VoEmpleado;
 
 import java.awt.Color;
@@ -26,14 +28,14 @@ public class PanelEmpleados extends JPanel {
     private Coordinador coordinador;
     private JPanel panelEmp, panelArea, panelCargo, panelAcciones;
     private JLabel lblIdEmp, lblNombreEmp, lblApellidoEmp, lblTipoDocEmp, lblDocumentoEmp, lblTelefonoEmp, lblCorreoEmp;
-    private JLabel lblIdArea, lblArea, lblIdCargo, lblCargo;
-    private JTextField txtIdEmp, txtNomEmp, txtApellEmp, txtDocEmp, txtTelEmp, txtCorreoEmp;
+    private JLabel lbl_Id, lblIdArea, lblArea, lblIdCargo, lblCargo;
+    private JTextField txtId, txtIdEmp, txtNomEmp, txtApellEmp, txtDocEmp, txtTelEmp, txtCorreoEmp;
 	public JTextField txtIdArea, txtArea, txtIdCargo, txtCargo;
     private JComboBox<String> ComboDoc;
 	private JTable tablaEmp;
     private DefaultTableModel modeloTablaEmp;
     private JScrollPane scrollTablaEmp;
-	private JButton btnRegistrar, btnModificar, btnEliminar, btnBuscar, btnBuscarArea, btnBuscarCargo;
+	private JButton btnRegistrar, btnModificar, btnEliminar, btnBuscar, btnBuscarArea, btnBuscarCargo, btnLimpiarTxt;
 
     private static final long serialVersionUID = 1L;
 
@@ -53,7 +55,7 @@ public class PanelEmpleados extends JPanel {
         panelEmp.setLayout(null);
         add(panelEmp);
 
-        // Etiquetas //
+        // Etiquetas //    
         lblIdEmp = new JLabel("ID");
         lblIdEmp.setBounds(10, 24, 14, 15);
         lblIdEmp.setFont(new Font("Consolas", Font.BOLD, 12));
@@ -141,6 +143,7 @@ public class PanelEmpleados extends JPanel {
         panelArea.setLayout(null);
         add(panelArea);
         
+        // Etiquetas //
         lblIdArea = new JLabel("ID");
         lblIdArea.setBounds(10, 24, 14, 15);
         lblIdArea.setFont(new Font("Consolas", Font.BOLD, 12));
@@ -252,29 +255,47 @@ public class PanelEmpleados extends JPanel {
         panelAcciones.setLayout(null);
         add(panelAcciones);
         
+        lbl_Id = new JLabel("Ingrese ID del Empleado a buscar:");
+		lbl_Id.setFont(new Font("Consolas", Font.BOLD, 11));
+	    lbl_Id.setBounds(20, 52, 220, 25);
+	    panelAcciones.add(lbl_Id);
+	    
+	    txtId = new JTextField();
+	   	txtId.setFont(new Font("Consolas", Font.PLAIN, 13));
+	    txtId.setBounds(240, 50, 100, 25);
+	    txtId.setColumns(10);
+	    panelAcciones.add(txtId);
+        
         btnRegistrar = new JButton("Registrar");
         btnRegistrar.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnRegistrar.setBounds(20, 35, 100, 30);
+        btnRegistrar.setBounds(20, 20, 100, 25);
         btnRegistrar.addActionListener(new ManejadorBotonRegistrar());
         panelAcciones.add(btnRegistrar);
         
         btnModificar = new JButton("Modificar");
         btnModificar.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnModificar.setBounds(130, 35, 100, 30);
+        btnModificar.setBounds(130, 20, 100, 25);
         btnModificar.addActionListener(new ManejadorBotonActualizar());
         panelAcciones.add(btnModificar);
         
         btnEliminar = new JButton("Eliminar");
         btnEliminar.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnEliminar.setBounds(240, 35, 100, 30);
+        btnEliminar.setBounds(240, 20, 100, 25);
         btnEliminar.addActionListener(new ManejadorBotonEliminar());
         panelAcciones.add(btnEliminar);
         
         btnBuscar = new JButton("Buscar");
         btnBuscar.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnBuscar.setBounds(350, 35, 100, 30);
+        btnBuscar.setBounds(350, 50, 100, 25);
         btnBuscar.addActionListener(new ManejadorBotonBuscar());
         panelAcciones.add(btnBuscar);
+
+        btnLimpiarTxt = new JButton("Limpiar");
+        btnLimpiarTxt.setFont(new Font("Consolas", Font.PLAIN, 13));
+        btnLimpiarTxt.setBounds(350, 20, 100, 25);
+        btnLimpiarTxt.setMnemonic('l');
+        btnLimpiarTxt.addActionListener(new ManejarBotonLimpiar());
+        panelAcciones.add(btnLimpiarTxt);
     }
 
     public void setCoordinador(Coordinador coordinador) {
@@ -282,6 +303,7 @@ public class PanelEmpleados extends JPanel {
     }
 
     public void limpiarDatos() {
+        txtId.setText("");
     	txtIdEmp.setText("");
     	txtNomEmp.setText("");
     	txtApellEmp.setText("");
@@ -385,15 +407,71 @@ public class PanelEmpleados extends JPanel {
     public class ManejadorBotonEliminar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            
-        } 
+            String idEmp = txtIdEmp.getText().trim();
+            if (!idEmp.isEmpty()) {
+                boolean confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar el empleado seleccionada?", "Confirmación", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+                if (confirmacion && coordinador.eliminarEmpleado(Integer.parseInt(idEmp))) {
+                    limpiarDatos();
+                    mostrarTablaEmpleados();
+                    JOptionPane.showMessageDialog(null, "Empleado eliminado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se eliminó el empleado.", "Advertencia", JOptionPane.INFORMATION_MESSAGE);  
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Seleccione un empleado para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
+        }
     }
 
     // Buscar Empleado
     public class ManejadorBotonBuscar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            String idEmp = txtId.getText().trim();
+            try {
+                if (idEmp.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese el ID del empleado a buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    VoEmpleado empleado = coordinador.buscarEmpleado(Integer.parseInt(idEmp));
+                    if (empleado != null) {
+                        txtIdEmp.setText(String.valueOf(empleado.getIdEmpleado()));
+                        txtNomEmp.setText(empleado.getNombre());
+                        txtApellEmp.setText(empleado.getApellido());
+                        ComboDoc.setSelectedItem(empleado.getTipoDoc());
+                        txtDocEmp.setText(empleado.getDocumento());
+                        txtIdArea.setText(String.valueOf(empleado.getIdArea()));
+                        txtArea.setText(empleado.getNombreArea());
+                        txtIdCargo.setText(String.valueOf(empleado.getIdCargo()));
+                        txtCargo.setText(empleado.getNombreCargo());
+                        txtTelEmp.setText(empleado.getTelefono());
+                        txtCorreoEmp.setText(empleado.getCorreo());
+                        
+                        VoArea area = coordinador.buscarArea(String.valueOf(empleado.getIdArea()));
+                        if (area != null) {
+                            txtArea.setText(area.getNombre());
+                        }
+                        VoCargo cargo = coordinador.buscarCargo(String.valueOf(empleado.getIdCargo()));
+                        if (cargo != null) {
+                            txtCargo.setText(cargo.getNombre());
+                        }
+                         
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Empleado no encontrado.", "Información", JOptionPane.INFORMATION_MESSAGE); 
+                    }
+                }
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(null, "Error: La cadena no es un entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                txtId.setText("");
+            }
+        }
+    }
 
+    // Limpiar Campos
+    public class ManejarBotonLimpiar implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            limpiarDatos();
         }
     }
 }

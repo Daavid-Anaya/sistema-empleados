@@ -264,14 +264,6 @@ public class PanelAreas extends JPanel {
 		}
     }
 
-    // Limpiar Campos
-    public class ManejarBotonLimpiar implements ActionListener {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            limpiarDatosArea();
-        }
-    }
-
     // Enviar datos a panel empleados
     public class ManejarBotonEnviar implements ActionListener {
 		@Override
@@ -286,5 +278,13 @@ public class PanelAreas extends JPanel {
                 JOptionPane.showMessageDialog(null, "Por favor, ingrese el ID y nombre del área.", "Advertencia", JOptionPane.WARNING_MESSAGE);
             }
 		}
+    }
+
+    // Limpiar Campos
+    public class ManejarBotonLimpiar implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            limpiarDatosArea();
+        }
     }
 }

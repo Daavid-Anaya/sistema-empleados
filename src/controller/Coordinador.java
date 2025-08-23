@@ -155,11 +155,11 @@ public class Coordinador {
 	}
 
 	public List<VoEmpleado> cargaListaEmpleados() {
-		return daoEmpleado.listarEmpleados();
+		return daoEmpleado.cargaListEmpleados();
     }
 
-	public VoEmpleado buscarEmpleado(VoEmpleado e) {
-		return daoEmpleado.buscarEmpleado(e);
+	public VoEmpleado buscarEmpleado(int id) {
+		return daoEmpleado.buscarEmpleado(id);
 	}
 
 	public boolean insertarEmpleado(VoEmpleado e) {
@@ -170,7 +170,7 @@ public class Coordinador {
         return daoEmpleado.actualizarEmpleado(e);
     }
 
-    public boolean eliminarEmpleado(VoEmpleado e) {
-        return daoEmpleado.eliminarEmpleado(e);
+    public boolean eliminarEmpleado(int id) {
+        return daoEmpleado.eliminarEmpleado(id);
     }
 }
