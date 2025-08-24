@@ -24,8 +24,8 @@ public class PanelCargos extends JPanel {
     private Coordinador coordinador;
     private JButton btnBuscarCargo, btnRegistrarCargo, btnActualizarCargo, btnEliminarCargo, btnLimpiarTxt;
     public JButton btnEnviar;
-    private JLabel lbl_Id, lbl_IdCargo, lblNombreCargo;
-    private JTextField txtFId, txtFIdCargo, txtFNombreCargo;
+    private JLabel lbl_Id, lbl_IdCargo, lblNombreCargo, lblRemuneracion;
+    private JTextField txtFId, txtFIdCargo, txtFNombreCargo, txtFRemuneracion;
     private DefaultTableModel modeloTablaCargos;
 	private JTable tablaCargos;
 	private JScrollPane scrollTablaCargos;
@@ -56,6 +56,11 @@ public class PanelCargos extends JPanel {
         lblNombreCargo.setFont(new Font("Consolas", Font.BOLD, 14));
         lblNombreCargo.setBounds(20, 145, 60, 20);
         add(lblNombreCargo);
+        
+        lblRemuneracion = new JLabel("Remuneración:");
+        lblRemuneracion.setFont(new Font("Consolas", Font.BOLD, 14));
+        lblRemuneracion.setBounds(20, 190, 120, 20);
+        add(lblRemuneracion);
 
         // Campo de texto //
         txtFId = new JTextField();
@@ -67,15 +72,21 @@ public class PanelCargos extends JPanel {
         txtFIdCargo = new JTextField();
         txtFIdCargo.setEnabled(false);
         txtFIdCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        txtFIdCargo.setBounds(80, 98, 150, 25);
+        txtFIdCargo.setBounds(90, 98, 160, 25);
         txtFIdCargo.setColumns(10);
         add(txtFIdCargo);
 
         txtFNombreCargo = new JTextField();
         txtFNombreCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        txtFNombreCargo.setBounds(80, 143, 150, 25);
+        txtFNombreCargo.setBounds(90, 143, 160, 25);
         txtFNombreCargo.setColumns(10);
         add(txtFNombreCargo);
+        
+        txtFRemuneracion = new JTextField();
+        txtFRemuneracion.setFont(new Font("Consolas", Font.PLAIN, 13));
+        txtFRemuneracion.setBounds(125, 188, 125, 25);
+        txtFRemuneracion.setColumns(10);
+        add(txtFRemuneracion);
 
         // Botones //
         btnBuscarCargo = new JButton("Buscar");
@@ -87,42 +98,42 @@ public class PanelCargos extends JPanel {
 
         btnRegistrarCargo = new JButton("Registrar");
         btnRegistrarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnRegistrarCargo.setBounds(93, 213, 140, 30);
+        btnRegistrarCargo.setBounds(93, 260, 140, 30);
         btnRegistrarCargo.setMnemonic('r');
         btnRegistrarCargo.addActionListener(new ManejadorBotonRegistrar());
         add(btnRegistrarCargo);
 
         btnActualizarCargo = new JButton("Actualizar");
         btnActualizarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnActualizarCargo.setBounds(93, 256, 140, 30);
+        btnActualizarCargo.setBounds(93, 300, 140, 30);
         btnActualizarCargo.setMnemonic('a');
         btnActualizarCargo.addActionListener(new ManejarBotonActuralizar());
         add(btnActualizarCargo);
 
         btnEliminarCargo = new JButton("Eliminar");
         btnEliminarCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnEliminarCargo.setBounds(93, 299, 140, 30);
+        btnEliminarCargo.setBounds(93, 340, 140, 30);
         btnEliminarCargo.setMnemonic('e');
         btnEliminarCargo.addActionListener(new ManejarBotonEliminar());
         add(btnEliminarCargo);
 
         btnLimpiarTxt = new JButton("Limpiar");
         btnLimpiarTxt.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnLimpiarTxt.setBounds(93, 342, 140, 30);
+        btnLimpiarTxt.setBounds(93, 380, 140, 30); 
         btnLimpiarTxt.setMnemonic('l');
         btnLimpiarTxt.addActionListener(new ManejarBotonLimpiar());
         add(btnLimpiarTxt);
 
         btnEnviar = new JButton("Enviar");
         btnEnviar.setFont(new Font("Consolas", Font.PLAIN, 13));
-        btnEnviar.setBounds(93, 385, 140, 30);
+        btnEnviar.setBounds(93, 420, 140, 30);
         btnEnviar.setMnemonic('v');
         btnEnviar.setEnabled(false);
         btnEnviar.addActionListener(new ManejarBotonEnviar());
         add(btnEnviar);
 
         // Tablas //
-        modeloTablaCargos = new DefaultTableModel(new Object[][] {}, new String[] {"ID", "Nombre Cargo"}) {
+        modeloTablaCargos = new DefaultTableModel(new Object[][] {}, new String[] {"ID", "Nombre Cargo", "Remuneración"}) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -139,6 +150,7 @@ public class PanelCargos extends JPanel {
                 if (fila != -1) {
                     txtFIdCargo.setText(tablaCargos.getValueAt(fila, 0).toString());
                     txtFNombreCargo.setText(tablaCargos.getValueAt(fila, 1).toString());
+                    txtFRemuneracion.setText(tablaCargos.getValueAt(fila, 2).toString());
                     tablaCargos.clearSelection();
                 }
             }
@@ -155,7 +167,7 @@ public class PanelCargos extends JPanel {
         add(separador1);
         
         separador2 = new JSeparator();
-	    separador2.setBounds(10, 190, 310, 10);
+	    separador2.setBounds(10, 235, 310, 10);
         add(separador2);
     }
 
@@ -166,6 +178,7 @@ public class PanelCargos extends JPanel {
 	public void limpiarDatosCargo() {
         txtFIdCargo.setText("");
         txtFNombreCargo.setText("");
+        txtFRemuneracion.setText("");
     }
 	
 	public void mostrarTablaCargos() {
@@ -186,13 +199,14 @@ public class PanelCargos extends JPanel {
                     if (cargo != null) {
                         txtFIdCargo.setText(String.valueOf(cargo.getId()));
                         txtFNombreCargo.setText(cargo.getNombre());
+                        txtFRemuneracion.setText(String.valueOf(cargo.getRemuneracion()));
                     } else {
                         JOptionPane.showMessageDialog(null, "Cargo no encontrado.", "Información", JOptionPane.INFORMATION_MESSAGE);
                     }
                 }
-                txtFId.setText("");
             } catch (Exception a) {
                 JOptionPane.showMessageDialog(null, "Error: La cadena no es un entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
                 txtFId.setText("");
             }
         }
@@ -202,18 +216,24 @@ public class PanelCargos extends JPanel {
     private class ManejadorBotonRegistrar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            String idCargo = txtFIdCargo.getText().trim();
-            String nombreCargo = txtFNombreCargo.getText().trim();
-            if (idCargo.isEmpty() && !nombreCargo.isEmpty() && !coordinador.existeNombreCargo(nombreCargo)) {
-                if (coordinador.insertarCargo(nombreCargo)) {
-        		    mostrarTablaCargos();
-        		    JOptionPane.showMessageDialog(null, "Cargo registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        	    } else {
-        		    JOptionPane.showMessageDialog(null, "Error al registrar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);
-        	    }
+            try {
+                String idCargo = txtFIdCargo.getText().trim();
+                String nombreCargo = txtFNombreCargo.getText().trim();
+                String remuneracion = txtFRemuneracion.getText().trim();
+                if (idCargo.isEmpty() && !nombreCargo.isEmpty() && !remuneracion.isEmpty() && !coordinador.existeNombreCargo(nombreCargo)) {
+                    if (coordinador.insertarCargo(nombreCargo, Double.parseDouble(remuneracion))) {
+                        JOptionPane.showMessageDialog(null, "Cargo registrado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al registrar el cargo.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Por favor, complete el campo Nombre o verifique que no exista el nombre y el campo ID este vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (Exception n) {
+                JOptionPane.showMessageDialog(null, "Error: La cadena no es un entero válido." + n.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
                 limpiarDatosCargo();
-            } else {
-                JOptionPane.showMessageDialog(null, "Por favor, complete el campo Nombre o verifique que no exista el nombre y el campo ID este vacio.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                mostrarTablaCargos();
             }
         }
     }
@@ -222,23 +242,29 @@ public class PanelCargos extends JPanel {
     private class ManejarBotonActuralizar implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String idCargo = txtFIdCargo.getText().trim();
-            String nombreCargo = txtFNombreCargo.getText().trim();
-            if (!nombreCargo.isEmpty() && !idCargo.isEmpty()) {
-                int id = Integer.parseInt(idCargo);
-                if (coordinador.existeIdCargo(id) && !coordinador.existeNombreCargo(nombreCargo)) {
-                    if (coordinador.actualizarCargo(new VoCargo(id, nombreCargo))) {
-                        limpiarDatosCargo();
-                        mostrarTablaCargos();
-                        JOptionPane.showMessageDialog(null, "Cargo actualizado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+			try {
+                String idCargo = txtFIdCargo.getText().trim();
+                String nombreCargo = txtFNombreCargo.getText().trim();
+                String remuneracion = txtFRemuneracion.getText().trim();
+                if (coordinador.verificaCamposVaciosCargo(idCargo, nombreCargo, remuneracion)) {
+                    int id = Integer.parseInt(idCargo);
+                    if (coordinador.existeIdCargo(id)) {
+                        if (coordinador.actualizarCargo(new VoCargo(id, nombreCargo, Double.parseDouble(remuneracion)))) {
+                            JOptionPane.showMessageDialog(null, "Cargo actualizado exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Error al actualizar el Cargo.", "Error", JOptionPane.ERROR_MESSAGE);
+                        }  
                     } else {
-                        JOptionPane.showMessageDialog(null, "Error al actualizar el Cargo.", "Error", JOptionPane.ERROR_MESSAGE);
-                    }  
+                        JOptionPane.showMessageDialog(null, "ID de cargo no encontrado.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 } else {
-                    JOptionPane.showMessageDialog(null, "ID de cargo no encontrado o nombre ya existe.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Verifique que no haya campos vacíos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
                 }
-            } else {
-                JOptionPane.showMessageDialog(null, "Verifique que no haya campos vacíos.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            } catch (Exception n) {
+                JOptionPane.showMessageDialog(null, "Error: La cadena no es un entero válido." + n.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                limpiarDatosCargo();
+                mostrarTablaCargos();
             }
 		}
     }
@@ -275,17 +301,22 @@ public class PanelCargos extends JPanel {
     public class ManejarBotonEnviar implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-            String idCargo = txtFIdCargo.getText().trim();
-            String nombreCargo = txtFNombreCargo.getText().trim();
-            if (!nombreCargo.isEmpty() && !idCargo.isEmpty()) {
-				VoCargo cargo = new VoCargo(Integer.parseInt(idCargo), nombreCargo);
-				coordinador.enviarCargo(cargo);
-                limpiarDatosCargo();
+            try {
+                String idCargo = txtFIdCargo.getText().trim();
+                String nombreCargo = txtFNombreCargo.getText().trim();
+                String remuneracion = txtFRemuneracion.getText().trim();
+                if (coordinador.verificaCamposVaciosCargo(idCargo, nombreCargo, remuneracion)) {
+                    VoCargo cargo = new VoCargo(Integer.parseInt(idCargo), nombreCargo, Double.parseDouble(remuneracion));
+                    coordinador.enviarCargo(cargo);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese el ID, nombre y remuneración del cargo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (Exception a) {
+                JOptionPane.showMessageDialog(null, "Error: La remuneración no es un número válido. " + a.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
                 btnEnviar.setEnabled(false);
-        	} else {
-                JOptionPane.showMessageDialog(null, "Por favor, ingrese el ID y nombre del cargo.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                limpiarDatosCargo();
             }
-			
 		}
     }
 }

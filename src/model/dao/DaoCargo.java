@@ -88,6 +88,7 @@ public class DaoCargo {
                 VoCargo cargo = new VoCargo();
                 cargo.setId(resultSet.getInt("id_cargo"));
                 cargo.setNombre(resultSet.getString("nombre_cargo"));
+                cargo.setRemuneracion(resultSet.getDouble("remuneracion"));
                 return cargo;
             }
         } catch (SQLException e) {
@@ -97,15 +98,16 @@ public class DaoCargo {
     }
     
     // Método para insertar un cargo
-    public boolean insertarCargo(String nombre) {
-    	// Consulta SQL para insertar el cargo
-        String insertQuery = "INSERT INTO cargos (nombre_cargo) VALUES (?)";
-    	
+    public boolean insertarCargo(String nombre, double remuneracion) {
+        // Consulta SQL para insertar el cargo
+        String insertQuery = "INSERT INTO cargos (nombre_cargo, remuneracion) VALUES (?, ?)";
+
         // Preparar la conexión y la consulta
         try (Connection connection = new Conexion().getConnection();
-            PreparedStatement statement = connection.prepareStatement(insertQuery)) {   
-        	// Establecer el valor del parámetro en la consulta
-        	statement.setString(1, nombre);
+            PreparedStatement statement = connection.prepareStatement(insertQuery)) {
+            // Establecer el valor del parámetro en la consulta
+            statement.setString(1, nombre);
+            statement.setDouble(2, remuneracion);
         	
         	// Ejecutamos la consulta
             int rowsInserted = statement.executeUpdate();
@@ -121,14 +123,15 @@ public class DaoCargo {
     // Método para actualizar un cargo
     public boolean actualizarCargo(VoCargo c) {
         // Consulta SQL para actualizar cargo
-    	String UpdateQuery = "UPDATE cargos SET nombre_cargo = ? WHERE id_cargo = ? ";
+    	String UpdateQuery = "UPDATE cargos SET nombre_cargo = ?, remuneracion = ? WHERE id_cargo = ? ";
     	
         // Preparar la conexión y la consulta
     	try (Connection connection = new Conexion().getConnection();
     	PreparedStatement statement = connection.prepareStatement(UpdateQuery)) {
     		// Establecer los valores de los parámetros en la consulta
             statement.setString(1, c.getNombre());
-            statement.setInt(2, c.getId());
+            statement.setDouble(2, c.getRemuneracion());
+            statement.setInt(3, c.getId());
 
             // Ejecutar la consulta
             int rowsUpdated = statement.executeUpdate();
@@ -181,6 +184,7 @@ public class DaoCargo {
                 VoCargo cargo = new VoCargo();
                 cargo.setId(resultSet.getInt("id_cargo"));
                 cargo.setNombre(resultSet.getString("nombre_cargo"));
+                cargo.setRemuneracion(resultSet.getDouble("remuneracion"));
                 listaCargos.add(cargo);
             }
         } catch (Exception e) {

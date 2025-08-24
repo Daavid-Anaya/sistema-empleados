@@ -68,6 +68,10 @@ public class Coordinador {
 		return validaciones.verificaCamposVaciosEmpleado(nombre, apellido, documento, idArea, idCargo, telefono, correo);
 	}
 
+	public boolean verificaCamposVaciosCargo(String id, String nombre, String remuneracion) {
+		return validaciones.verificaCamposVaciosCargo(id, nombre, remuneracion);
+	}
+
 	public boolean existeIdEmpleado(int id) {
         return daoEmpleado.existeIdEmpleado(id);
     }
@@ -108,8 +112,8 @@ public class Coordinador {
 		return daoCargo.buscarCargo(id);
 	}
 
-	public boolean insertarCargo(String nombre) {
-		return daoCargo.insertarCargo(nombre);
+	public boolean insertarCargo(String nombre, double remuneracion) {
+		return daoCargo.insertarCargo(nombre, remuneracion);
 	}
 
     public boolean actualizarCargo(VoCargo cargo) {
@@ -160,6 +164,10 @@ public class Coordinador {
 
 	public VoEmpleado buscarEmpleado(int id) {
 		return daoEmpleado.buscarEmpleado(id);
+	}
+
+	public VoEmpleado buscarEmpleadoDoc(String documento) {
+		return daoEmpleado.buscarEmpleadoDoc(documento);
 	}
 
 	public boolean insertarEmpleado(VoEmpleado e) {

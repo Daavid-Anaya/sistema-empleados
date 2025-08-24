@@ -9,7 +9,7 @@ import model.vo.VoCargo;
 public class CargoTableModel extends AbstractTableModel {
     private static final long serialVersionUID = 1L;
     private List<VoCargo> cargos;
-    private final String[] columnas = {"ID", "Nombre Cargo"};
+    private final String[] columnas = {"ID", "Nombre Cargo", "Remuneración"};
 
     public CargoTableModel(List<VoCargo> cargos) {
         this.cargos = cargos;
@@ -28,7 +28,7 @@ public class CargoTableModel extends AbstractTableModel {
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         VoCargo c = cargos.get(rowIndex);
-        return columnIndex == 0 ? c.getId() : c.getNombre();
+        return columnIndex == 0 ? c.getId() : columnIndex == 1 ? c.getNombre() : c.getRemuneracion();
     }
 
     @Override

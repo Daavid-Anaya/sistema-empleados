@@ -201,4 +201,39 @@ public class DaoEmpleado {
         }
         return empleados;
     }
+
+    // Método para buscar un Empleado por su Documento
+    public VoEmpleado buscarEmpleadoDoc(String documento) {
+        // Consulta SQL para buscar un empleado por su Documento
+        String query = "SELECT * FROM empleados WHERE documento = ?";
+
+        // Preparar la conexión y la consulta
+        try (Connection connection = new Conexion().getConnection();
+            PreparedStatement statement = connection.prepareStatement(query)) {
+            // Establecer el valor del parámetro en la consulta
+            statement.setString(1, documento);
+
+            // Ejecutar la consulta
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Procesar el resultado
+                if (resultSet.next()) {
+                    // Crear un objeto VoEmpleado con los datos del ResultSet
+                    VoEmpleado empleado = new VoEmpleado();
+                    empleado.setIdEmpleado(resultSet.getInt("id_empleado"));
+                    empleado.setNombre(resultSet.getString("nombre"));
+                    empleado.setApellido(resultSet.getString("apellido"));
+                    empleado.setTipoDoc(resultSet.getString("tipo_documento"));
+                    empleado.setDocumento(resultSet.getString("documento"));
+                    empleado.setIdArea(resultSet.getInt("id_area"));
+                    empleado.setIdCargo(resultSet.getInt("id_cargo"));
+                    empleado.setTelefono(resultSet.getString("telefono"));
+                    empleado.setCorreo(resultSet.getString("correo"));
+                    return empleado;
+                }
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error al buscar empleado: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
+    }
 }

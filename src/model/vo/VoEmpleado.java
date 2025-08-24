@@ -13,6 +13,7 @@ public class VoEmpleado {
     private String nombreCargo;
     private String telefono;
     private String correo;
+    private double remuneracion;
 
     // Constructores
     public VoEmpleado() {
@@ -87,6 +88,10 @@ public class VoEmpleado {
         return correo;
     }
 
+    public double getRemuneracion() {
+        return remuneracion;
+    }
+
     public void setIdEmpleado(int idEmpleado) {
         this.idEmpleado = idEmpleado;
     }
@@ -129,5 +134,9 @@ public class VoEmpleado {
 
     public void setNombreCargo(String nombreCargo) {
         this.nombreCargo = nombreCargo;
+    }
+
+    public void setRemuneracion(double remuneracion) {
+        this.remuneracion = remuneracion;
     }
 }

@@ -20,4 +20,8 @@ public class Validaciones {
 	String idArea, String idCargo, String telefono, String correo) {
 		return Stream.of(nombre, apellido, documento, idArea, idCargo, telefono, correo).allMatch(s -> s != null && !s.trim().isEmpty());
 	}
+
+	public boolean verificaCamposVaciosCargo(String id, String nombre, String remuneracion) {
+		return !id.isEmpty() && !nombre.isEmpty() && !remuneracion.isEmpty() && Double.parseDouble(remuneracion) > 0;
+	}
 }

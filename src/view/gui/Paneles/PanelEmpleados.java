@@ -440,9 +440,7 @@ public class PanelEmpleados extends JPanel {
                         ComboDoc.setSelectedItem(empleado.getTipoDoc());
                         txtDocEmp.setText(empleado.getDocumento());
                         txtIdArea.setText(String.valueOf(empleado.getIdArea()));
-                        txtArea.setText(empleado.getNombreArea());
                         txtIdCargo.setText(String.valueOf(empleado.getIdCargo()));
-                        txtCargo.setText(empleado.getNombreCargo());
                         txtTelEmp.setText(empleado.getTelefono());
                         txtCorreoEmp.setText(empleado.getCorreo());
                         

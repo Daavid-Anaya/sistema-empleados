@@ -17,6 +17,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.Coordinador;
+import model.vo.VoCargo;
+import model.vo.VoEmpleado;
 
 public class PanelNomina extends JPanel {
 	private Coordinador coordinador;
@@ -28,7 +30,7 @@ public class PanelNomina extends JPanel {
 	private JTable tablaEmp;
     private DefaultTableModel modeloTablaNom;
     private JScrollPane scrollTablaNom;
-	private JButton btnRegistrar, btnModificar, btnEliminar, btnBuscar, btnLimpiarTxt, btnFecha, btnCalcular;
+	private JButton btnRegistrar, btnModificar, btnEliminar, btnBuscar, btnLimpiarTxt, btnFecha, btnCalcular, btnBuscarEmp;
 
     private static final long serialVersionUID = 1L;
 
@@ -50,7 +52,7 @@ public class PanelNomina extends JPanel {
 
         // Etiquetas //    
         lblDocEmp = new JLabel("Documento");
-        lblDocEmp.setBounds(10, 24, 56, 15);
+        lblDocEmp.setBounds(10, 24, 70, 15);
         lblDocEmp.setFont(new Font("Consolas", Font.BOLD, 12));
         panelEmp.add(lblDocEmp);
         
@@ -81,14 +83,14 @@ public class PanelNomina extends JPanel {
         
         lblRemune = new JLabel("Remuneración");
         lblRemune.setFont(new Font("Consolas", Font.BOLD, 12));
-        lblRemune.setBounds(10, 180, 56, 15);
+        lblRemune.setBounds(10, 180, 85, 15);
         panelEmp.add(lblRemune);
 
         // Campos de texto //
         txtDocEmp = new JTextField();
         txtDocEmp.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtDocEmp.setColumns(10);
-        txtDocEmp.setBounds(80, 19, 175, 20);
+        txtDocEmp.setBounds(80, 19, 100, 20);
         panelEmp.add(txtDocEmp);
         
         txtIdEmp = new JTextField();
@@ -116,7 +118,7 @@ public class PanelNomina extends JPanel {
         txtIdCargo.setBounds(80, 123, 175, 20);
         panelEmp.add(txtIdCargo);
         
-        txtCargo= new JTextField();
+        txtCargo = new JTextField();
         txtCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtCargo.setColumns(10);
         txtCargo.setBounds(80, 149, 175, 20);
@@ -125,8 +127,15 @@ public class PanelNomina extends JPanel {
         txtRemune = new JTextField();
         txtRemune.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtRemune.setColumns(10);
-        txtRemune.setBounds(80, 175, 175, 20);
+        txtRemune.setBounds(100, 175, 155, 20);
         panelEmp.add(txtRemune);
+
+        // Boton //
+        btnBuscarEmp = new JButton("Buscar");
+        btnBuscarEmp.setFont(new Font("Consolas", Font.PLAIN, 11));
+        btnBuscarEmp.setBounds(185, 20, 70, 20);
+        btnBuscarEmp.addActionListener(new ManejarBotonBuscarEmp());
+        panelEmp.add(btnBuscarEmp);
 
         //// Panel datos Nomina ////
         panelNomina = new JPanel();
@@ -347,11 +356,38 @@ public class PanelNomina extends JPanel {
 		}
     }
     
- // Limpiar Campos
+    // Limpiar Campos
     public class ManejarBotonLimpiar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             limpiarDatos();
+        }
+    }
+
+    // Buscar Empleado
+    public class ManejarBotonBuscarEmp implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            String docEmp = txtDocEmp.getText().trim();
+            if (docEmp.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese el Documento del empleado a buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            } else {
+                VoEmpleado empleado = coordinador.buscarEmpleadoDoc(docEmp);
+                if (empleado != null) {
+                    txtIdEmp.setText(String.valueOf(empleado.getIdEmpleado()));
+                    txtNomEmp.setText(empleado.getNombre());
+                    txtApellEmp.setText(empleado.getApellido());
+                    txtDocEmp.setText(empleado.getDocumento());
+                    txtIdCargo.setText(String.valueOf(empleado.getIdCargo()));
+                    VoCargo cargo = coordinador.buscarCargo(String.valueOf(empleado.getIdCargo()));
+                    if (cargo != null) {
+                        txtCargo.setText(cargo.getNombre());
+                        txtRemune.setText(String.valueOf(cargo.getRemuneracion()));
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Empleado no encontrado.", "Información", JOptionPane.INFORMATION_MESSAGE); 
+                }
+            }
         }
     }
 }
