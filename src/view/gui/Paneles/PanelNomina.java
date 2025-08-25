@@ -16,6 +16,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import com.toedter.calendar.JDateChooser;
+
 import controller.Coordinador;
 import model.vo.VoCargo;
 import model.vo.VoEmpleado;
@@ -26,11 +28,12 @@ public class PanelNomina extends JPanel {
     private JLabel lblDocEmp, lblIdEmp, lblNombreEmp, lblApellidoEmp, lblIdCargo, lblCargo, lblRemune;
     private JLabel lblFecha, lblDias, lblTotal, lblIdNomina, lbl_Id;
     private JTextField txtDocEmp, txtIdEmp, txtNomEmp, txtApellEmp, txtIdCargo, txtCargo, txtRemune;
-    private JTextField txtFecha, txtDias, txtTotal, txtIdNomina, txtId;
+    private JTextField txtDias, txtTotal, txtIdNomina, txtId;
 	private JTable tablaEmp;
     private DefaultTableModel modeloTablaNom;
     private JScrollPane scrollTablaNom;
-	private JButton btnRegistrar, btnModificar, btnEliminar, btnBuscar, btnLimpiarTxt, btnFecha, btnCalcular, btnBuscarEmp;
+	private JButton btnRegistrar, btnModificar, btnEliminar, btnBuscar, btnLimpiarTxt, btnCalcular, btnBuscarEmp;
+    private JDateChooser fecha;
 
     private static final long serialVersionUID = 1L;
 
@@ -147,13 +150,13 @@ public class PanelNomina extends JPanel {
         
         // Etiquetas //
         lblFecha = new JLabel("Fecha:");
-        lblFecha.setBounds(10, 24, 42, 15);
+        lblFecha.setBounds(10, 24, 42, 17);
         lblFecha.setFont(new Font("Consolas", Font.BOLD, 12));
         panelNomina.add(lblFecha);
-        
+
         lblDias = new JLabel("Dias laborados:");
         lblDias.setFont(new Font("Consolas", Font.BOLD, 11));
-        lblDias.setBounds(10, 50, 120, 15);
+        lblDias.setBounds(12, 50, 120, 17);
         panelNomina.add(lblDias);
         
         lblTotal = new JLabel("Total:");
@@ -166,16 +169,10 @@ public class PanelNomina extends JPanel {
         lblIdNomina.setBounds(270, 54, 60, 15);
         panelNomina.add(lblIdNomina);
      
-        // Campos de texto //
-        txtFecha = new JTextField();
-        txtFecha.setFont(new Font("Consolas", Font.PLAIN, 13));
-        txtFecha.setColumns(10);
-        txtFecha.setBounds(60, 19, 115, 20);
-        panelNomina.add(txtFecha);
-        
+        // Campos de texto //     
         txtDias = new JTextField();
         txtDias.setFont(new Font("Consolas", Font.PLAIN, 13));
-        txtDias.setBounds(105, 45, 150, 20);
+        txtDias.setBounds(102, 45, 150, 20);
         txtDias.setColumns(10);
         panelNomina.add(txtDias);
         
@@ -192,14 +189,13 @@ public class PanelNomina extends JPanel {
         txtIdNomina.setBounds(315, 45, 140, 20);
         txtIdNomina.setEnabled(false);
         panelNomina.add(txtIdNomina);
+
+        // Fecha //
+        fecha = new JDateChooser();
+        fecha.setBounds(60, 19, 140, 20);
+        panelNomina.add(fecha);
         
-        // Botones //
-        btnFecha = new JButton("Fecha");
-        btnFecha.setFont(new Font("Consolas", Font.PLAIN, 10));
-        btnFecha.setBounds(180, 19, 75, 20);
-        btnFecha.addActionListener(new ManejarBotonFecha());
-        panelNomina.add(btnFecha);
-        
+        // Boton //  
         btnCalcular = new JButton("Calcular");
         btnCalcular.setFont(new Font("Consolas", Font.PLAIN, 12));
         btnCalcular.setBounds(335, 75, 120, 25);
@@ -295,7 +291,7 @@ public class PanelNomina extends JPanel {
     	txtIdCargo.setText("");
     	txtCargo.setText("");
     	txtRemune.setText("");
-        txtFecha.setText("");
+    	fecha.setDate(null);
         txtDias.setText("");
         txtTotal.setText("");
         txtIdNomina.setText("");
@@ -334,14 +330,6 @@ public class PanelNomina extends JPanel {
 	
     // Eliminar Cargo
     private class ManejarBotonEliminar implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-            
-		}
-    }
-    
-    // Seleccionar Fecha
-    private class ManejarBotonFecha implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
             
