@@ -8,7 +8,11 @@ public class VoNomina {
     int diasLaborados;
     double total;
     int idEmpleado;
+    String nombreEmpleado;
+    String documentoEmpleado;
     int idCargo;
+    String nombreCargo;
+    double remuneracion;
 
     public VoNomina() {
 
@@ -23,12 +27,29 @@ public class VoNomina {
         this.idCargo = idCargo;
     }
 
+    public VoNomina(int id, Date fecha, int idEmpleado, String nombreEmpleado, String documentoEmpleado, int idCargo, String nombreCargo, double remuneracion, int diasLaborados, double total) {
+        this.id = id;
+        this.fecha = fecha;
+        this.idEmpleado = idEmpleado;
+        this.nombreEmpleado = nombreEmpleado;
+        this.documentoEmpleado = documentoEmpleado;
+        this.idCargo = idCargo;
+        this.nombreCargo = nombreCargo;
+        this.remuneracion = remuneracion;
+        this.diasLaborados = diasLaborados;
+        this.total = total;
+    }
+
     public int getId() {
         return id;
     }
 
     public Date getFecha() {
         return fecha;
+    }
+
+    public double getRemuneracion() {
+        return remuneracion;
     }
 
     public int getDiasLaborados() {
@@ -43,9 +64,21 @@ public class VoNomina {
         return idEmpleado;
     }
 
+    public String getNombreEmpleado() {
+        return nombreEmpleado;
+    }
+
+    public String getDocumentoEmpleado() {
+        return documentoEmpleado;
+    }
+
     public int getIdCargo() {
         return idCargo;
     }   
+
+    public String getNombreCargo() {
+        return nombreCargo;
+    }
 
     public void setId(int id) {
         this.id = id;
@@ -53,6 +86,10 @@ public class VoNomina {
 
     public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+
+    public void setRemuneracion(double remuneracion) {
+        this.remuneracion = remuneracion;
     }
 
     public void setDiasLaborados(int diasLaborados) {
@@ -67,7 +104,19 @@ public class VoNomina {
         this.idEmpleado = idEmpleado;
     }
 
+    public void setNombreEmpleado(String nombreEmpleado) {
+        this.nombreEmpleado = nombreEmpleado;
+    }
+
+    public void setDocumentoEmpleado(String documentoEmpleado) {
+        this.documentoEmpleado = documentoEmpleado;
+    }
+
     public void setIdCargo(int idCargo) {
         this.idCargo = idCargo;
+    }
+
+    public void setNombreCargo(String nombreCargo) {
+        this.nombreCargo = nombreCargo;
     }
 }

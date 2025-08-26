@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
+import java.sql.Date;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -19,8 +21,10 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 
 import controller.Coordinador;
+import model.tablas.NominaTableModel;
 import model.vo.VoCargo;
 import model.vo.VoEmpleado;
+import model.vo.VoNomina;
 
 public class PanelNomina extends JPanel {
 	private Coordinador coordinador;
@@ -29,7 +33,7 @@ public class PanelNomina extends JPanel {
     private JLabel lblFecha, lblDias, lblTotal, lblIdNomina, lbl_Id;
     private JTextField txtDocEmp, txtIdEmp, txtNomEmp, txtApellEmp, txtIdCargo, txtCargo, txtRemune;
     private JTextField txtDias, txtTotal, txtIdNomina, txtId;
-	private JTable tablaEmp;
+	private JTable tablaNom;
     private DefaultTableModel modeloTablaNom;
     private JScrollPane scrollTablaNom;
 	private JButton btnRegistrar, btnModificar, btnEliminar, btnBuscar, btnLimpiarTxt, btnCalcular, btnBuscarEmp;
@@ -107,30 +111,35 @@ public class PanelNomina extends JPanel {
         txtNomEmp.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtNomEmp.setColumns(10);
         txtNomEmp.setBounds(80, 71, 175, 20);
+        txtNomEmp.setEnabled(false);
         panelEmp.add(txtNomEmp);
         
         txtApellEmp = new JTextField();
         txtApellEmp.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtApellEmp.setColumns(10);
         txtApellEmp.setBounds(80, 97, 175, 20);
+        txtApellEmp.setEnabled(false);
         panelEmp.add(txtApellEmp);
         
         txtIdCargo = new JTextField();
         txtIdCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtIdCargo.setColumns(10);
         txtIdCargo.setBounds(80, 123, 175, 20);
+        txtIdCargo.setEnabled(false);
         panelEmp.add(txtIdCargo);
         
         txtCargo = new JTextField();
         txtCargo.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtCargo.setColumns(10);
         txtCargo.setBounds(80, 149, 175, 20);
+        txtCargo.setEnabled(false);
         panelEmp.add(txtCargo);
         
         txtRemune = new JTextField();
         txtRemune.setFont(new Font("Consolas", Font.PLAIN, 13));
         txtRemune.setColumns(10);
         txtRemune.setBounds(100, 175, 155, 20);
+        txtRemune.setEnabled(false);
         panelEmp.add(txtRemune);
 
         // Boton //
@@ -242,7 +251,7 @@ public class PanelNomina extends JPanel {
         btnBuscar = new JButton("Buscar");
         btnBuscar.setFont(new Font("Consolas", Font.PLAIN, 13));
         btnBuscar.setBounds(350, 50, 100, 25);
-       btnBuscar.addActionListener(new ManejadorBotonBuscar());
+        btnBuscar.addActionListener(new ManejadorBotonBuscar());
         panelAcciones.add(btnBuscar);
 
         btnLimpiarTxt = new JButton("Limpiar");
@@ -253,28 +262,38 @@ public class PanelNomina extends JPanel {
         panelAcciones.add(btnLimpiarTxt);
         
         // Tablas //
-        modeloTablaNom = new DefaultTableModel(new Object[][] {}, new String[] {"ID Nomina", "Fecha", "ID Emp", "Nombre", "Apellido", "Documento", "ID Cargo", "Remuneración", "Cant", "Total"}) {
+        modeloTablaNom = new DefaultTableModel(new Object[][] {}, new String[] {"ID Nomina", "Fecha", "ID Emp", "Nombre", "Documento", "ID Cargo", "Nombre Cargo", "Remuneración", "Días", "Total"}) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
 
-        tablaEmp = new JTable(modeloTablaNom);
-        tablaEmp.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-        tablaEmp.setFont(new Font("Consolas", Font.PLAIN, 10));
-        tablaEmp.getTableHeader().setReorderingAllowed(false);
-        tablaEmp.getSelectionModel().addListSelectionListener(e -> {
+        tablaNom = new JTable(modeloTablaNom);
+        tablaNom.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+        tablaNom.setFont(new Font("Consolas", Font.PLAIN, 10));
+        tablaNom.getTableHeader().setReorderingAllowed(false);
+        tablaNom.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
-                int fila = tablaEmp.getSelectedRow();
-                if (fila != -1 && tablaEmp.getValueAt(fila, 0) != null) {
-                    
+                int fila = tablaNom.getSelectedRow();
+                if (fila != -1 && tablaNom.getValueAt(fila, 0) != null) {
+                    txtIdNomina.setText(tablaNom.getValueAt(fila, 0).toString());
+                    fecha.setToolTipText(tablaNom.getValueAt(fila, 1).toString());
+                    txtIdEmp.setText(tablaNom.getValueAt(fila, 2).toString());
+                    txtNomEmp.setText(tablaNom.getValueAt(fila, 3).toString());
+                    txtDocEmp.setText(tablaNom.getValueAt(fila, 4).toString());
+                    txtIdCargo.setText(tablaNom.getValueAt(fila, 5).toString());
+                    txtCargo.setText(tablaNom.getValueAt(fila, 6).toString());
+                    txtRemune.setText(tablaNom.getValueAt(fila, 7).toString());
+                    txtDias.setText(tablaNom.getValueAt(fila, 8).toString());
+                    txtTotal.setText(tablaNom.getValueAt(fila, 9).toString());
+                    tablaNom.clearSelection();
                 }
             }
         });
         
         // Scrolls //
-        scrollTablaNom = new JScrollPane(tablaEmp);
+        scrollTablaNom = new JScrollPane(tablaNom);
         scrollTablaNom.setBounds(5, 234, 752, 218);
         add(scrollTablaNom);
     }
@@ -298,9 +317,13 @@ public class PanelNomina extends JPanel {
         txtTotal.setText("");
         txtId.setText("");
     }
+
+    public void mostrarTablaNomina() {
+    	tablaNom.setModel(new NominaTableModel(coordinador.cargaListaNominas()));
+    }
     
  // Clases internas que implementa ActionListener
-    // Buscar Area
+    // Buscar Nomina
     private class ManejadorBotonBuscar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -312,15 +335,44 @@ public class PanelNomina extends JPanel {
         }
     }
 
-	// Registrar Cargo
+	// Registrar Nomina
     private class ManejadorBotonRegistrar implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-        
+            String dias = txtDias.getText();
+            String total = txtTotal.getText();
+            String idEmp = txtIdEmp.getText();
+            String idCargo = txtIdCargo.getText();
+
+            try {
+                if (txtIdNomina.getText().trim().isEmpty() && coordinador.verificarCamposVaciosNomina(dias, total, idEmp, idCargo)) { // 
+                    VoNomina nomina = new VoNomina();
+                    Calendar cal = fecha.getCalendar();
+                    if (cal != null) {
+                        nomina.setFecha(new Date(cal.getTimeInMillis()));
+                    }
+                    nomina.setDiasLaborados(Integer.parseInt(dias));
+                    nomina.setTotal(Double.parseDouble(total));
+                    nomina.setIdEmpleado(Integer.parseInt(idEmp));
+                    nomina.setIdCargo(Integer.parseInt(idCargo));
+                    if (coordinador.insertarNomina(nomina)) {
+                        JOptionPane.showMessageDialog(null, "Nómina registrada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al registrar la nómina.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ingrese todos los campos y verifique el campo ID este vacio.", "Error", JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (NumberFormatException a) {
+                JOptionPane.showMessageDialog(null, "Error: La cadena no es un entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                limpiarDatos();
+                mostrarTablaNomina();
+            }
         }
     }
 
-    // Actualizar Área
+    // Actualizar Nomina
     private class ManejarBotonActualizar implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -328,7 +380,7 @@ public class PanelNomina extends JPanel {
 		}
     }
 	
-    // Eliminar Cargo
+    // Eliminar Nomina
     private class ManejarBotonEliminar implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -340,7 +392,15 @@ public class PanelNomina extends JPanel {
     private class ManejarBotonTotal implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-            
+            try {
+                double dias = 0.0, remuneracion = 0.0, total = 0.0;
+                dias = Double.parseDouble(txtDias.getText().trim());
+                remuneracion = Double.parseDouble(txtRemune.getText().trim());
+                total = dias * remuneracion;
+                txtTotal.setText(String.valueOf(total));
+            } catch (NumberFormatException a) {
+                JOptionPane.showMessageDialog(null, "Error: La cadena no es un número válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
 		}
     }
     

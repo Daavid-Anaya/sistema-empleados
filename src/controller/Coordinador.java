@@ -6,10 +6,12 @@ import model.Validaciones;
 import model.dao.DaoArea;
 import model.dao.DaoCargo;
 import model.dao.DaoEmpleado;
+import model.dao.DaoNomina;
 import model.dao.DaoUsuario;
 import model.vo.VoArea;
 import model.vo.VoCargo;
 import model.vo.VoEmpleado;
+import model.vo.VoNomina;
 import view.gui.Login;
 import view.gui.VentanaPrincipal;
 
@@ -21,6 +23,7 @@ public class Coordinador {
 	private DaoArea daoArea;
 	private DaoCargo daoCargo;
 	private DaoEmpleado daoEmpleado;
+	private DaoNomina daoNomina;
 	private Validaciones validaciones;
 	
 	public void setLogin(Login login) {
@@ -47,6 +50,10 @@ public class Coordinador {
 		this.daoEmpleado = daoEmpleado;
 	}
 
+	public void setDaoNomina(DaoNomina daoNomina) {
+		this.daoNomina = daoNomina;
+	}
+
 	public void setValidaciones(Validaciones validaciones) {
 		this.validaciones = validaciones;
 	}
@@ -70,6 +77,10 @@ public class Coordinador {
 
 	public boolean verificaCamposVaciosCargo(String id, String nombre, String remuneracion) {
 		return validaciones.verificaCamposVaciosCargo(id, nombre, remuneracion);
+	}
+
+	public boolean verificarCamposVaciosNomina(String dias, String total, String idEmpleado, String idCargo) {
+		return validaciones.verificarCamposVaciosNomina(dias, total, idEmpleado, idCargo);
 	}
 
 	public boolean existeIdEmpleado(int id) {
@@ -180,5 +191,13 @@ public class Coordinador {
 
     public boolean eliminarEmpleado(int id) {
         return daoEmpleado.eliminarEmpleado(id);
+    }
+
+	public boolean insertarNomina(VoNomina nomina) {
+		return daoNomina.insertarNomina(nomina);
+	}
+
+    public List<VoNomina> cargaListaNominas() {
+        return daoNomina.cargaListaNominas();
     }
 }

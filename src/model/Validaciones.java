@@ -24,4 +24,8 @@ public class Validaciones {
 	public boolean verificaCamposVaciosCargo(String id, String nombre, String remuneracion) {
 		return !id.isEmpty() && !nombre.isEmpty() && !remuneracion.isEmpty() && Double.parseDouble(remuneracion) > 0;
 	}
+
+	public boolean verificarCamposVaciosNomina(String dias, String total, String idEmpleado, String idCargo) {
+		return Stream.of(dias, total, idEmpleado, idCargo).allMatch(s -> s != null && !s.trim().isEmpty());
+	}
 }

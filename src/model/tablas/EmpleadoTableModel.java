@@ -6,9 +6,8 @@ import javax.swing.table.AbstractTableModel;
 
 import model.vo.VoEmpleado;
 
-public class EmpleadoTableModel extends AbstractTableModel{
-
-   private static final long serialVersionUID = 1L;
+public class EmpleadoTableModel extends AbstractTableModel {
+    private static final long serialVersionUID = 1L;
     private List<VoEmpleado> empleados;
     private final String[] columnas = {"ID", "Nombre", "Apellido", "Tipo Doc", "Documento", "Area", "Cargo", "Telefono", "Correo"};
 

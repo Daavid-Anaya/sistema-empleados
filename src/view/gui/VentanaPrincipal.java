@@ -150,8 +150,8 @@ public class VentanaPrincipal extends JFrame implements ActionListener {
             panelCargos.limpiarDatosCargo();
         } else if (e.getSource() == btnNomina) {
             panelPestañas.setSelectedComponent(panelNomina);
-            //panelNomina.mostrarTablaNomina();
-            //panelNomina.limpiarDatosNomina();
+            panelNomina.mostrarTablaNomina();
+            panelNomina.limpiarDatos();
         }
     }
 }
