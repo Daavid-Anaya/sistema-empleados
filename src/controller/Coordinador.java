@@ -197,6 +197,10 @@ public class Coordinador {
 		return daoNomina.insertarNomina(nomina);
 	}
 
+	public boolean actualizarNomina(VoNomina nomina) {
+		return daoNomina.actualizarNomina(nomina);
+	}
+
     public List<VoNomina> cargaListaNominas() {
         return daoNomina.cargaListaNominas();
     }

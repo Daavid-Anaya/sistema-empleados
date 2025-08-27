@@ -278,7 +278,7 @@ public class PanelNomina extends JPanel {
                 int fila = tablaNom.getSelectedRow();
                 if (fila != -1 && tablaNom.getValueAt(fila, 0) != null) {
                     txtIdNomina.setText(tablaNom.getValueAt(fila, 0).toString());
-                    fecha.setToolTipText(tablaNom.getValueAt(fila, 1).toString());
+                    fecha.setDate(Date.valueOf(tablaNom.getValueAt(fila, 1).toString()));
                     txtIdEmp.setText(tablaNom.getValueAt(fila, 2).toString());
                     txtNomEmp.setText(tablaNom.getValueAt(fila, 3).toString());
                     txtDocEmp.setText(tablaNom.getValueAt(fila, 4).toString());
@@ -376,7 +376,38 @@ public class PanelNomina extends JPanel {
     private class ManejarBotonActualizar implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-            
+            String dias = txtDias.getText();
+            String total = txtTotal.getText();
+            String idEmp = txtIdEmp.getText();
+            String idCargo = txtIdCargo.getText();
+            String idNomina = txtIdNomina.getText().trim();
+            Calendar cal = fecha.getCalendar();
+
+            try {
+                if (!idNomina.isEmpty() && coordinador.verificarCamposVaciosNomina(dias, total, idEmp, idCargo)) { // 
+                    VoNomina nomina = new VoNomina();
+                    nomina.setId(Integer.parseInt(idNomina));
+                    if (cal != null) {
+                        nomina.setFecha(new Date(cal.getTimeInMillis()));
+                    }
+                    nomina.setDiasLaborados(Integer.parseInt(dias));
+                    nomina.setTotal(Double.parseDouble(total));
+                    nomina.setIdEmpleado(Integer.parseInt(idEmp));
+                    nomina.setIdCargo(Integer.parseInt(idCargo));
+                    if (coordinador.actualizarNomina(nomina)) {
+                        JOptionPane.showMessageDialog(null, "Nómina actualizada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Error al actualizar la nómina.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Ingrese todos los campos y verifique el campo ID este vacio.", "Error", JOptionPane.WARNING_MESSAGE);
+                }
+            } catch (NumberFormatException a) {
+                JOptionPane.showMessageDialog(null, "Error: La cadena no es un entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                limpiarDatos();
+                mostrarTablaNomina();
+            }
 		}
     }
 	

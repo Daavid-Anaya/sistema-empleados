@@ -81,4 +81,29 @@ public class DaoNomina {
         }
         return nominas;
     }
+
+    // Método para actualizar una Nomida
+    public boolean actualizarNomina(VoNomina nomina) {
+        String updateQuery = "UPDATE nominas SET fecha = ?, dias_laborados = ?, total = ?, id_empleado = ?, id_cargo = ? WHERE id = ?";
+
+        try (Connection connection = new Conexion().getConnection();
+            PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+            // Establecer el valor del parámetro en la consulta
+            statement.setDate(1, nomina.getFecha());
+            statement.setInt(2, nomina.getDiasLaborados());
+            statement.setDouble(3, nomina.getTotal());
+            statement.setInt(4, nomina.getIdEmpleado());
+            statement.setInt(5, nomina.getIdCargo());
+            statement.setInt(6, nomina.getId());
+
+            // Ejecutar la consulta
+            int rowsUpdated = statement.executeUpdate();
+
+            // Verificar si se actualizó la nómina
+            return rowsUpdated > 0;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al actualizar nómina: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
 }
