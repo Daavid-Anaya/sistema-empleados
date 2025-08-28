@@ -9,6 +9,7 @@ public class VoNomina {
     double total;
     int idEmpleado;
     String nombreEmpleado;
+    String apellidoEmpleado;
     String documentoEmpleado;
     int idCargo;
     String nombreCargo;
@@ -27,11 +28,12 @@ public class VoNomina {
         this.idCargo = idCargo;
     }
 
-    public VoNomina(int id, Date fecha, int idEmpleado, String nombreEmpleado, String documentoEmpleado, int idCargo, String nombreCargo, double remuneracion, int diasLaborados, double total) {
+    public VoNomina(int id, Date fecha, int idEmpleado, String nombreEmpleado, String apellidoEmpleado, String documentoEmpleado, int idCargo, String nombreCargo, double remuneracion, int diasLaborados, double total) {
         this.id = id;
         this.fecha = fecha;
         this.idEmpleado = idEmpleado;
         this.nombreEmpleado = nombreEmpleado;
+        this.apellidoEmpleado = apellidoEmpleado;
         this.documentoEmpleado = documentoEmpleado;
         this.idCargo = idCargo;
         this.nombreCargo = nombreCargo;
@@ -66,6 +68,10 @@ public class VoNomina {
 
     public String getNombreEmpleado() {
         return nombreEmpleado;
+    }
+
+    public String getApellidoEmpleado() {
+        return apellidoEmpleado;
     }
 
     public String getDocumentoEmpleado() {
@@ -106,6 +112,10 @@ public class VoNomina {
 
     public void setNombreEmpleado(String nombreEmpleado) {
         this.nombreEmpleado = nombreEmpleado;
+    }
+
+    public void setApellidoEmpleado(String apellidoEmpleado) {
+        this.apellidoEmpleado = apellidoEmpleado;
     }
 
     public void setDocumentoEmpleado(String documentoEmpleado) {

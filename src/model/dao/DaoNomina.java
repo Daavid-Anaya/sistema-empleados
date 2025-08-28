@@ -51,7 +51,7 @@ public class DaoNomina {
         List<VoNomina> nominas = new ArrayList<>();
 
         // Consulta SQL para listar empleados
-        String selectQuery = "SELECT n.id, n.fecha, n.id_empleado, e.nombre, e.documento,\n" +
+        String selectQuery = "SELECT n.id, n.fecha, n.id_empleado, e.nombre, e.apellido, e.documento,\n" +
                             "n.id_cargo, c.nombre_cargo, c.remuneracion, n.dias_laborados, n.total\n" +
                             "FROM nominas n\n" +
                             "INNER JOIN empleados e ON n.id_empleado = e.id_empleado\n"+
@@ -68,6 +68,7 @@ public class DaoNomina {
                 nom.setFecha(resultSet.getDate("fecha"));
                 nom.setIdEmpleado(resultSet.getInt("id_empleado"));
                 nom.setNombreEmpleado(resultSet.getString("nombre"));
+                nom.setApellidoEmpleado(resultSet.getString("apellido"));
                 nom.setDocumentoEmpleado(resultSet.getString("documento"));
                 nom.setIdCargo(resultSet.getInt("id_cargo"));
                 nom.setNombreCargo(resultSet.getString("nombre_cargo"));
@@ -80,6 +81,44 @@ public class DaoNomina {
             JOptionPane.showMessageDialog(null, "Error al listar nominas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return nominas;
+    }
+
+    // Método para buscar una Nomina por su ID
+    public VoNomina buscarNomina(int id) {
+        VoNomina nomina = null;
+        String selectQuery = "SELECT n.id, n.fecha, n.id_empleado, e.nombre, e.apellido, e.documento,\n" +
+                            "n.id_cargo, c.nombre_cargo, c.remuneracion, n.dias_laborados, n.total\n" +
+                            "FROM nominas n\n" +
+                            "INNER JOIN empleados e ON n.id_empleado = e.id_empleado\n"+
+                            "INNER JOIN cargos c ON e.id_cargo = c.id_cargo WHERE n.id = ?";
+
+        try (Connection connection = new Conexion().getConnection();
+            PreparedStatement statement = connection.prepareStatement(selectQuery)) {
+            // Establecer el valor del parámetro en la consulta
+            statement.setInt(1, id);
+
+            // Ejecutar la consulta
+            try (ResultSet resultSet = statement.executeQuery()) {
+                // Procesar el resultado
+                if (resultSet.next()) {
+                    nomina = new VoNomina();
+                    nomina.setId(resultSet.getInt("id"));
+                    nomina.setFecha(resultSet.getDate("fecha"));
+                    nomina.setIdEmpleado(resultSet.getInt("id_empleado"));
+                    nomina.setNombreEmpleado(resultSet.getString("nombre"));
+                    nomina.setApellidoEmpleado(resultSet.getString("apellido"));
+                    nomina.setDocumentoEmpleado(resultSet.getString("documento"));
+                    nomina.setIdCargo(resultSet.getInt("id_cargo"));
+                    nomina.setNombreCargo(resultSet.getString("nombre_cargo"));
+                    nomina.setRemuneracion(resultSet.getDouble("remuneracion"));
+                    nomina.setDiasLaborados(resultSet.getInt("dias_laborados"));
+                    nomina.setTotal(resultSet.getDouble("total"));
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al buscar nómina: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return nomina;
     }
 
     // Método para actualizar una Nomida

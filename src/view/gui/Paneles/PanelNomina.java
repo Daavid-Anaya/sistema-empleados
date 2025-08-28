@@ -328,9 +328,29 @@ public class PanelNomina extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e) {
             try {
-                
+                String idNomina = txtId.getText().trim();
+                if (idNomina.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese el ID de la nómina a buscar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+                } else {
+                    VoNomina nomina = coordinador.buscarNomina(Integer.parseInt(idNomina));
+                    if (nomina != null) {
+                        txtIdNomina.setText(String.valueOf(nomina.getId()));
+                        fecha.setDate(nomina.getFecha());
+                        txtIdEmp.setText(String.valueOf(nomina.getIdEmpleado()));
+                        txtNomEmp.setText(nomina.getNombreEmpleado());
+                        txtApellEmp.setText(nomina.getApellidoEmpleado());
+                        txtDocEmp.setText(nomina.getDocumentoEmpleado());
+                        txtIdCargo.setText(String.valueOf(nomina.getIdCargo()));
+                        txtCargo.setText(nomina.getNombreCargo());
+                        txtRemune.setText(String.valueOf(nomina.getRemuneracion()));
+                        txtDias.setText(String.valueOf(nomina.getDiasLaborados()));
+                        txtTotal.setText(String.valueOf(nomina.getTotal()));
+                    }
+                }
             } catch (NumberFormatException a) {
                 JOptionPane.showMessageDialog(null, "Error: La cadena no es un entero válido.", "Error", JOptionPane.ERROR_MESSAGE);
+            } finally {
+                txtId.setText("");
             }
         }
     }

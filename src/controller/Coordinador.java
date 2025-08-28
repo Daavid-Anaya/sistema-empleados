@@ -193,6 +193,10 @@ public class Coordinador {
         return daoEmpleado.eliminarEmpleado(id);
     }
 
+	public VoNomina buscarNomina(int id) {
+		return daoNomina.buscarNomina(id);
+	}
+
 	public boolean insertarNomina(VoNomina nomina) {
 		return daoNomina.insertarNomina(nomina);
 	}
