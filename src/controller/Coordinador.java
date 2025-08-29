@@ -205,6 +205,10 @@ public class Coordinador {
 		return daoNomina.actualizarNomina(nomina);
 	}
 
+	public boolean eliminarNomina(int id) {
+		return daoNomina.eliminarNomina(id);
+	}
+
     public List<VoNomina> cargaListaNominas() {
         return daoNomina.cargaListaNominas();
     }

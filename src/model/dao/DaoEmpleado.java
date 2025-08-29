@@ -142,7 +142,7 @@ public class DaoEmpleado {
 
     // Método para eliminar un empleado
     public boolean eliminarEmpleado(int id) {
-         // Consulta SQL para eliminar el empleado
+        // Consulta SQL para eliminar el empleado
         String deleteQuery = "DELETE FROM empleados WHERE id_empleado = ?";
 
         // Preparar la conexión y la consulta

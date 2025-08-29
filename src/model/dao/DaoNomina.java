@@ -41,12 +41,12 @@ public class DaoNomina {
             // Verificar si se insertó el área
             return rowsInserted > 0;
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al insertar nomina: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al insertar nómina: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
 
-    // Método para cargar lista de Nominas
+    // Método para cargar lista de Nóminas
     public List<VoNomina> cargaListaNominas() {
         List<VoNomina> nominas = new ArrayList<>();
 
@@ -78,12 +78,12 @@ public class DaoNomina {
                 nominas.add(nom);
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al listar nominas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error al listar nóminas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
         return nominas;
     }
 
-    // Método para buscar una Nomina por su ID
+    // Método para buscar una Nómina por su ID
     public VoNomina buscarNomina(int id) {
         VoNomina nomina = null;
         String selectQuery = "SELECT n.id, n.fecha, n.id_empleado, e.nombre, e.apellido, e.documento,\n" +
@@ -121,7 +121,7 @@ public class DaoNomina {
         return nomina;
     }
 
-    // Método para actualizar una Nomida
+    // Método para actualizar una Nómina
     public boolean actualizarNomina(VoNomina nomina) {
         String updateQuery = "UPDATE nominas SET fecha = ?, dias_laborados = ?, total = ?, id_empleado = ?, id_cargo = ? WHERE id = ?";
 
@@ -142,6 +142,28 @@ public class DaoNomina {
             return rowsUpdated > 0;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al actualizar nómina: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+
+    // Método para eliminar una Nómina
+    public boolean eliminarNomina(int id) {
+        // Consulta SQL para eliminar una nómina
+        String deleteQuery = "DELETE FROM nominas WHERE id = ?";
+        
+         // Preparar la conexión y la consulta
+        try (Connection connection = new Conexion().getConnection();
+            PreparedStatement statement = connection.prepareStatement(deleteQuery)) {
+            // Establecer el valor del parámetro en la consulta
+            statement.setInt(1, id);
+
+            // Ejecutar la consulta
+            int rowsDeleted = statement.executeUpdate();
+
+            // Verificar si se eliminó el área
+            return rowsDeleted > 0;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar nómina: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }

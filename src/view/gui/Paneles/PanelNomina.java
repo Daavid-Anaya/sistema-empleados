@@ -435,7 +435,19 @@ public class PanelNomina extends JPanel {
     private class ManejarBotonEliminar implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-            
+            String idNomina = txtIdNomina.getText().trim();
+            if (!idNomina.isEmpty()) {
+                boolean confirmacion = JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar la nómina seleccionada?", "Confirmación", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+                if (confirmacion && coordinador.eliminarNomina(Integer.parseInt(idNomina))) {
+                    limpiarDatos();
+                    mostrarTablaNomina();
+                    JOptionPane.showMessageDialog(null, "Nómina eliminada exitosamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se eliminó la nómina.", "Advertencia", JOptionPane.INFORMATION_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Seleccione una nómina para eliminar.", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }
 		}
     }
 	
